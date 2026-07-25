@@ -658,12 +658,24 @@ function zoomAt(px,py,nk){           // (px,py)를 고정점으로 잡고 배율
 }
 function zoomStep(f){ zoomAt(CX,CY,view.k*f); applyView(true); }
 
-var pts={}, npt=0, last=null, pinch=null;
+var pts={}, npt=0, last=null, pinch=null, held={};
+/* 포인터 캡처는 「실제로 끌기 시작한 뒤」에만 건다.
+   pointerdown에서 캡처하면 뒤따르는 click이 핀이 아니라 map으로 재타겟팅돼
+   (Chrome·Edge) 핀의 click 리스너가 아예 호출되지 않는다. */
+function grab(id){
+  if(held[id]) return;
+  try{ map.setPointerCapture(id); held[id]=1; }catch(_){}
+}
+function drop(id){
+  if(!held[id]) return;
+  try{ map.releasePointerCapture(id); }catch(_){}
+  delete held[id];
+}
 map.addEventListener('pointerdown',function(e){
   pts[e.pointerId]={x:e.clientX,y:e.clientY}; npt++;
-  map.setPointerCapture(e.pointerId);
   if(npt===1){ last={x:e.clientX,y:e.clientY}; dragged=false; map.classList.add('grabbing'); }
-  else if(npt===2){ var k=Object.keys(pts); pinch={d:pdist(),k:view.k}; last=null; }
+  else if(npt===2){ pinch={d:pdist(),k:view.k}; last=null;
+    for(var q in pts) grab(+q); }              // 핀치는 시작부터 캡처가 필요하다
 });
 map.addEventListener('pointermove',function(e){
   if(!pts[e.pointerId]) return;
@@ -675,13 +687,16 @@ map.addEventListener('pointermove',function(e){
     dragged=true; applyView(false);
   } else if(last){
     var s=fit(), dx=(e.clientX-last.x)/s, dy=(e.clientY-last.y)/s;
-    if(Math.abs(e.clientX-last.x)+Math.abs(e.clientY-last.y)>8) dragged=true;
+    if(Math.abs(e.clientX-last.x)+Math.abs(e.clientY-last.y)>8){
+      dragged=true; grab(e.pointerId);         // 여기서부터 손이 지도 밖으로 나가도 따라온다
+    }
     view.tx+=dx; view.ty+=dy; last={x:e.clientX,y:e.clientY};
     applyView(false);
   }
 });
 function endPt(e){
   if(!pts[e.pointerId]) return;
+  drop(e.pointerId);
   delete pts[e.pointerId]; npt=Math.max(0,npt-1);
   if(npt<2) pinch=null;
   if(npt===0){ last=null; map.classList.remove('grabbing');
