@@ -34,6 +34,8 @@
   :root[data-theme="light"] .sheet{box-shadow:0 8px 24px rgba(31,35,40,.15)}
   :root[data-theme="light"] .attrib{background:rgba(255,255,255,.85); color:#656D76}
   *{box-sizing:border-box}
+  /* .cbtn{display:block} 같은 규칙이 hidden 속성을 덮어써 빈 버튼이 보이던 문제 방지 */
+  [hidden]{display:none !important}
   html,body{height:100%}
   body{margin:0; background:var(--bg); color:var(--ink); overflow:hidden;
     font-family:var(--f); font-size:14px; line-height:1.55; font-weight:400}
@@ -330,8 +332,6 @@
       <button class="cbtn on" id="ob-3" onclick="setOrder(3)">
         <b>3 · 유네스코<span class="rec">추천</span></b><s>내몽고·내몽고·베이징·베이징</s></button>
       <button class="ttbtn" onclick="open_('sch')">시간표 보기</button>
-      <button class="cbtn" id="cb-a" hidden onclick="setCase('a')"><b></b><s></s></button>
-      <button class="cbtn" id="cb-b" hidden onclick="setCase('b')"><b></b><s></s></button>
     </div>
 
     <div class="grp">
@@ -344,8 +344,6 @@
         <span class="tx"><b>시라무런 초원</b><s id="s-grass"></s></span></button>
       <button class="navbtn" onclick="go('desert')"><span class="dot" style="background:#BF8700"></span>
         <span class="tx"><b>샹사완 사막</b><s id="s-desert"></s></span></button>
-      <button class="navbtn" id="nav-baotou" hidden onclick="go('baotou')"><span class="dot"></span>
-        <span class="tx"><b></b><s></s></span></button>
     </div>
 
     <div class="grp" style="padding-bottom:12px">
@@ -947,13 +945,12 @@ function reset(){
   cur=null; view={k:1,tx:0,ty:0}; applyView(true);
   pc.classList.remove('show'); hint.style.opacity='1'; markPin(null);
 }
+/* 복귀 경로: a = 후허하오터 왕복, b = 바오터우 아웃.
+   지금은 a로 고정이고 전환 버튼은 없습니다. b를 다시 쓰려면 버튼을 붙이면 됩니다. */
 function setCase(c,silent){
   CASE=c; var a=c==='a';
   document.getElementById('rt-a').hidden=!a;
   document.getElementById('rt-b').hidden=a;
-  document.getElementById('cb-a').classList.toggle('on',a);
-  document.getElementById('cb-b').classList.toggle('on',!a);
-  document.getElementById('nav-baotou').style.opacity=a?'.5':'1';
   refresh();
 }
 function setOrder(o,silent){
@@ -964,8 +961,6 @@ function setOrder(o,silent){
   document.getElementById('s-hohhot').textContent=n.hohhot;
   document.getElementById('s-grass').textContent=n.grass;
   document.getElementById('s-desert').textContent=n.desert;
-  document.getElementById('mn-grass').textContent = o===3 ? '반나절 경유' : '게르 1박';
-  document.getElementById('mn-desert').textContent = o===3 ? '낙타 1박' : '낙타 · 별 1박';
   document.getElementById('nav-grass').style.opacity = (o===3?'.6':'1');
   refresh();
 }

@@ -7,7 +7,8 @@
 """
 import sys, io, os, json, re
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+if __name__ == "__main__":      # import될 때 stdout을 건드리지 않는다
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import verify_itinerary as V
