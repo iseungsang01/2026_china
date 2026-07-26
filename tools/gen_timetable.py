@@ -38,10 +38,11 @@ def to_tt(P):
 
 
 def build_tt():
+    """A경로(후허하오터 왕복)만 페이지에 싣는다. 1안의 B경로는 검증기에는 살아 있지만
+    전환 UI가 없어 시간표로는 쓰이지 않는다."""
     tt = {}
-    for o in (1, 2, 3, 4):
-        for case in ("A", "B"):
-            tt["%d%s" % (o, case)] = to_tt(V.build(o, "", case))
+    for o in (1, 4, 5):
+        tt["%dA" % o] = to_tt(V.build(o, "", "A"))
     return tt
 
 
