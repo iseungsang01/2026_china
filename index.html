@@ -339,9 +339,9 @@
     .attrib{font-size:10px; bottom:2px; right:4px}
 
     /* 핀을 누르면 지도 아래에서 상세가 올라온다. 일정은 시간표 탭에 있다 */
-    .mlist{display:block; flex:1; min-height:0; overflow-y:auto;
+    .mlist{display:flex; flex-direction:column; flex:1; min-height:0; overflow-y:auto;
       background:var(--bg); -webkit-overflow-scrolling:touch}
-    .mhint{margin:0; padding:22px 20px; text-align:center; font-size:13px;
+    .mhint{margin:auto 0; padding:22px 20px; text-align:center; font-size:13px;
       line-height:1.7; color:var(--muted)}
     .mhint b{display:block; margin-top:4px; color:var(--dim); font-weight:500}
     .poicard.show ~ .mhint{display:none}
