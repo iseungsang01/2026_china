@@ -39,7 +39,7 @@ def to_tt(P):
 
 def build_tt():
     tt = {}
-    for o in (1, 2, 3):
+    for o in (1, 2, 3, 4):
         for case in ("A", "B"):
             tt["%d%s" % (o, case)] = to_tt(V.build(o, "", case))
     return tt

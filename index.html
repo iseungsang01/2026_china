@@ -298,6 +298,8 @@
   .blk.rest,.blk.transit{border-left-color:var(--dim); background:rgba(110,118,129,.10)}
   .bk{font-size:10.5px; background:var(--warn); color:#1a1005; font-weight:600;
       padding:1px 7px; border-radius:9999px; margin-left:5px; white-space:nowrap}
+  .du{display:block; font-size:10.5px; color:var(--dim); text-decoration:none;
+      font-family:var(--fm); margin-top:1px}
   .tgleg{display:flex; gap:12px; flex-wrap:wrap; padding:8px 10px; font-size:11px;
          color:var(--muted); border-top:1px solid var(--border); background:var(--surface)}
   .tgleg span{display:flex; align-items:center; gap:5px}
@@ -428,6 +430,8 @@
         <b>2 · 내몽고 직행</b><s>내몽고·내몽고·내몽고·베이징</s></button>
       <button class="cbtn on" id="ob-3" onclick="setOrder(3)">
         <b>3 · 유네스코<span class="rec">추천</span></b><s>내몽고·내몽고·베이징·베이징</s></button>
+      <button class="cbtn" id="ob-4" onclick="setOrder(4)">
+        <b>4 · 초원 제외</b><s>사막 온종일 · 유네스코 셋</s></button>
       <button class="ttbtn" onclick="open_('sch')">시간표 보기</button>
     </div>
 
@@ -526,7 +530,8 @@
 <image x="448.00" y="288.00" width="32.1" height="32.1" href="data:image/png;base64,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"/>
 </g>
         <g id="rt-a"><path class="rail-case" d="M867.7 384.7 Q 660 300 443.9 272.7"/><path class="rail-line" d="M867.7 384.7 Q 660 300 443.9 272.7"/><path class="road-case" d="M443.9 272.7 Q 405 240 387.6 215.3"/><path class="road-line" d="M443.9 272.7 Q 405 240 387.6 215.3"/><path class="road-case" d="M387.6 215.3 Q 322 258 286 327.6"/><path class="road-line" d="M387.6 215.3 Q 322 258 286 327.6"/><path class="road-case" d="M286 327.6 Q 372 322 443.9 272.7"/><path class="road-line" d="M286 327.6 Q 372 322 443.9 272.7"/><path class="dlnk" d="M885.5 363.8 L862.8 380.3"/><path class="dlnk" d="M442.5 271.5 L387.6 215.3"/><path class="dlnk" d="M286 327.6 L268.1 300.5"/></g>
-        <g id="rt-b" hidden><path class="rail-case" d="M867.7 384.7 Q 660 300 443.9 272.7"/><path class="rail-line" d="M867.7 384.7 Q 660 300 443.9 272.7"/><path class="road-case" d="M443.9 272.7 Q 405 240 387.6 215.3"/><path class="road-line" d="M443.9 272.7 Q 405 240 387.6 215.3"/><path class="road-case" d="M387.6 215.3 Q 322 258 286 327.6"/><path class="road-line" d="M387.6 215.3 Q 322 258 286 327.6"/><path class="road-case" d="M286 327.6 L 269.9 294.8"/><path class="road-line" d="M286 327.6 L 269.9 294.8"/><path class="rail-case" d="M269.9 294.8 Q 575 244 867.7 384.7"/><path class="rail-line" d="M269.9 294.8 Q 575 244 867.7 384.7"/><path class="dlnk" d="M885.5 363.8 L862.8 380.3"/><path class="dlnk" d="M442.5 271.5 L387.6 215.3"/><path class="dlnk" d="M286 327.6 L268.1 300.5"/></g>
+        <g id="rt-c" style="display:none"><path class="rail-case" d="M867.7 384.7 Q 660 300 443.9 272.7"/><path class="rail-line" d="M867.7 384.7 Q 660 300 443.9 272.7"/><path class="road-case" d="M443.9 272.7 Q 365 307 286 327.6"/><path class="road-line" d="M443.9 272.7 Q 365 307 286 327.6"/><path class="road-case" d="M286 327.6 L 269.9 294.8"/><path class="road-line" d="M286 327.6 L 269.9 294.8"/><path class="rail-case" d="M269.9 294.8 Q 575 244 867.7 384.7"/><path class="rail-line" d="M269.9 294.8 Q 575 244 867.7 384.7"/><path class="dlnk" d="M885.5 363.8 L862.8 380.3"/><path class="dlnk" d="M286 327.6 L268.1 300.5"/></g>
+        <g id="rt-b" style="display:none"><path class="rail-case" d="M867.7 384.7 Q 660 300 443.9 272.7"/><path class="rail-line" d="M867.7 384.7 Q 660 300 443.9 272.7"/><path class="road-case" d="M443.9 272.7 Q 405 240 387.6 215.3"/><path class="road-line" d="M443.9 272.7 Q 405 240 387.6 215.3"/><path class="road-case" d="M387.6 215.3 Q 322 258 286 327.6"/><path class="road-line" d="M387.6 215.3 Q 322 258 286 327.6"/><path class="road-case" d="M286 327.6 L 269.9 294.8"/><path class="road-line" d="M286 327.6 L 269.9 294.8"/><path class="rail-case" d="M269.9 294.8 Q 575 244 867.7 384.7"/><path class="rail-line" d="M269.9 294.8 Q 575 244 867.7 384.7"/><path class="dlnk" d="M885.5 363.8 L862.8 380.3"/><path class="dlnk" d="M442.5 271.5 L387.6 215.3"/><path class="dlnk" d="M286 327.6 L268.1 300.5"/></g>
       </g>
       <g id="durs"></g>
       <g id="pins"></g>
@@ -553,9 +558,10 @@
   </div>
 
   <nav class="mtab">
-    <button id="mt-1" onclick="setOrder(1)"><b>1</b><s>베이징 먼저</s></button>
-    <button id="mt-2" onclick="setOrder(2)"><b>2</b><s>내몽고 직행</s></button>
-    <button id="mt-3" onclick="setOrder(3)"><b>3<span class="rec">추천</span></b><s>유네스코</s></button>
+    <button id="mt-1" onclick="setOrder(1)"><b>1</b><s>베이징</s></button>
+    <button id="mt-2" onclick="setOrder(2)"><b>2</b><s>직행</s></button>
+    <button id="mt-3" onclick="setOrder(3)"><b>3</b><s>유네스코</s></button>
+    <button id="mt-4" onclick="setOrder(4)"><b>4</b><s>초원 제외</s></button>
     <button class="tt first" onclick="open_('days')" aria-label="일정표 보기">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
         stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></svg>
@@ -575,7 +581,7 @@
 </div>
 
 <script>
-var TT={"1A":[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 시내 (택시 2대)"],[990,20,"rest","호텔에 짐만 맡기고 바로 출발"],[1010,30,"car","호텔 → 징산공원 (지하철)"],[1050,60,"activity","징산공원 만춘정 — 자금성 전경"],[1110,30,"car","징산 → 첸먼다제"],[1140,90,"meal","베이징덕 저녁 (볜이팡 셴위커우점)"],[1230,60,"activity","첸먼다제 · 다잔란 야간 산책"],[1290,45,"activity","왕푸징 야시장"]],"stay":"베이징 1박"},{"d":"8/11","b":[[390,60,"meal","조식 · 체크아웃"],[450,40,"transit","베이징북역 도착 · 발권 · 보안"],[490,155,"rail","고속철 1등석 → 후허하오터동"],[645,30,"transit","차량 합류"],[675,120,"car","후허하오터 → 시라무런 초원"],[795,75,"meal","하마주 환영식 · 점심"],[870,150,"activity","초원 승마"],[1020,75,"activity","양떼 방목지 산책"],[1110,90,"meal","양 통구이 저녁"],[1200,60,"activity","일몰"],[1260,90,"activity","모닥불 파티"],[1350,60,"activity","초원 별보기 (유성우 전야)"]],"stay":"초원 게르 1박"},{"d":"8/12","b":[[420,60,"meal","조식 · 체크아웃"],[480,240,"car","초원 → 샹사완 (바오터우 경유)"],[720,60,"meal","점심"],[780,60,"rest","리조트 체크인 · 짐 보관"],[840,60,"activity","케이블카 → 셴사다오"],[900,90,"activity","낙타 타기"],[990,105,"activity","모래썰매 · 사막 액티비티"],[1110,90,"rest","휴식 · 샤워"],[1200,60,"activity","사막 일몰"],[1260,75,"meal","저녁"],[1410,120,"activity","페르세우스 유성우 극대기 · 별보기"]],"stay":"사막 게르 1박"},{"d":"8/13","b":[[450,60,"meal","조식 · 체크아웃"],[510,180,"car","샹사완 → 후허하오터"],[690,60,"meal","점심"],[750,60,"transit","역 도착 · 발권 · 보안"],[810,165,"rail","고속철 1등석 → 베이징북"],[975,75,"car","역 → 호텔 체크인"],[1080,150,"activity","스차하이 · 난뤄구샹"]],"stay":"베이징 1박"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}],"1B":[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 시내 (택시 2대)"],[990,20,"rest","호텔에 짐만 맡기고 바로 출발"],[1010,30,"car","호텔 → 징산공원 (지하철)"],[1050,60,"activity","징산공원 만춘정 — 자금성 전경"],[1110,30,"car","징산 → 첸먼다제"],[1140,90,"meal","베이징덕 저녁 (볜이팡 셴위커우점)"],[1230,60,"activity","첸먼다제 · 다잔란 야간 산책"],[1290,45,"activity","왕푸징 야시장"]],"stay":"베이징 1박"},{"d":"8/11","b":[[390,60,"meal","조식 · 체크아웃"],[450,40,"transit","베이징북역 도착 · 발권 · 보안"],[490,155,"rail","고속철 1등석 → 후허하오터동"],[645,30,"transit","차량 합류"],[675,120,"car","후허하오터 → 시라무런 초원"],[795,75,"meal","하마주 환영식 · 점심"],[870,150,"activity","초원 승마"],[1020,75,"activity","양떼 방목지 산책"],[1110,90,"meal","양 통구이 저녁"],[1200,60,"activity","일몰"],[1260,90,"activity","모닥불 파티"],[1350,60,"activity","초원 별보기 (유성우 전야)"]],"stay":"초원 게르 1박"},{"d":"8/12","b":[[420,60,"meal","조식 · 체크아웃"],[480,240,"car","초원 → 샹사완 (바오터우 경유)"],[720,60,"meal","점심"],[780,60,"rest","리조트 체크인 · 짐 보관"],[840,60,"activity","케이블카 → 셴사다오"],[900,90,"activity","낙타 타기"],[990,105,"activity","모래썰매 · 사막 액티비티"],[1110,90,"rest","휴식 · 샤워"],[1200,60,"activity","사막 일몰"],[1260,75,"meal","저녁"],[1410,120,"activity","페르세우스 유성우 극대기 · 별보기"]],"stay":"사막 게르 1박"},{"d":"8/13","b":[[540,60,"meal","조식 · 체크아웃 (아침에 여유)"],[600,120,"car","샹사완 → 바오터우"],[720,60,"meal","점심"],[780,45,"transit","역 도착 · 발권 · 보안"],[825,222,"rail","고속철 1등석 → 베이징북"],[1047,75,"car","역 → 호텔 체크인"],[1140,120,"activity","스차하이 · 난뤄구샹"]],"stay":"베이징 1박"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}],"2A":[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 베이징북역 (택시 2대)"],[990,50,"meal","역에서 이른 저녁 · 발권 · 보안"],[1040,155,"rail","고속철 1등석 → 후허하오터동"],[1195,45,"car","역 → 호텔 체크인"]],"stay":"후허하오터 1박"},{"d":"8/11","b":[[450,60,"meal","조식 · 체크아웃"],[540,120,"car","후허하오터 → 시라무런 초원"],[660,90,"activity","하마주 환영식 · 초원 도착"],[750,60,"meal","점심"],[840,180,"activity","초원 승마"],[1020,75,"activity","양떼 방목지 산책"],[1110,90,"meal","양 통구이 저녁"],[1200,60,"activity","일몰"],[1260,90,"activity","모닥불 파티"],[1350,60,"activity","초원 별보기 (유성우 전야)"]],"stay":"초원 게르 1박"},{"d":"8/12","b":[[420,60,"meal","조식 · 체크아웃"],[480,240,"car","초원 → 샹사완 (바오터우 경유)"],[720,60,"meal","점심"],[780,60,"rest","리조트 체크인 · 짐 보관"],[840,60,"activity","케이블카 → 셴사다오"],[900,90,"activity","낙타 타기"],[990,105,"activity","모래썰매 · 사막 액티비티"],[1110,90,"rest","휴식 · 샤워"],[1200,60,"activity","사막 일몰"],[1260,75,"meal","저녁"],[1410,120,"activity","페르세우스 유성우 극대기 · 별보기"]],"stay":"사막 게르 1박"},{"d":"8/13","b":[[450,60,"meal","조식 · 체크아웃"],[510,180,"car","샹사완 → 후허하오터"],[690,60,"meal","점심"],[750,60,"transit","역 도착 · 발권 · 보안"],[810,165,"rail","고속철 1등석 → 베이징북"],[975,75,"car","역 → 호텔 체크인"],[1080,150,"activity","스차하이 · 난뤄구샹"]],"stay":"베이징 1박"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}],"2B":[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 베이징북역 (택시 2대)"],[990,50,"meal","역에서 이른 저녁 · 발권 · 보안"],[1040,155,"rail","고속철 1등석 → 후허하오터동"],[1195,45,"car","역 → 호텔 체크인"]],"stay":"후허하오터 1박"},{"d":"8/11","b":[[450,60,"meal","조식 · 체크아웃"],[540,120,"car","후허하오터 → 시라무런 초원"],[660,90,"activity","하마주 환영식 · 초원 도착"],[750,60,"meal","점심"],[840,180,"activity","초원 승마"],[1020,75,"activity","양떼 방목지 산책"],[1110,90,"meal","양 통구이 저녁"],[1200,60,"activity","일몰"],[1260,90,"activity","모닥불 파티"],[1350,60,"activity","초원 별보기 (유성우 전야)"]],"stay":"초원 게르 1박"},{"d":"8/12","b":[[420,60,"meal","조식 · 체크아웃"],[480,240,"car","초원 → 샹사완 (바오터우 경유)"],[720,60,"meal","점심"],[780,60,"rest","리조트 체크인 · 짐 보관"],[840,60,"activity","케이블카 → 셴사다오"],[900,90,"activity","낙타 타기"],[990,105,"activity","모래썰매 · 사막 액티비티"],[1110,90,"rest","휴식 · 샤워"],[1200,60,"activity","사막 일몰"],[1260,75,"meal","저녁"],[1410,120,"activity","페르세우스 유성우 극대기 · 별보기"]],"stay":"사막 게르 1박"},{"d":"8/13","b":[[540,60,"meal","조식 · 체크아웃 (아침에 여유)"],[600,120,"car","샹사완 → 바오터우"],[720,60,"meal","점심"],[780,45,"transit","역 도착 · 발권 · 보안"],[825,222,"rail","고속철 1등석 → 베이징북"],[1047,75,"car","역 → 호텔 체크인"],[1140,120,"activity","스차하이 · 난뤄구샹"]],"stay":"베이징 1박"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}],"3A":[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 베이징북역 (택시 2대)"],[990,50,"meal","역에서 이른 저녁 · 발권 · 보안"],[1040,155,"rail","고속철 1등석 → 후허하오터동"],[1195,45,"car","역 → 호텔 체크인"]],"stay":"후허하오터 1박"},{"d":"8/11","b":[[420,60,"meal","조식 · 체크아웃"],[480,120,"car","후허하오터 → 시라무런 초원"],[600,60,"activity","하마주 환영식 · 초원 도착"],[660,90,"activity","초원 승마 · 목민 가정 방문"],[750,60,"meal","초원에서 점심"],[810,240,"car","초원 → 샹사완"],[1050,60,"rest","사막 리조트 체크인 · 휴식"],[1140,60,"meal","저녁"],[1200,60,"activity","사막 일몰"],[1320,120,"activity","사막 별보기 (극대기 하루 전)"]],"stay":"사막 게르 1박"},{"d":"8/12","b":[[450,45,"meal","조식"],[495,45,"activity","케이블카 → 셴사다오"],[540,90,"activity","낙타 타기"],[630,60,"activity","모래썰매 · 사막 액티비티"],[690,45,"meal","점심 · 체크아웃"],[735,180,"car","샹사완 → 후허하오터"],[915,45,"transit","역 도착 · 발권 · 보안"],[960,165,"rail","고속철 1등석 → 베이징북"],[1125,60,"car","역 → 호텔 체크인"],[1200,90,"meal","저녁 · 휴식"]],"stay":"베이징 1박"},{"d":"8/13","b":[[450,60,"meal","조식 · 체크아웃 (짐은 호텔 보관)"],[510,30,"car","호텔 → 천안문 (지하철)"],[540,180,"activity","자금성 관람 (오전권 · 예약 필수)"],[720,60,"meal","점심"],[780,60,"car","자금성 → 이화원 (지하철 4호선)"],[840,210,"activity","이화원 관람"],[1050,60,"car","이화원 → 시내 (짐 회수)"],[1120,70,"meal","저녁"],[1190,75,"car","시내 → 공항 인근 호텔"]],"stay":"베이징 1박 (공항 인근)"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}],"3B":[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 베이징북역 (택시 2대)"],[990,50,"meal","역에서 이른 저녁 · 발권 · 보안"],[1040,155,"rail","고속철 1등석 → 후허하오터동"],[1195,45,"car","역 → 호텔 체크인"]],"stay":"후허하오터 1박"},{"d":"8/11","b":[[420,60,"meal","조식 · 체크아웃"],[480,120,"car","후허하오터 → 시라무런 초원"],[600,60,"activity","하마주 환영식 · 초원 도착"],[660,90,"activity","초원 승마 · 목민 가정 방문"],[750,60,"meal","초원에서 점심"],[810,240,"car","초원 → 샹사완"],[1050,60,"rest","사막 리조트 체크인 · 휴식"],[1140,60,"meal","저녁"],[1200,60,"activity","사막 일몰"],[1320,120,"activity","사막 별보기 (극대기 하루 전)"]],"stay":"사막 게르 1박"},{"d":"8/12","b":[[450,45,"meal","조식"],[495,45,"activity","케이블카 → 셴사다오"],[540,90,"activity","낙타 타기"],[630,60,"activity","모래썰매 · 사막 액티비티"],[690,45,"meal","점심 · 체크아웃"],[735,180,"car","샹사완 → 후허하오터"],[915,45,"transit","역 도착 · 발권 · 보안"],[960,165,"rail","고속철 1등석 → 베이징북"],[1125,60,"car","역 → 호텔 체크인"],[1200,90,"meal","저녁 · 휴식"]],"stay":"베이징 1박"},{"d":"8/13","b":[[450,60,"meal","조식 · 체크아웃 (짐은 호텔 보관)"],[510,30,"car","호텔 → 천안문 (지하철)"],[540,180,"activity","자금성 관람 (오전권 · 예약 필수)"],[720,60,"meal","점심"],[780,60,"car","자금성 → 이화원 (지하철 4호선)"],[840,210,"activity","이화원 관람"],[1050,60,"car","이화원 → 시내 (짐 회수)"],[1120,70,"meal","저녁"],[1190,75,"car","시내 → 공항 인근 호텔"]],"stay":"베이징 1박 (공항 인근)"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}]};
+var TT={"1A":[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 시내 (택시 2대)"],[990,20,"rest","호텔에 짐만 맡기고 바로 출발"],[1010,30,"car","호텔 → 징산공원 (지하철)"],[1050,60,"activity","징산공원 만춘정 — 자금성 전경"],[1110,30,"car","징산 → 첸먼다제"],[1140,90,"meal","베이징덕 저녁 (볜이팡 셴위커우점)"],[1230,60,"activity","첸먼다제 · 다잔란 야간 산책"],[1290,45,"activity","왕푸징 야시장"]],"stay":"베이징 1박"},{"d":"8/11","b":[[390,60,"meal","조식 · 체크아웃"],[450,40,"transit","베이징북역 도착 · 발권 · 보안"],[490,155,"rail","고속철 1등석 → 후허하오터동"],[645,30,"transit","차량 합류"],[675,120,"car","후허하오터 → 시라무런 초원"],[795,75,"meal","하마주 환영식 · 점심"],[870,150,"activity","초원 승마"],[1020,75,"activity","양떼 방목지 산책"],[1110,90,"meal","양 통구이 저녁"],[1200,60,"activity","일몰"],[1260,90,"activity","모닥불 파티"],[1350,60,"activity","초원 별보기 (유성우 전야)"]],"stay":"초원 게르 1박"},{"d":"8/12","b":[[420,60,"meal","조식 · 체크아웃"],[480,240,"car","초원 → 샹사완 (바오터우 경유)"],[720,60,"meal","점심"],[780,60,"rest","리조트 체크인 · 짐 보관"],[840,60,"activity","케이블카 → 셴사다오"],[900,90,"activity","낙타 타기"],[990,105,"activity","모래썰매 · 사막 액티비티"],[1110,90,"rest","휴식 · 샤워"],[1200,60,"activity","사막 일몰"],[1260,75,"meal","저녁"],[1410,120,"activity","페르세우스 유성우 극대기 · 별보기"]],"stay":"사막 게르 1박"},{"d":"8/13","b":[[450,60,"meal","조식 · 체크아웃"],[510,180,"car","샹사완 → 후허하오터"],[690,60,"meal","점심"],[750,60,"transit","역 도착 · 발권 · 보안"],[810,165,"rail","고속철 1등석 → 베이징북"],[975,75,"car","역 → 호텔 체크인"],[1080,150,"activity","스차하이 · 난뤄구샹"]],"stay":"베이징 1박"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}],"1B":[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 시내 (택시 2대)"],[990,20,"rest","호텔에 짐만 맡기고 바로 출발"],[1010,30,"car","호텔 → 징산공원 (지하철)"],[1050,60,"activity","징산공원 만춘정 — 자금성 전경"],[1110,30,"car","징산 → 첸먼다제"],[1140,90,"meal","베이징덕 저녁 (볜이팡 셴위커우점)"],[1230,60,"activity","첸먼다제 · 다잔란 야간 산책"],[1290,45,"activity","왕푸징 야시장"]],"stay":"베이징 1박"},{"d":"8/11","b":[[390,60,"meal","조식 · 체크아웃"],[450,40,"transit","베이징북역 도착 · 발권 · 보안"],[490,155,"rail","고속철 1등석 → 후허하오터동"],[645,30,"transit","차량 합류"],[675,120,"car","후허하오터 → 시라무런 초원"],[795,75,"meal","하마주 환영식 · 점심"],[870,150,"activity","초원 승마"],[1020,75,"activity","양떼 방목지 산책"],[1110,90,"meal","양 통구이 저녁"],[1200,60,"activity","일몰"],[1260,90,"activity","모닥불 파티"],[1350,60,"activity","초원 별보기 (유성우 전야)"]],"stay":"초원 게르 1박"},{"d":"8/12","b":[[420,60,"meal","조식 · 체크아웃"],[480,240,"car","초원 → 샹사완 (바오터우 경유)"],[720,60,"meal","점심"],[780,60,"rest","리조트 체크인 · 짐 보관"],[840,60,"activity","케이블카 → 셴사다오"],[900,90,"activity","낙타 타기"],[990,105,"activity","모래썰매 · 사막 액티비티"],[1110,90,"rest","휴식 · 샤워"],[1200,60,"activity","사막 일몰"],[1260,75,"meal","저녁"],[1410,120,"activity","페르세우스 유성우 극대기 · 별보기"]],"stay":"사막 게르 1박"},{"d":"8/13","b":[[540,60,"meal","조식 · 체크아웃 (아침에 여유)"],[600,120,"car","샹사완 → 바오터우"],[720,60,"meal","점심"],[780,45,"transit","역 도착 · 발권 · 보안"],[825,222,"rail","고속철 1등석 → 베이징북"],[1047,75,"car","역 → 호텔 체크인"],[1140,120,"activity","스차하이 · 난뤄구샹"]],"stay":"베이징 1박"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}],"2A":[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 베이징북역 (택시 2대)"],[990,50,"meal","역에서 이른 저녁 · 발권 · 보안"],[1040,155,"rail","고속철 1등석 → 후허하오터동"],[1195,45,"car","역 → 호텔 체크인"]],"stay":"후허하오터 1박"},{"d":"8/11","b":[[450,60,"meal","조식 · 체크아웃"],[540,120,"car","후허하오터 → 시라무런 초원"],[660,90,"activity","하마주 환영식 · 초원 도착"],[750,60,"meal","점심"],[840,180,"activity","초원 승마"],[1020,75,"activity","양떼 방목지 산책"],[1110,90,"meal","양 통구이 저녁"],[1200,60,"activity","일몰"],[1260,90,"activity","모닥불 파티"],[1350,60,"activity","초원 별보기 (유성우 전야)"]],"stay":"초원 게르 1박"},{"d":"8/12","b":[[420,60,"meal","조식 · 체크아웃"],[480,240,"car","초원 → 샹사완 (바오터우 경유)"],[720,60,"meal","점심"],[780,60,"rest","리조트 체크인 · 짐 보관"],[840,60,"activity","케이블카 → 셴사다오"],[900,90,"activity","낙타 타기"],[990,105,"activity","모래썰매 · 사막 액티비티"],[1110,90,"rest","휴식 · 샤워"],[1200,60,"activity","사막 일몰"],[1260,75,"meal","저녁"],[1410,120,"activity","페르세우스 유성우 극대기 · 별보기"]],"stay":"사막 게르 1박"},{"d":"8/13","b":[[450,60,"meal","조식 · 체크아웃"],[510,180,"car","샹사완 → 후허하오터"],[690,60,"meal","점심"],[750,60,"transit","역 도착 · 발권 · 보안"],[810,165,"rail","고속철 1등석 → 베이징북"],[975,75,"car","역 → 호텔 체크인"],[1080,150,"activity","스차하이 · 난뤄구샹"]],"stay":"베이징 1박"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}],"2B":[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 베이징북역 (택시 2대)"],[990,50,"meal","역에서 이른 저녁 · 발권 · 보안"],[1040,155,"rail","고속철 1등석 → 후허하오터동"],[1195,45,"car","역 → 호텔 체크인"]],"stay":"후허하오터 1박"},{"d":"8/11","b":[[450,60,"meal","조식 · 체크아웃"],[540,120,"car","후허하오터 → 시라무런 초원"],[660,90,"activity","하마주 환영식 · 초원 도착"],[750,60,"meal","점심"],[840,180,"activity","초원 승마"],[1020,75,"activity","양떼 방목지 산책"],[1110,90,"meal","양 통구이 저녁"],[1200,60,"activity","일몰"],[1260,90,"activity","모닥불 파티"],[1350,60,"activity","초원 별보기 (유성우 전야)"]],"stay":"초원 게르 1박"},{"d":"8/12","b":[[420,60,"meal","조식 · 체크아웃"],[480,240,"car","초원 → 샹사완 (바오터우 경유)"],[720,60,"meal","점심"],[780,60,"rest","리조트 체크인 · 짐 보관"],[840,60,"activity","케이블카 → 셴사다오"],[900,90,"activity","낙타 타기"],[990,105,"activity","모래썰매 · 사막 액티비티"],[1110,90,"rest","휴식 · 샤워"],[1200,60,"activity","사막 일몰"],[1260,75,"meal","저녁"],[1410,120,"activity","페르세우스 유성우 극대기 · 별보기"]],"stay":"사막 게르 1박"},{"d":"8/13","b":[[540,60,"meal","조식 · 체크아웃 (아침에 여유)"],[600,120,"car","샹사완 → 바오터우"],[720,60,"meal","점심"],[780,45,"transit","역 도착 · 발권 · 보안"],[825,222,"rail","고속철 1등석 → 베이징북"],[1047,75,"car","역 → 호텔 체크인"],[1140,120,"activity","스차하이 · 난뤄구샹"]],"stay":"베이징 1박"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}],"3A":[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 베이징북역 (택시 2대)"],[990,50,"meal","역에서 이른 저녁 · 발권 · 보안"],[1040,155,"rail","고속철 1등석 → 후허하오터동"],[1195,45,"car","역 → 호텔 체크인"]],"stay":"후허하오터 1박"},{"d":"8/11","b":[[420,60,"meal","조식 · 체크아웃"],[480,120,"car","후허하오터 → 시라무런 초원"],[600,60,"activity","하마주 환영식 · 초원 도착"],[660,90,"activity","초원 승마 · 목민 가정 방문"],[750,60,"meal","초원에서 점심"],[810,240,"car","초원 → 샹사완"],[1050,60,"rest","사막 리조트 체크인 · 휴식"],[1140,60,"meal","저녁"],[1200,60,"activity","사막 일몰"],[1320,120,"activity","사막 별보기 (극대기 하루 전)"]],"stay":"사막 게르 1박"},{"d":"8/12","b":[[450,45,"meal","조식"],[495,45,"activity","케이블카 → 셴사다오"],[540,90,"activity","낙타 타기"],[630,60,"activity","모래썰매 · 사막 액티비티"],[690,45,"meal","점심 · 체크아웃"],[735,180,"car","샹사완 → 후허하오터"],[915,45,"transit","역 도착 · 발권 · 보안"],[960,165,"rail","고속철 1등석 → 베이징북"],[1125,60,"car","역 → 호텔 체크인"],[1200,90,"meal","저녁 · 휴식"]],"stay":"베이징 1박"},{"d":"8/13","b":[[450,60,"meal","조식 · 체크아웃 (짐은 호텔 보관)"],[510,30,"car","호텔 → 천안문 (지하철)"],[540,180,"activity","자금성 관람 (오전권 · 예약 필수)"],[720,60,"meal","점심"],[780,60,"car","자금성 → 이화원 (지하철 4호선)"],[840,210,"activity","이화원 관람"],[1050,60,"car","이화원 → 시내 (짐 회수)"],[1120,70,"meal","저녁"],[1190,75,"car","시내 → 공항 인근 호텔"]],"stay":"베이징 1박 (공항 인근)"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}],"3B":[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 베이징북역 (택시 2대)"],[990,50,"meal","역에서 이른 저녁 · 발권 · 보안"],[1040,155,"rail","고속철 1등석 → 후허하오터동"],[1195,45,"car","역 → 호텔 체크인"]],"stay":"후허하오터 1박"},{"d":"8/11","b":[[420,60,"meal","조식 · 체크아웃"],[480,120,"car","후허하오터 → 시라무런 초원"],[600,60,"activity","하마주 환영식 · 초원 도착"],[660,90,"activity","초원 승마 · 목민 가정 방문"],[750,60,"meal","초원에서 점심"],[810,240,"car","초원 → 샹사완"],[1050,60,"rest","사막 리조트 체크인 · 휴식"],[1140,60,"meal","저녁"],[1200,60,"activity","사막 일몰"],[1320,120,"activity","사막 별보기 (극대기 하루 전)"]],"stay":"사막 게르 1박"},{"d":"8/12","b":[[450,45,"meal","조식"],[495,45,"activity","케이블카 → 셴사다오"],[540,90,"activity","낙타 타기"],[630,60,"activity","모래썰매 · 사막 액티비티"],[690,45,"meal","점심 · 체크아웃"],[735,180,"car","샹사완 → 후허하오터"],[915,45,"transit","역 도착 · 발권 · 보안"],[960,165,"rail","고속철 1등석 → 베이징북"],[1125,60,"car","역 → 호텔 체크인"],[1200,90,"meal","저녁 · 휴식"]],"stay":"베이징 1박"},{"d":"8/13","b":[[450,60,"meal","조식 · 체크아웃 (짐은 호텔 보관)"],[510,30,"car","호텔 → 천안문 (지하철)"],[540,180,"activity","자금성 관람 (오전권 · 예약 필수)"],[720,60,"meal","점심"],[780,60,"car","자금성 → 이화원 (지하철 4호선)"],[840,210,"activity","이화원 관람"],[1050,60,"car","이화원 → 시내 (짐 회수)"],[1120,70,"meal","저녁"],[1190,75,"car","시내 → 공항 인근 호텔"]],"stay":"베이징 1박 (공항 인근)"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}],"4A":[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 베이징북역 (택시 2대)"],[990,50,"meal","역에서 이른 저녁 · 발권 · 보안"],[1040,155,"rail","고속철 1등석 → 후허하오터동"],[1195,45,"car","역 → 호텔 체크인"]],"stay":"후허하오터 1박"},{"d":"8/11","b":[[450,60,"meal","조식 · 체크아웃"],[510,180,"car","후허하오터 → 샹사완 (직행)"],[690,60,"rest","리조트 체크인 · 짐 보관"],[750,60,"meal","점심"],[810,60,"activity","케이블카 → 셴사다오"],[870,90,"activity","낙타 타기"],[960,105,"activity","모래썰매 · 사막 액티비티"],[1080,60,"rest","휴식 · 샤워"],[1140,60,"meal","저녁"],[1200,60,"activity","사막 일몰"],[1320,120,"activity","사막 별보기 (극대기 하루 전)"]],"stay":"사막 게르 1박"},{"d":"8/12","b":[[420,60,"meal","조식 · 체크아웃"],[480,120,"car","샹사완 → 바오터우 (58km)"],[600,45,"meal","점심"],[645,45,"transit","역 도착 · 발권 · 보안"],[690,222,"rail","고속철 1등석 → 베이징북"],[912,48,"car","역 → 호텔 (짐만 맡김)"],[960,30,"car","호텔 → 천단 (지하철)"],[990,60,"activity","천단 관람 (통표 · 경점 17:30 마감)"],[1050,30,"car","천단 → 첸먼"],[1080,90,"meal","베이징덕 저녁 (첸먼)"],[1170,60,"activity","첸먼다제 · 다잔란 야간 산책"]],"stay":"베이징 1박"},{"d":"8/13","b":[[450,60,"meal","조식 · 체크아웃 (짐은 호텔 보관)"],[510,30,"car","호텔 → 천안문 (지하철)"],[540,180,"activity","자금성 관람 (오전권 · 예약 필수)"],[720,60,"meal","점심"],[780,60,"car","자금성 → 이화원 (지하철 4호선)"],[840,210,"activity","이화원 관람"],[1050,60,"car","이화원 → 시내 (짐 회수)"],[1120,70,"meal","저녁"],[1190,75,"car","시내 → 공항 인근 호텔"]],"stay":"베이징 1박 (공항 인근)"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}],"4B":[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 베이징북역 (택시 2대)"],[990,50,"meal","역에서 이른 저녁 · 발권 · 보안"],[1040,155,"rail","고속철 1등석 → 후허하오터동"],[1195,45,"car","역 → 호텔 체크인"]],"stay":"후허하오터 1박"},{"d":"8/11","b":[[450,60,"meal","조식 · 체크아웃"],[510,180,"car","후허하오터 → 샹사완 (직행)"],[690,60,"rest","리조트 체크인 · 짐 보관"],[750,60,"meal","점심"],[810,60,"activity","케이블카 → 셴사다오"],[870,90,"activity","낙타 타기"],[960,105,"activity","모래썰매 · 사막 액티비티"],[1080,60,"rest","휴식 · 샤워"],[1140,60,"meal","저녁"],[1200,60,"activity","사막 일몰"],[1320,120,"activity","사막 별보기 (극대기 하루 전)"]],"stay":"사막 게르 1박"},{"d":"8/12","b":[[420,60,"meal","조식 · 체크아웃"],[480,120,"car","샹사완 → 바오터우 (58km)"],[600,45,"meal","점심"],[645,45,"transit","역 도착 · 발권 · 보안"],[690,222,"rail","고속철 1등석 → 베이징북"],[912,48,"car","역 → 호텔 (짐만 맡김)"],[960,30,"car","호텔 → 천단 (지하철)"],[990,60,"activity","천단 관람 (통표 · 경점 17:30 마감)"],[1050,30,"car","천단 → 첸먼"],[1080,90,"meal","베이징덕 저녁 (첸먼)"],[1170,60,"activity","첸먼다제 · 다잔란 야간 산책"]],"stay":"베이징 1박"},{"d":"8/13","b":[[450,60,"meal","조식 · 체크아웃 (짐은 호텔 보관)"],[510,30,"car","호텔 → 천안문 (지하철)"],[540,180,"activity","자금성 관람 (오전권 · 예약 필수)"],[720,60,"meal","점심"],[780,60,"car","자금성 → 이화원 (지하철 4호선)"],[840,210,"activity","이화원 관람"],[1050,60,"car","이화원 → 시내 (짐 회수)"],[1120,70,"meal","저녁"],[1190,75,"car","시내 → 공항 인근 호텔"]],"stay":"베이징 1박 (공항 인근)"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}]};
 /* 구역별 식당·볼거리 — 2026-07 웹 조사 기준. 가격은 인당 평균(元) */
 /* 핀 — 지도 확대와 무관하게 화면상 크기가 고정된다.
    min: 이 배율 이상에서만 나타남 (단계별 노출)
@@ -641,7 +647,11 @@ var DURS={
     {x:424,y:238,t:"1.5h",c:"car"},
     {x:316,y:252,t:"3~4h",c:"car",a:"end"},
     {x:252,y:318,t:"1.5h",c:"car",a:"end"},
-    {x:580,y:276,t:"고속철 3시간 18분",c:"rail"}]
+    {x:580,y:276,t:"고속철 3시간 18분",c:"rail"}],
+ c:[{x:662,y:318,t:"고속철 2시간 30분",c:"rail"},
+    {x:366,y:290,t:"직행 3h",c:"car"},
+    {x:252,y:318,t:"1.5h",c:"car",a:"end"},
+    {x:580,y:276,t:"고속철 3시간 42분",c:"rail"}]
 };
 
 
@@ -932,7 +942,8 @@ setTheme((function(){try{return localStorage.getItem('theme')||'light'}catch(_){
 var NIGHTS={
  1:{beijing:'8/10 · 8/13 · 2박', hohhot:'8/11 통과', grass:'8/11 게르 1박', desert:'8/12 · 유성우 극대기'},
  2:{beijing:'8/13 · 1박', hohhot:'8/10 밤 1박', grass:'8/11 게르 1박', desert:'8/12 · 유성우 극대기'},
- 3:{beijing:'8/12 · 8/13 · 2박', hohhot:'8/10 밤 1박', grass:'8/11 반나절 경유', desert:'8/11 · 극대기 하루 전'}
+ 3:{beijing:'8/12 · 8/13 · 2박', hohhot:'8/10 밤 1박', grass:'8/11 반나절 경유', desert:'8/11 · 극대기 하루 전'},
+ 4:{beijing:'8/12 · 8/13 · 2박', hohhot:'8/10 밤 1박', grass:'들르지 않음', desert:'8/11 온종일 · 1박'}
 };
 
 function POI(){ var o=ORDER; return {
@@ -1104,13 +1115,15 @@ function renderPins(){
   var k=view.k, tx=view.tx, ty=view.ty, z=PINSCALE;
   for(var i=0;i<PINS.length;i++){
     var p=PINS[i], e=pinEls[i];
-    if(k < p.min-1e-9){ e.style.display='none'; continue; }
+    if(p.id==='grass' && ORDER===4){ e.style.display='none'; continue; }   // 4안은 초원을 뺀다
+    // 4안은 바오터우로 빠져나오므로 배율과 무관하게 보여야 한다
+    if(!(p.id==='baotou' && ORDER===4) && k < p.min-1e-9){ e.style.display='none'; continue; }
     var x=p.x*k+tx, y=p.y*k+ty;
     if(x<-90||x>MW+90||y<-70||y>MH+70){ e.style.display='none'; continue; }
     e.style.display='';
     e.setAttribute('transform','translate('+x.toFixed(1)+','+y.toFixed(1)+') scale('+z+')');
   }
-  var d=DURS[CASE==='a'?'a':'b'], s='';
+  var d=DURS[ORDER===4?'c':(CASE==='a'?'a':'b')], s='';
   for(var j=0;j<d.length;j++){
     var q=d[j], qx=q.x*k+tx, qy=q.y*k+ty;
     if(qx<-90||qx>MW+90||qy<-70||qy>MH+70) continue;
@@ -1168,13 +1181,40 @@ function reset(){
    지금은 a로 고정이고 전환 버튼은 없습니다. b를 다시 쓰려면 버튼을 붙이면 됩니다. */
 function setCase(c,silent){
   CASE=c; var a=c==='a';
-  document.getElementById('rt-a').hidden=!a;
-  document.getElementById('rt-b').hidden=a;
+  applyRoute();
   refresh();
+}
+/* 핀 밑에 붙는 한 줄은 순서마다 달라진다. 데이터에 박아 두면
+   3안에서 반나절만 들르는 초원이 「게르 1박」으로 나온다. */
+var PINNOTE={
+  grass:{1:'게르 1박', 2:'게르 1박', 3:'반나절 경유', 4:''},
+  desert:{1:'낙타 · 별 1박', 2:'낙타 · 별 1박', 3:'낙타 · 별 1박', 4:'온종일 · 1박'}
+};
+function updPinNotes(){
+  for(var i=0;i<PINS.length;i++){
+    var m=PINNOTE[PINS[i].id]; if(!m) continue;
+    var el=pinEls[i] && pinEls[i].querySelector('text.n');
+    if(el) el.textContent = m[ORDER]||'';
+  }
+}
+
+/* 4안은 초원을 들르지 않는다 — 후허하오터에서 사막으로 직행하는 선을 따로 쓴다.
+   SVG 요소에는 hidden 프로퍼티가 없다. e.hidden=true는 속성을 만들지 않아
+   [hidden] 규칙이 걸리지 않는다. A·B 경로 전환도 이 때문에 죽어 있었다.
+   style.display로 직접 켜고 끈다. */
+function applyRoute(){
+  var four = ORDER===4, a = CASE==='a';
+  showG('rt-a', !four && a);
+  showG('rt-b', !four && !a);
+  showG('rt-c', four);
+}
+function showG(id,on){
+  var e=document.getElementById(id);
+  if(e) e.style.display = on ? '' : 'none';
 }
 function setOrder(o,silent){
   ORDER=o;
-  [1,2,3].forEach(function(i){
+  [1,2,3,4].forEach(function(i){
     document.getElementById('ob-'+i).classList.toggle('on',i===o);
     document.getElementById('mt-'+i).classList.toggle('on',i===o);
   });
@@ -1184,7 +1224,9 @@ function setOrder(o,silent){
   document.getElementById('s-hohhot').textContent=n.hohhot;
   document.getElementById('s-grass').textContent=n.grass;
   document.getElementById('s-desert').textContent=n.desert;
-  document.getElementById('nav-grass').style.opacity = (o===3?'.6':'1');
+  document.getElementById('nav-grass').style.opacity = (o===3?'.6':o===4?'.35':'1');
+  applyRoute(); updPinNotes();
+  renderPins();          // 초원 핀과 이동 시간 라벨은 순서마다 달라진다 — 다시 그려야 반영된다
   refresh();
 }
 function refresh(){ if(cur) go(cur); if(curSheet) open_(curSheet); }
@@ -1201,7 +1243,8 @@ function dur(m){
 }
 
 /* ============ 모바일 ============ */
-var ONAME={1:'순서 1 · 베이징 먼저',2:'순서 2 · 내몽고 직행',3:'순서 3 · 유네스코'};
+var ONAME={1:'순서 1 · 베이징 먼저',2:'순서 2 · 내몽고 직행',
+           3:'순서 3 · 유네스코',4:'순서 4 · 초원 제외'};
 
 /* CSS 미디어쿼리와 같은 기준 — 눕힌 핸드폰은 폭이 넓어 높이로도 판단해야 한다 */
 function isMobile(){ return innerWidth<=820 || innerHeight<=520 }
@@ -1229,18 +1272,21 @@ function placePOI(){
 
 var SHEET={
  plans:{title:"일정 비교",body:function(){return ''+
-  '<div class="tw"><table><thead><tr><th></th><th>1 · 베이징 먼저</th><th>2 · 내몽고 직행</th><th>3 · 유네스코</th></tr></thead><tbody>'+
-  '<tr><td>8/10 (월) 밤</td><td>베이징</td><td>후허하오터</td><td>후허하오터</td></tr>'+
-  '<tr><td>8/11 (화) 밤</td><td>초원 게르</td><td>초원 게르</td><td>사막</td></tr>'+
-  '<tr><td>8/12 (수) 밤</td><td>사막</td><td>사막</td><td>베이징</td></tr>'+
-  '<tr><td>8/13 (목) 밤</td><td>베이징</td><td>베이징</td><td>베이징 (공항)</td></tr>'+
-  '<tr><td><b>자금성 · 이화원</b></td><td>'+N()+'</td><td>'+N()+'</td><td>'+Y()+'</td></tr>'+
-  '<tr><td>유성우 극대기</td><td>'+Y()+'</td><td>'+Y()+'</td><td>'+N()+'</td></tr>'+
-  '<tr><td>초원 게르 1박</td><td>'+Y()+'</td><td>'+Y()+'</td><td>반나절 경유</td></tr>'+
-  '<tr><td>사막 · 낙타 · 별</td><td>'+Y()+'</td><td>'+Y()+'</td><td>'+Y()+'</td></tr>'+
-  '<tr><td>비가 오면</td><td>중간</td><td><b>덜 무너짐</b></td><td><b>가장 취약</b></td></tr>'+
-  '<tr><td>검증 지적</td><td>5건</td><td>4건</td><td><b>3건</b></td></tr>'+
-  '<tr class="tot"><td>1인 비용</td><td>62만</td><td>58만</td><td><b>55만</b></td></tr>'+
+  '<div class="tw"><table><thead><tr><th></th><th>1 · 베이징 먼저</th><th>2 · 내몽고 직행</th>'+
+  '<th>3 · 유네스코</th><th>4 · 초원 제외</th></tr></thead><tbody>'+
+  '<tr><td>8/10 (월) 밤</td><td>베이징</td><td>후허하오터</td><td>후허하오터</td><td>후허하오터</td></tr>'+
+  '<tr><td>8/11 (화) 밤</td><td>초원 게르</td><td>초원 게르</td><td>사막</td><td>사막</td></tr>'+
+  '<tr><td>8/12 (수) 밤</td><td>사막</td><td>사막</td><td>베이징</td><td>베이징</td></tr>'+
+  '<tr><td>8/13 (목) 밤</td><td>베이징</td><td>베이징</td><td>베이징 (공항)</td><td>베이징 (공항)</td></tr>'+
+  '<tr><td><b>자금성 · 이화원</b></td><td>'+N()+'</td><td>'+N()+'</td><td>'+Y()+'</td><td>'+Y()+'</td></tr>'+
+  '<tr><td>천단</td><td>'+N()+'</td><td>'+N()+'</td><td>'+N()+'</td><td><b>'+Y()+'</b></td></tr>'+
+  '<tr><td>유성우 극대기</td><td>'+Y()+'</td><td>'+Y()+'</td><td>'+N()+'</td><td>'+N()+'</td></tr>'+
+  '<tr><td>초원 게르 1박</td><td>'+Y()+'</td><td>'+Y()+'</td><td>반나절 경유</td><td>'+N()+'</td></tr>'+
+  '<tr><td>사막 · 낙타 · 별</td><td>'+Y()+'</td><td>'+Y()+'</td><td>'+Y()+'</td><td><b>온종일</b></td></tr>'+
+  '<tr><td>비가 오면</td><td>중간</td><td><b>덜 무너짐</b></td><td><b>가장 취약</b></td><td>취약</td></tr>'+
+  '<tr><td>도시 간 차량</td><td>9시간</td><td>9시간</td><td>9시간</td><td><b>5시간</b></td></tr>'+
+  '<tr><td>검증 지적</td><td>5건</td><td>4건</td><td>3건</td><td><b>2건</b></td></tr>'+
+  '<tr class="tot"><td>1인 비용</td><td>62만</td><td>58만</td><td><b>55만</b></td><td>57만</td></tr>'+
   '</tbody></table></div>'+
 
   '<h3>얻는 것과 잃는 것</h3>'+
@@ -1251,6 +1297,9 @@ var SHEET={
   '<td>유네스코 내부 · 베이징이 사실상 없음</td></tr>'+
   '<tr><td><b>3 · 유네스코</b></td><td><b>자금성 + 이화원 종일</b> · 초원 승마 · 사막 1박 · 가장 저렴</td>'+
   '<td><b>유성우 극대기</b> · 초원 게르 숙박</td></tr>'+
+  '<tr><td><b>4 · 초원 제외</b></td><td><b>유네스코 셋</b>(자금성·이화원·천단) · 사막 온종일 · '+
+  '차량이 5시간으로 가장 짧고 <b>검증 지적도 2건으로 가장 적음</b></td>'+
+  '<td><b>초원 전부</b>(승마·게르·양떼) · 유성우 극대기</td></tr>'+
   '</tbody></table></div>'+
 
   '<div class="msg ok"><p><b>유네스코를 우선하신다면 순서 3입니다.</b></p>'+
@@ -1281,16 +1330,16 @@ var SHEET={
       if(b[2]!=='activity' && b[2]!=='meal') continue;   // 이동·수속·휴식은 뺀다
       var txt=b[3].replace(/<[^>]+>/g,'');
       if(NEEDBOOK.test(txt)) txt+=' <span class="bk">예약</span>';
-      rows+='<tr><td class="n">'+hm(b[0])+'</td><td>'+txt+'</td>'+
-            '<td class="n">'+dur(b[1])+'</td></tr>';
+      rows+='<tr><td class="n">'+hm(b[0])+'<s class="du">'+dur(b[1])+'</s></td>'+
+            '<td>'+txt+'</td></tr>';
       mins+=b[1];
     }
-    if(!rows) rows='<tr><td class="n">—</td><td>온종일 이동합니다</td><td class="n">—</td></tr>';
+    if(!rows) rows='<tr><td class="n">—</td><td>온종일 이동합니다</td></tr>';
     out+='<h3>'+d.d+'</h3>'+
       '<p class="src">묵는 곳 <b>'+(d.stay||'출국 — 숙박 없음')+'</b>'+
       (mins?' · 머무는 시간 합계 '+dur(mins):'')+'</p>'+
       '<div class="tw"><table><thead><tr><th class="n">시각</th>'+
-      '<th>어디서 무엇을</th><th class="n">머무름</th></tr></thead><tbody>'+
+      '<th>어디서 무엇을</th></tr></thead><tbody>'+
       rows+'</tbody></table></div>';
   }
 
@@ -1333,6 +1382,10 @@ var SHEET={
    : ORDER===1
    ? '<div class="msg"><p><b>순서 1 · 베이징 먼저</b> — 도착 당일 저녁을 베이징에서 씁니다. '+
      '대신 <b>8/11 06:00 기상</b>으로 오전을 통째로 이동에 씁니다.</p></div>'
+   : ORDER===4
+   ? '<div class="msg ok"><p><b>순서 4 · 초원 제외</b> — 초원을 들르지 않고 '+
+     '<b>사막에 하루를 온전히</b> 씁니다. 가장 불확실했던 초원~사막 4시간 구간이 사라지고, '+
+     '남는 반나절에 <b>천단</b>이 들어가 유네스코가 셋이 됩니다.</p></div>'
    : '<div class="msg ok"><p><b>순서 3 · 유네스코</b> — 8/13 하루를 통째로 써서 '+
      '<b>자금성 오전 + 이화원 오후</b>를 봅니다. 대신 <b>유성우 극대기와 초원 게르</b>를 포기합니다.</p></div>';
 
@@ -1350,21 +1403,23 @@ var SHEET={
 
  cost:{title:"비용",body:function(){return ''+
   '<p class="lead">1인 · 2인 1실 · 고속철 1등석 · 패키지 · 항공권 제외. 1 CNY ≈ 190원.</p>'+
-  '<div class="tw"><table><thead><tr><th>항목</th><th class="n">1</th><th class="n">2</th><th class="n">3</th></tr></thead><tbody>'+
-  '<tr><td>고속철 1등석 왕복</td><td class="n">680</td><td class="n">680</td><td class="n">680</td></tr>'+
-  '<tr><td>내몽고 패키지</td><td class="n">1,599</td><td class="n">1,599</td><td class="n">1,050<span class="est">추정</span></td></tr>'+
-  '<tr><td>후허하오터 1박</td><td class="n">—</td><td class="n">150</td><td class="n">150</td></tr>'+
-  '<tr><td>베이징 시내 숙박</td><td class="n">300</td><td class="n">—</td><td class="n">300</td></tr>'+
-  '<tr><td>베이징 공항 1박</td><td class="n">210</td><td class="n">210</td><td class="n">210</td></tr>'+
-  '<tr><td>유네스코 입장</td><td class="n">—</td><td class="n">—</td><td class="n">120</td></tr>'+
-  '<tr><td>식비 · 시내교통</td><td class="n">400</td><td class="n">320</td><td class="n">450</td></tr>'+
-  '<tr><td>기타 입장료</td><td class="n">100</td><td class="n">100</td><td class="n">55</td></tr>'+
-  '<tr class="tot"><td>정가 CNY</td><td class="n">3,289</td><td class="n">3,059</td><td class="n"><b>3,015</b></td></tr>'+
-  '<tr class="tot"><td>할인가 CNY</td><td class="n">3,249</td><td class="n">3,027</td><td class="n"><b>2,915</b></td></tr>'+
-  '<tr class="tot"><td>원화 (할인가)</td><td class="n">62만</td><td class="n">58만</td><td class="n"><b>55만</b></td></tr>'+
+  '<div class="tw"><table><thead><tr><th>항목</th><th class="n">1</th><th class="n">2</th>'+
+  '<th class="n">3</th><th class="n">4</th></tr></thead><tbody>'+
+  '<tr><td>고속철 1등석 왕복</td><td class="n">680</td><td class="n">680</td><td class="n">680</td><td class="n">680</td></tr>'+
+  '<tr><td>내몽고 패키지</td><td class="n">1,599</td><td class="n">1,599</td><td class="n">1,050<span class="est">추정</span></td><td class="n">1,050<span class="est">추정</span></td></tr>'+
+  '<tr><td>후허하오터 1박</td><td class="n">—</td><td class="n">150</td><td class="n">150</td><td class="n">150</td></tr>'+
+  '<tr><td>베이징 시내 숙박</td><td class="n">300</td><td class="n">—</td><td class="n">300</td><td class="n">300</td></tr>'+
+  '<tr><td>베이징 공항 1박</td><td class="n">210</td><td class="n">210</td><td class="n">210</td><td class="n">210</td></tr>'+
+  '<tr><td>유네스코 입장</td><td class="n">—</td><td class="n">—</td><td class="n">120</td><td class="n">154</td></tr>'+
+  '<tr><td>식비 · 시내교통</td><td class="n">400</td><td class="n">320</td><td class="n">450</td><td class="n">480</td></tr>'+
+  '<tr><td>기타 입장료</td><td class="n">100</td><td class="n">100</td><td class="n">55</td><td class="n">55</td></tr>'+
+  '<tr class="tot"><td>정가 CNY</td><td class="n">3,289</td><td class="n">3,059</td><td class="n"><b>3,015</b></td><td class="n">3,079</td></tr>'+
+  '<tr class="tot"><td>할인가 CNY</td><td class="n">3,249</td><td class="n">3,027</td><td class="n"><b>2,915</b></td><td class="n">2,976</td></tr>'+
+  '<tr class="tot"><td>원화 (할인가)</td><td class="n">62만</td><td class="n">58만</td><td class="n"><b>55만</b></td><td class="n">57만</td></tr>'+
   '</tbody></table></div>'+
   '<div class="msg ok"><p><b>순서 3이 가장 쌉니다.</b> 유네스코 입장료 120元이 붙지만 '+
-  '내몽고 패키지가 2일1박으로 짧아져 그보다 크게 상쇄됩니다.</p></div>'+
+  '내몽고 패키지가 2일1박으로 짧아져 그보다 크게 상쇄됩니다. '+
+  '순서 4는 천단 통표(34元)와 베이징 반나절 식비가 더 붙어 <b>2만원 비쌉니다</b>.</p></div>'+
 
   '<h3>깎을 수 있는 것</h3>'+
   '<div class="tw"><table><thead><tr><th>수단</th><th class="n">절감</th><th>대가</th></tr></thead><tbody>'+
@@ -1374,7 +1429,7 @@ var SHEET={
   '<tr><td>베이징 시내 3성</td><td class="n">70</td><td>4성 → 3성</td></tr>'+
   '<tr><td>후허하오터 3성</td><td class="n">45</td><td>4성 → 3성</td></tr>'+
   '<tr><td>패키지 경제형 <span class="cn">(1·2안)</span></td><td class="n">200</td><td>게르 공용 화장실</td></tr>'+
-  '<tr class="tot"><td>다 적용한 바닥</td><td class="n">—</td><td>1안 55만 · 2안 52만 · <b>3안 52만</b></td></tr>'+
+  '<tr class="tot"><td>다 적용한 바닥</td><td class="n">—</td><td>1안 55만 · 2안 52만 · <b>3안 52만</b> · 4안 54만</td></tr>'+
   '</tbody></table></div>'+
 
   '<h3>쓸 수 없는 할인</h3>'+
@@ -1457,7 +1512,28 @@ var SHEET={
   '사전 예약은 값을 깎아주기보다 성수기 프리미엄과 매진을 막아줍니다.</p></div>'}},
 
  policy:{title:"정책 · 요일",body:function(){return ''+
-  '<p class="lead">날짜별로 걸리는 규칙만 모았습니다.</p>'+
+  '<h3>계획을 만들거나 바꿀 때</h3>'+
+  '<p class="lead">새 안을 짜거나 기존 안을 손볼 때는 <b>이 두 가지를 먼저</b> 봅니다. '+
+  '보고 싶은 것을 먼저 고르고 나중에 맞추면 대개 성립하지 않습니다.</p>'+
+  '<div class="tw"><table><thead><tr><th class="n">순위</th><th>기준</th><th>어떻게 확인하는가</th></tr></thead><tbody>'+
+  '<tr><td class="n"><b>1</b></td><td><b>동선 — 되는가</b></td>'+
+  '<td>가장 가까운 역에서 들어가고 나오는지 먼저 봅니다. '+
+  '샹사완은 후허하오터에서 3시간이지만 <b>바오터우에서는 58km · 1시간 20분</b>입니다. '+
+  '차량 4시간을 넘기는 날은 다른 일정을 얹지 않습니다</td></tr>'+
+  '<tr><td class="n"><b>2</b></td><td><b>비용 — 얼마나 싼가</b></td>'+
+  '<td>같은 것을 보면서 더 싼 길이 있으면 그쪽입니다. '+
+  '숙박지 한 곳을 바꾸면 1인 5~6만원이 움직입니다. '+
+  '고속철과 패키지가 비용의 절반이고 둘 다 할인이 없으니 나머지에서 아낍니다</td></tr>'+
+  '<tr><td class="n">3</td><td>운영시간 · 예약</td>'+
+  '<td>위 둘을 통과한 뒤에 봅니다. 입장 마감과 휴관일에 걸리면 그 자리에서 무너집니다</td></tr>'+
+  '<tr><td class="n">4</td><td>보고 싶은 것</td>'+
+  '<td>마지막입니다. 여기서 시작하면 대개 동선이 안 나옵니다</td></tr>'+
+  '</tbody></table></div>'+
+  '<div class="msg ok"><p><b>순서 4가 이 순서로 나온 안입니다.</b> '+
+  '초원을 빼서 초원~사막 4시간을 없애고(동선), 나올 때는 가까운 바오터우를 써서 '+
+  '차량을 2시간 줄였습니다. 그 결과 <b>검증 지적이 2건으로 가장 적습니다.</b></p></div>'+
+
+  '<h3>날짜별로 걸리는 것</h3>'+
   '<div class="tw"><table><thead><tr><th>날짜</th><th>이날 걸리는 것</th></tr></thead><tbody>'+
   '<tr><td><b>8/10 (월)</b></td><td><b>자금성 휴관</b> · <b>천안문 광장 폐쇄</b> · 국가박물관 · 수도박물관 · 자연박물관 휴관<br>'+
   '<span style="color:var(--success)">이화원 · 천단 · 징산은 정상</span> — 야외 경구는 월요일 휴관이 없습니다<br>'+
