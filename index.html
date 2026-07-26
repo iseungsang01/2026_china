@@ -353,9 +353,11 @@
       <button class="navbtn" onclick="open_('cost')"><span class="dot" style="background:#8B949E"></span>
         <span class="tx"><b>비용</b><s>1인 55~62만원</s></span></button>
       <button class="navbtn" onclick="open_('hard')"><span class="dot" style="background:#D29922"></span>
-        <span class="tx"><b>예약 난이도</b><s>무엇이 먼저 마감되는가</s></span><span class="warnmark">!</span></button>
+        <span class="tx"><b>예약 난이도</b><s>7/27부터 표가 열립니다</s></span><span class="warnmark">!</span></button>
       <button class="navbtn" onclick="open_('policy')"><span class="dot" style="background:#8250DF"></span>
         <span class="tx"><b>정책 · 요일</b><s>휴관일 · 예약제 · 입국</s></span></button>
+      <button class="navbtn" onclick="open_('weather')"><span class="dot" style="background:#58A6FF"></span>
+        <span class="tx"><b>날씨 · 복장</b><s>주훈기 · 일교차 20℃</s></span></button>
     </div>
 
   </aside>
@@ -1029,6 +1031,7 @@ var SHEET={
   '<tr><td>유성우 극대기</td><td>'+Y()+'</td><td>'+Y()+'</td><td>'+N()+'</td></tr>'+
   '<tr><td>초원 게르 1박</td><td>'+Y()+'</td><td>'+Y()+'</td><td>반나절 경유</td></tr>'+
   '<tr><td>사막 · 낙타 · 별</td><td>'+Y()+'</td><td>'+Y()+'</td><td>'+Y()+'</td></tr>'+
+  '<tr><td>비가 오면</td><td>중간</td><td><b>덜 무너짐</b></td><td><b>가장 취약</b></td></tr>'+
   '<tr><td>검증 지적</td><td>5건</td><td>4건</td><td><b>3건</b></td></tr>'+
   '<tr class="tot"><td>1인 비용</td><td>62만</td><td>58만</td><td><b>55만</b></td></tr>'+
   '</tbody></table></div>'+
@@ -1154,6 +1157,29 @@ var SHEET={
   '다라터기 시내에서 자므로 일몰과 별을 잃습니다. 실제 견적을 받으면 이 값을 대체하세요.</p>'}},
 
  hard:{title:"예약 난이도",body:function(){return ''+
+  '<p class="lead">중국 철도는 <b>출발 15일 전(당일 포함)</b>에 표가 풀립니다. 안마다 날짜가 다릅니다.</p>'+
+  '<div class="tw"><table><thead><tr><th class="n">날짜</th><th>이날 열리는 것</th><th class="n">해당</th></tr></thead><tbody>'+
+  '<tr><td class="n"><b>7/27</b></td><td>8/10 베이징북 → 후허하오터동 고속철</td><td class="n">순서 2 · 3</td></tr>'+
+  '<tr><td class="n">7/28</td><td>8/11 베이징북 → 후허하오터동 고속철</td><td class="n">순서 1</td></tr>'+
+  '<tr><td class="n">7/29</td><td>8/12 내몽고 → 베이징북 고속철</td><td class="n">순서 3</td></tr>'+
+  '<tr><td class="n">7/30</td><td>8/13 내몽고 → 베이징북 고속철</td><td class="n">순서 1 · 2</td></tr>'+
+  '<tr><td class="n"><b>8/6 20:00</b></td><td><b>자금성</b> 8/13 입장권 — 기회는 이 한 번뿐</td><td class="n">순서 3</td></tr>'+
+  '<tr><td class="n">8/6 21:00</td><td>이화원 8/13 입장권 <b>(한 시간 다릅니다)</b></td><td class="n">순서 3</td></tr>'+
+  '<tr><td class="n">8/6~12</td><td>천안문 광장 — 1~7일 전 · 매일 12:00 잔여분 갱신</td><td class="n">전체</td></tr>'+
+  '</tbody></table></div>'+
+
+  '<div class="msg bad"><p><b>먼저 12306 여권 인증부터 하세요 — 3~5 영업일 걸립니다.</b> '+
+  '외국 여권은 자동 대조 성공률이 낮아 수작업 검증으로 넘어가고, 길면 2주가 걸립니다(국철그룹 공식 답변). '+
+  '<b>인증이 끝나기 전에는 표를 살 수 없습니다.</b> 안을 정하는 것과 무관하게 이것부터 시작하세요. '+
+  '여권 영문 이름을 정확히 넣는 것이 통과율을 좌우합니다.</p></div>'+
+
+  '<div class="msg ok"><p><b>안을 못 정했어도 표는 먼저 잡아도 됩니다.</b> '+
+  '출발 <b>8일 이상 전 환불은 수수료가 없고</b>, <b>48시간 이상 전 날짜 변경도 무료</b>입니다. '+
+  '가장 이른 날짜(8/10 출발 · 8/12 귀경)로 잡아 두었다가 확정되면 뒤로 옮기세요. '+
+  '앞으로 당기는 것은 안 되니 방향이 중요합니다.</p>'+
+  '<p>단 <b>대행사로 사면 이 규정이 안 통합니다</b> — 환불이 5%부터 시작하고 대행료가 따로 붙습니다.</p></div>'+
+
+  '<h3>무엇이 먼저 마감되는가</h3>'+
   '<p class="lead">위에서부터 먼저 마감됩니다. <b>★★★는 놓치면 일정이 무너집니다.</b></p>'+
   '<div class="tw"><table><thead><tr><th>대상</th><th class="n">난이도</th><th class="n">언제</th><th>왜 어려운가</th></tr></thead><tbody>'+
 
@@ -1237,7 +1263,55 @@ var SHEET={
   '예약자와 입장자가 같아야 합니다</td></tr>'+
   '</tbody></table></div>'+
   '<p class="src">2026년 7월 조회 — 故宫博物院 · 北京市公园管理中心 · 天安门广场예약시스템 · 北京本地宝. '+
-  '정책은 바뀔 수 있으니 예약 직전에 다시 확인하세요.</p>'}}
+  '정책은 바뀔 수 있으니 예약 직전에 다시 확인하세요.</p>'}},
+
+ weather:{title:"날씨 · 복장",body:function(){return ''+
+  '<div class="msg warn"><p><b>七下八上 — 7월 하순부터 8월 상순까지가 베이징 주훈기입니다.</b> '+
+  '이 3주에 연 강수가 몰리고, 비는 <b>오후부터 자정 사이</b>에 집중됩니다. '+
+  '8/10~8/14는 그 끝자락입니다.</p></div>'+
+
+  '<h3>비가 오면 무엇이 무너지는가</h3>'+
+  '<div class="tw"><table><thead><tr><th></th><th class="n">위험</th><th>왜</th></tr></thead><tbody>'+
+  '<tr><td><b>3 · 유네스코</b></td><td class="n"><b>가장 취약</b></td>'+
+  '<td><b>8/13 하루에 야외 두 곳을 몰아넣었습니다.</b> 자금성 표는 시간대 지정이라 '+
+  '<b>날짜 변경도 환불도 안 됩니다.</b> 그날 비가 오면 회복 수단이 없습니다.<br>'+
+  '사막도 1박뿐이라 8/11 밤에 흐리면 일몰과 별을 통째로 잃습니다</td></tr>'+
+  '<tr><td><b>1 · 베이징 먼저</b></td><td class="n">중간</td>'+
+  '<td>초원 1박과 사막 1박으로 나뉘어 있어 한쪽이 비어도 다른 쪽이 남습니다. '+
+  '베이징 일정은 실내로 대체할 수 있습니다</td></tr>'+
+  '<tr><td><b>2 · 내몽고 직행</b></td><td class="n">덜 무너짐</td>'+
+  '<td>내몽고 3박이라 야외 기회가 가장 여러 날에 분산됩니다</td></tr>'+
+  '</tbody></table></div>'+
+  '<p class="src">검증 7라운드에는 날씨 축이 없습니다. 이 표는 강수 확률이 아니라 '+
+  '<b>비가 왔을 때 회복이 되느냐</b>로 매긴 것입니다.</p>'+
+
+  '<h3>기온</h3>'+
+  '<div class="tw"><table><thead><tr><th>장소</th><th class="n">낮</th><th class="n">밤</th><th>비고</th></tr></thead><tbody>'+
+  '<tr><td>샹사완 사막 <span class="cn">响沙湾</span></td><td class="n">최고 38℃</td><td class="n">15℃ 안팎</td>'+
+  '<td><b>일교차 20℃.</b> 야간 돌풍 6~7급. 8월은 15일 중 5일꼴로 비</td></tr>'+
+  '<tr><td>시라무런 초원</td><td class="n">25℃ 안팎</td><td class="n">10~15℃</td>'+
+  '<td>비 오는 밤은 5℃까지 떨어집니다. 해발 1,500m 안팎</td></tr>'+
+  '<tr><td>베이징</td><td class="n">29~33℃</td><td class="n">25℃ 안팎</td>'+
+  '<td>습도가 높아 체감이 더 덥습니다. 오후 뇌우 · 7급 순간풍</td></tr>'+
+  '</tbody></table></div>'+
+
+  '<h3>이것이 없으면 못 하는 것</h3>'+
+  '<div class="tw"><table><tbody>'+
+  '<tr><td><b>방풍 외투</b></td><td><b>유성우는 23:30 이후 야외에 서 있어야 봅니다.</b> '+
+  '사막 밤 15℃에 바람까지 불어 반팔로는 30분을 못 버팁니다. 순서 1 · 2에 필수</td></tr>'+
+  '<tr><td><b>우산보다 우비</b></td><td>돌풍을 동반한 소나기라 우산이 뒤집힙니다</td></tr>'+
+  '<tr><td><b>모자 · 선글라스 · 자외선차단</b></td><td>사막은 지표 반사가 강해 그늘이 없습니다</td></tr>'+
+  '<tr><td><b>여벌 양말과 신발</b></td><td>모래와 폭우가 각각 한 켤레씩 버립니다</td></tr>'+
+  '<tr><td><b>물</b></td><td>내몽고는 건조한 고원입니다. 갈증을 느끼기 전에 마셔야 합니다</td></tr>'+
+  '</tbody></table></div>'+
+
+  '<div class="msg bad"><p><b>승마가 여행자보험에서 빠져 있을 수 있습니다.</b> '+
+  '일반 여행자보험은 승마를 「위험한 레저활동」으로 보고 부담보 처리하는 약관이 많습니다. '+
+  '초원 승마는 헬멧 없이 태우는 경우가 흔하니, 가입 전 <b>보상하지 않는 손해</b> 조항을 확인하고 '+
+  '필요하면 특약을 넣으세요.</p></div>'+
+
+  '<p class="src">2026년 7월 조회 — 中国天气网 · 北京市气象局 · 响沙湾 경구 예보. '+
+  '실제 예보는 출발 3일 전에 다시 확인하세요.</p>'}}
 };
 
 
