@@ -458,7 +458,7 @@
       <button class="navbtn" onclick="open_('plans')"><span class="dot" style="background:#F78166"></span>
         <span class="tx"><b>일정 비교</b><s>무엇을 얻고 잃는가</s></span></button>
       <button class="navbtn" onclick="open_('cost')"><span class="dot" style="background:#8B949E"></span>
-        <span class="tx"><b>비용</b><s>1인 55~62만원</s></span></button>
+        <span class="tx"><b>비용</b><s>1인 47~63만원</s></span></button>
       <button class="navbtn" onclick="open_('hard')"><span class="dot" style="background:#D29922"></span>
         <span class="tx"><b>예약 난이도</b><s>7/27부터 표가 열립니다</s></span><span class="warnmark">!</span></button>
       <button class="navbtn" onclick="open_('policy')"><span class="dot" style="background:#8250DF"></span>
@@ -1434,7 +1434,7 @@ var SHEET={
   '<tr><td><b>도시 간 차량</b></td><td>9시간</td><td><b>5시간</b></td><td>7시간 30분</td><td>10시간</td></tr>'+
   '<tr><td>검증 지적</td><td>5건 <s class="du">실질 4</s></td><td><b>3건</b> <s class="du">실질 1</s></td>'+
   '<td>5건 <s class="du">실질 3</s></td><td>5건 <s class="du">실질 4</s></td></tr>'+
-  '<tr class="tot"><td>1인 비용</td><td>62만</td><td>57만</td><td><b>53만</b></td><td>65만</td></tr>'+
+  '<tr class="tot"><td>1인 비용</td><td>57만</td><td><b>49만</b></td><td><b>49만</b></td><td>63만</td></tr>'+
   '</tbody></table></div>'+
   '<p class="src">「실질」은 <b>의도된 포기</b>를 뺀 수입니다. 초원을 안 가는 안에서 '+
   '「초원 승마 없음」이 걸리는 것은 결함이 아니라 선택이라 따로 셉니다.<br>'+
@@ -1450,19 +1450,19 @@ var SHEET={
   '도착 당일 밤 사이상라오제 · <b>검증 지적이 가장 적음</b></td>'+
   '<td>초원 전부 · <b>유성우 극대기</b> · 자금성 예약 실패 위험</td></tr>'+
   '<tr><td><b>5 · 화산</b></td><td><b>우란하다 화산군</b>(무료) · 유성우 극대기 · '+
-  '후허하오터 저녁 · <b>가장 저렴</b> · 예약 부담이 가장 적음</td>'+
+  '후허하오터 저녁 · <b>순서 4와 같은 값</b>(차이 7천원) · 예약 부담이 가장 적음</td>'+
   '<td>초원 전부 · <b>자금성 · 이화원</b> · 마지막 날 이동이 많음</td></tr>'+
   '<tr><td><b>6 · 전부 담기</b></td><td><b>화산 + 초원 게르 + 사막 낙타 + 유성우 극대기</b> — '+
   '내몽고에서 볼 수 있는 것을 하나도 빼지 않음</td>'+
-  '<td><b>자금성 · 이화원</b> · <b>가장 비쌈</b>(65만) · 차량 10시간</td></tr>'+
+  '<td><b>자금성 · 이화원</b> · <b>가장 비쌈</b>(63만) · 차량 10시간</td></tr>'+
   '</tbody></table></div>'+
 
   '<div class="msg warn"><p><b>순서 6은 「다 넣으면 얼마인가」에 대한 답입니다.</b></p>'+
   '<p>초원을 시라무런이 아니라 <b>우란차부 쪽 후이텅시러</b>로 바꾸면 화산과 같은 날에 묶입니다. '+
   '「화산 오전 → 초원 오후 → 게르 1박」이 성립하고, 사막 밤은 8/12라 <b>유성우 극대기</b>도 들어옵니다.</p>'+
   '<p>대가는 두 가지입니다. <b>8/12에 초원에서 사막까지 4시간 30분</b> — 두 곳이 후허하오터를 사이에 두고 '+
-  '정반대 방향입니다. 그리고 <b>1인 65만원</b>으로 가장 비쌉니다. '+
-  '하이라이트 하나를 포기할 때마다 <b>8~12만원</b>이 빠진다고 보시면 됩니다.</p></div>'+
+  '정반대 방향입니다. 그리고 <b>1인 63만원</b>으로 가장 비쌉니다. '+
+  '하이라이트 하나를 포기할 때마다 <b>6~14만원</b>이 빠진다고 보시면 됩니다.</p></div>'+
 
   '<div class="msg ok"><p><b>네 안이 서로 다른 것을 삽니다.</b></p>'+
   '<p>· <b>순서 1</b>은 초원에서 자는 밤을 삽니다. 승마·양 통구이·모닥불이 여기에만 있습니다.<br>'+
@@ -1576,41 +1576,75 @@ var SHEET={
   '<tr><td>고속철 1등석</td><td class="n">680</td><td class="n">680</td><td class="n">650</td><td class="n">580</td></tr>'+
   '<tr><td>내몽고 패키지</td><td class="n">1,599</td><td class="n">1,050<span class="est">추정</span></td><td class="n">1,050<span class="est">추정</span></td><td class="n">1,900<span class="est">추정</span></td></tr>'+
   '<tr><td>우란차부 1박</td><td class="n">—</td><td class="n">—</td><td class="n">150<span class="est">추정</span></td><td class="n">150<span class="est">추정</span></td></tr>'+
-  '<tr><td>후허하오터 1박</td><td class="n">—</td><td class="n">150</td><td class="n">150</td><td class="n">—</td></tr>'+
-  '<tr><td>베이징 시내 숙박</td><td class="n">300</td><td class="n">300</td><td class="n">—</td><td class="n">—</td></tr>'+
-  '<tr><td>베이징 공항 1박</td><td class="n">210</td><td class="n">210</td><td class="n">210</td><td class="n">210</td></tr>'+
+  '<tr><td>후허하오터 1박</td><td class="n">—</td><td class="n">105</td><td class="n">105</td><td class="n">—</td></tr>'+
+  '<tr><td>베이징 시내 숙박</td><td class="n">182<s class="du">2박</s></td><td class="n">91</td><td class="n">—</td><td class="n">—</td></tr>'+
+  '<tr><td>베이징 공항 1박</td><td class="n">81</td><td class="n">81</td><td class="n">81</td><td class="n">81</td></tr>'+
   '<tr><td>유네스코 입장</td><td class="n">—</td><td class="n">154</td><td class="n">34</td><td class="n">34</td></tr>'+
   '<tr><td>화산 · 초원 입장</td><td class="n">—</td><td class="n">—</td><td class="n">100</td><td class="n">120</td></tr>'+
   '<tr><td>식비 · 시내교통</td><td class="n">400</td><td class="n">480</td><td class="n">430</td><td class="n">430</td></tr>'+
   '<tr><td>기타 입장료</td><td class="n">100</td><td class="n">55</td><td class="n">55</td><td class="n">55</td></tr>'+
-  '<tr class="tot"><td>정가 CNY</td><td class="n">3,289</td><td class="n">3,079</td><td class="n"><b>2,829</b></td><td class="n">3,479</td></tr>'+
-  '<tr class="tot"><td>할인가 CNY</td><td class="n">3,249</td><td class="n">2,976</td><td class="n"><b>2,786</b></td><td class="n">3,436</td></tr>'+
-  '<tr class="tot"><td>원화 (할인가)</td><td class="n">62만</td><td class="n">57만</td><td class="n"><b>53만</b></td><td class="n">65만</td></tr>'+
+  '<tr class="tot"><td>정가 CNY</td><td class="n">3,042</td><td class="n">2,696</td><td class="n"><b>2,655</b></td><td class="n">3,350</td></tr>'+
+  '<tr class="tot"><td>할인가 CNY</td><td class="n">3,002</td><td class="n">2,593</td><td class="n"><b>2,557</b></td><td class="n">3,307</td></tr>'+
+  '<tr class="tot"><td>원화 (할인가)</td><td class="n">57만</td><td class="n"><b>49만</b></td><td class="n"><b>49만</b></td><td class="n">63만</td></tr>'+
   '</tbody></table></div>'+
-  '<div class="msg ok"><p><b>순서 5가 가장 쌉니다.</b> 이유는 <b>화산이 무료</b>여서가 아니라 '+
-  '<b>베이징 시내에서 자지 않기 때문</b>입니다. 시내 숙박 300元이 통째로 빠지고, '+
-  '자금성·이화원 대신 천단만 보므로 입장료도 120元 줄어듭니다.</p>'+
+
+  '<h3>숙박비는 실제로 조회한 값입니다</h3>'+
+  '<p class="lead">2026-08-10~14 <b>실제 날짜</b>로 성인 4명 · 객실 2개를 조회했습니다. '+
+  '총액은 <b>2실 1박 · 세금 포함</b>이고, 1인은 그것을 4로 나눈 값입니다.</p>'+
+  '<div class="tw"><table><thead><tr><th>밤</th><th>숙소</th><th class="n">2실 총액</th>'+
+  '<th class="n">1인</th></tr></thead><tbody>'+
+  '<tr><td><b>8/10</b> <span class="cn">후허하오터</span></td>'+
+  '<td>Hanggai 유스호스텔 <s class="du">공용 욕실 · 다자오 7.6km</s></td>'+
+  '<td class="n">296</td><td class="n"><b>74</b></td></tr>'+
+  '<tr><td></td><td>Lantern Hotel <s class="du">다자오 4.4km</s></td>'+
+  '<td class="n">421</td><td class="n">105</td></tr>'+
+  '<tr><td><b>8/11</b> <span class="cn">샹사완</span></td>'+
+  '<td>Shengshi Boyuan 민박 <s class="du">경구 밖 2.8km</s></td><td class="n">534</td><td class="n"><b>134</b></td></tr>'+
+  '<tr><td></td><td>Desert local peasant household <s class="du">유르트 · 공용 욕실 · 조식 포함 · 도보 990m</s></td>'+
+  '<td class="n">586</td><td class="n">147</td></tr>'+
+  '<tr><td></td><td>일리사 리조트 <s class="du">도보 500m</s></td><td class="n">736</td><td class="n">184</td></tr>'+
+  '<tr><td></td><td><s>순사도 · 연꽃호텔 <span class="cn">경구 내 올인클루시브</span></s></td>'+
+  '<td class="n"><s>7,120~7,920</s></td><td class="n"><s>1,780~1,980</s></td></tr>'+
+  '<tr><td><b>8/12</b> <span class="cn">베이징 첸먼</span></td>'+
+  '<td>LeftBank 유스호스텔 <s class="du">첸먼역 4.8km</s></td><td class="n">364</td><td class="n"><b>91</b></td></tr>'+
+  '<tr><td><b>8/13</b> <span class="cn">공항</span></td>'+
+  '<td>维也纳智好 <span class="cn">신국전·수도공항점</span> <s class="du">공항 2.7km</s></td>'+
+  '<td class="n">322</td><td class="n"><b>81</b></td></tr>'+
+  '</tbody></table></div>'+
+  '<div class="msg warn"><p><b>싼 방은 대개 구시가 밖에 있습니다.</b> 8/10 밤 사이상라오제를 걸으려면 '+
+  '다자오 도보권이어야 하는데, 위 두 곳은 4.4km와 7.6km입니다. '+
+  '도보권 숙소(<span class="cn">舍一茶事</span> 등 다자오 0.4~0.5km)는 아직 실가를 못 받았습니다 — '+
+  '택시로 10분이면 닿으니 일정은 성립하지만 <b>왕복 30元이 더 듭니다</b>.</p>'+
+  '<p><b>사막은 「경구 안에서 자느냐」가 값을 가릅니다.</b> 경구 밖 민박은 1인 134元이지만 '+
+  '<b>18:30 폐장 뒤에는 못 들어갑니다</b> — 일몰(20:00)과 별보기를 잃습니다. '+
+  '경구 안에서 자는 방법은 패키지의 텐트 캠프이거나, 아니면 올인클루시브 <b>1인 1,780元</b>뿐입니다.</p></div>'+
+
+  '<div class="msg ok"><p><b>순서 4와 5가 같아졌습니다.</b> 예전에 순서 5가 4만원 쌌던 이유는 '+
+  '<b>베이징 시내 숙박 300元</b>을 안 쓰기 때문이었는데, 실제로 조회하니 시내 유스호스텔이 '+
+  '<b>1인 91元</b>이라 그 우위가 거의 사라졌습니다. 이제 둘의 차이는 <b>36元(약 7천원)</b>입니다.</p>'+
   '<p><b>순서 1과 6이 비싼 것은 초원 게르 때문입니다.</b> 초원에서 자면 패키지가 3일2박이 되어 '+
   '2일1박(1,050元)보다 <b>550~850元</b> 오릅니다. 초원에서 자는 밤의 값이 그것입니다. '+
   '순서 6은 여기에 화산 구간까지 붙어 패키지가 <b>1,900元</b>으로 가장 높습니다.</p></div>'+
 
-  '<div class="msg warn"><p><b>하이라이트 하나의 값</b> — 순서 6(65만)에서 하나씩 빼면</p>'+
-  '<p>· 초원 게르를 빼면 → <b>순서 5</b> (53만) · <b>12만원</b><br>'+
-  '· 화산을 빼면 → 순서 1과 비슷 (62만) · <b>3만원</b><br>'+
-  '· 유성우와 초원을 빼고 유네스코를 넣으면 → <b>순서 4</b> (57만)</p>'+
-  '<p>가장 비싼 것은 <b>초원에서 자는 밤</b>이고, 가장 싼 하이라이트는 <b>화산</b>(입장 무료)입니다.</p></div>'+
+  '<div class="msg warn"><p><b>하이라이트 하나의 값</b> — 순서 6(63만)에서 하나씩 빼면</p>'+
+  '<p>· 초원 게르를 빼면 → <b>순서 5</b> (49만) · <b>14만원</b><br>'+
+  '· 화산을 빼면 → 순서 1 (57만) · <b>6만원</b><br>'+
+  '· 유성우와 초원을 빼고 유네스코를 넣으면 → <b>순서 4</b> (49만)</p>'+
+  '<p>가장 비싼 것은 <b>초원에서 자는 밤</b>이고, 가장 싼 하이라이트는 <b>화산</b>(입장 무료)입니다. '+
+  '숙박을 실가로 낮추자 <b>초원 게르의 값이 오히려 도드라졌습니다</b> — 이제 패키지가 비용의 절반입니다.</p></div>'+
 
   '<h3>깎을 수 있는 것</h3>'+
   '<div class="tw"><table><thead><tr><th>수단</th><th class="n">절감</th><th>대가</th></tr></thead><tbody>'+
   '<tr><td>大众点评 쿠폰 (식비 10%)</td><td class="n">30~50</td><td>없음 <span class="est">추정</span></td></tr>'+
   '<tr><td>패키지에 샹사완 통표 포함</td><td class="n">55</td><td>없음 — 견적서에서 확인만</td></tr>'+
-  '<tr><td>공항 호텔 하향</td><td class="n">70</td><td>도보 8분 → 셔틀</td></tr>'+
-  '<tr><td>베이징 시내 3성</td><td class="n">70</td><td>4성 → 3성</td></tr>'+
-  '<tr><td>후허하오터 3성</td><td class="n">45</td><td>4성 → 3성</td></tr>'+
+  '<tr><td>후허하오터 유스호스텔</td><td class="n">31</td><td><b>공용 욕실</b> · 다자오에서 7.6km</td></tr>'+
+  '<tr><td>유네스코를 문표·대문표로</td><td class="n">49</td><td><b>기년전·회음벽과 이화원 경점을 못 봅니다</b></td></tr>'+
   '<tr><td>패키지 경제형 <span class="cn">(1안)</span></td><td class="n">200</td><td>게르 공용 화장실</td></tr>'+
-  '<tr><td>우란차부 3성 <span class="cn">(5안)</span></td><td class="n">45</td><td>4성 → 3성</td></tr>'+
-  '<tr class="tot"><td>다 적용한 바닥</td><td class="n">—</td><td>1안 55만 · 4안 54만 · <b>5안 50만</b></td></tr>'+
+  '<tr><td>우란차부 3성 <span class="cn">(5·6안)</span></td><td class="n">45</td><td>4성 → 3성 <span class="est">추정</span></td></tr>'+
+  '<tr class="tot"><td>다 적용한 바닥</td><td class="n">—</td><td>1안 53만 · 4안 48만 · <b>5안 47만</b> · 6안 62만</td></tr>'+
   '</tbody></table></div>'+
+  '<p class="src">예전에 있던 <b>「공항 호텔 하향 70」·「베이징 시내 3성 70」은 없어졌습니다</b> — '+
+  '실가로 조회한 값(공항 81 · 시내 91)이 이미 그 아래라 더 깎을 것이 없습니다.</p>'+
 
   '<h3>쓸 수 없는 할인</h3>'+
   '<div class="tw"><table><tbody>'+
@@ -1620,12 +1654,17 @@ var SHEET={
   '<tr><td>공원 연간패스 100元</td><td>4박에 대상이 두 곳뿐이라 손익이 안 맞습니다</td></tr>'+
   '</tbody></table></div>'+
 
-  '<div class="msg bad"><p><b>바닥은 1인 50만원입니다.</b> 비용의 절반이 패키지와 고속철인데 '+
-  '둘 다 할인이 없습니다. 희망하셨던 30만원과는 <b>20만원</b> 벌어져 있고, '+
-  '할인을 전부 긁어모아도 좁혀지지 않습니다.</p></div>'+
-  '<p class="src">패키지 1,050元은 <b>사막 텐트 숙박형 기준의 추정치</b>입니다. 시중 698~898元 상품은 '+
+  '<div class="msg bad"><p><b>바닥은 1인 47만원입니다.</b> 숙소를 실가로 조회해 '+
+  '<b>8만원을 덜어냈지만</b>(순서 4 기준 57만 → 49만) 여기가 끝입니다. '+
+  '남은 비용의 <b>절반 이상이 패키지(1,050元)와 고속철 1등석(680元)</b>이고 둘 다 할인이 없습니다. '+
+  '희망하셨던 30만원과는 여전히 <b>17만원</b> 벌어져 있습니다.</p>'+
+  '<p>이 아래로 내리려면 <b>여행 내용을 버려야 합니다</b> — 패키지를 시외버스로 바꾸면 '+
+  '1인 900元이 빠지지만 짐을 들고 3.5시간 버스를 타고 <b>샹사완 입체교차로에서 3km를 더 가야</b> 하며, '+
+  '경구 밖에 자게 되어 <b>사막의 밤이 통째로 사라집니다</b>.</p></div>'+
+  '<p class="src">숙박비는 <b>2026-08-10~14 실제 날짜로 조회한 값</b>입니다(성인 4명 · 객실 2개 · 세금 포함). '+
+  '패키지 1,050元은 여전히 <b>사막 텐트 숙박형 기준의 추정치</b>입니다 — 시중 698~898元 상품은 '+
   '다라터기 시내에서 자므로 일몰과 별을 잃습니다. 실제 견적을 받으면 이 값을 대체하세요. '+
-  '우란차부 150元도 후허하오터와 같게 잡은 추정치입니다 — 집닝구는 더 작은 도시라 실제로는 낮을 수 있습니다.</p>'}},
+  '우란차부 150元도 아직 조회 못 한 추정치입니다.</p>'}},
 
  hard:{title:"예약 난이도",body:function(){return ''+
   '<p class="lead">중국 철도는 <b>출발 15일 전(당일 포함)</b>에 표가 풀립니다. 안마다 날짜가 다릅니다.</p>'+
