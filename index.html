@@ -270,6 +270,10 @@
     transition:border-color .12s}
   .lk a:hover{border-color:var(--link)}
   .lk a.tel{color:var(--success); font-family:var(--fm)}
+  /* 표의 min-width 420px이 폰에서 오른쪽 열을 잘라 링크를 누를 수 없게 만든다.
+     인솔서 표는 열을 둘로 줄이고 최소폭을 푼다 */
+  .tw.nar table{min-width:0}
+  .tw.nar .lk{margin-top:5px}
 
   /* 줌 단계별 세부 지점: k>=3 관문, k>=6.5 시내 상세 */
   .det{opacity:0; pointer-events:none; transition:opacity .18s}
@@ -2086,20 +2090,21 @@ var SHEET={
     '가져오므로 일정을 고치면 여기도 따라 바뀝니다. 각 줄에 붙은 것이 그때 필요한 링크와 함정입니다.</p>'+
 
   '<h3>출발 전 — 이 순서로 잡습니다</h3>'+
-  '<div class="tw"><table><thead><tr><th class="n">언제</th><th>무엇을</th><th>어디서</th></tr></thead><tbody>'+
-  '<tr><td class="n">지금</td><td><b>12306 계정 · 여권 인증</b><s class="du">인증에 3~5 영업일</s></td>'+
-  '<td><a href="https://www.12306.cn/en/index.html" target="_blank" rel="noopener">12306 영문</a></td></tr>'+
-  '<tr><td class="n">7월 중</td><td><b>샹사완 경구 안 텐트 캠프</b><s class="du">웨사다오 전 40실</s></td>'+
-  '<td><a href="https://www.ixsw.cn/" target="_blank" rel="noopener">샹사완</a> · 패키지 여행사</td></tr>'+
-  '<tr><td class="n">7/27</td><td>8/10 베이징북 → 후허하오터동 1등석<s class="du">승차 15일 전</s></td>'+
-  '<td>12306</td></tr>'+
-  '<tr><td class="n">7/29</td><td>8/12 바오터우 → 베이징북 1등석</td><td>12306</td></tr>'+
-  '<tr><td class="n">8/5 21:00</td><td>천단 <b>통표 34元</b><s class="du">8/12 관람</s></td>'+
-  '<td><a href="https://www.bjgyol.com.cn/" target="_blank" rel="noopener">창유공원</a></td></tr>'+
-  '<tr class="tot"><td class="n">8/6 20:00</td><td><b>자금성 오전권</b><s class="du">8/13 관람 · 당일권 없음</s></td>'+
-  '<td><a href="https://ticket.dpm.org.cn/" target="_blank" rel="noopener">공식 예매</a> · 위챗 「故宫博物院」</td></tr>'+
-  '<tr><td class="n">8/6 21:00</td><td>이화원 <b>연표 60元</b><s class="du">8/13 관람</s></td>'+
-  '<td><a href="https://www.bjgyol.com.cn/" target="_blank" rel="noopener">창유공원</a></td></tr>'+
+  '<div class="tw nar"><table><thead><tr><th class="n">언제</th><th>무엇을 · 어디서</th></tr></thead><tbody>'+
+  '<tr><td class="n">지금</td><td><b>12306 계정 · 여권 인증</b><s class="du">인증에 3~5 영업일</s>'+
+  '<div class="lk"><a href="https://www.12306.cn/en/index.html" target="_blank" rel="noopener">12306 영문</a></div></td></tr>'+
+  '<tr><td class="n">7월 중</td><td><b>샹사완 경구 안 텐트 캠프</b><s class="du">웨사다오 전 40실 · 패키지 여행사</s>'+
+  '<div class="lk"><a href="https://www.ixsw.cn/" target="_blank" rel="noopener">샹사완 공식</a>'+
+  '<a href="https://www.ixsw.cn/XSWXCX/XSWXCX.HTML" target="_blank" rel="noopener">예약 시스템</a></div></td></tr>'+
+  '<tr><td class="n">7/27</td><td>8/10 베이징북 → 후허하오터동 1등석<s class="du">승차 15일 전 · 12306</s></td></tr>'+
+  '<tr><td class="n">7/29</td><td>8/12 바오터우 → 베이징북 1등석<s class="du">12306</s></td></tr>'+
+  '<tr><td class="n">8/5<br>21:00</td><td>천단 <b>통표 34元</b><s class="du">8/12 관람</s>'+
+  '<div class="lk"><a href="https://www.bjgyol.com.cn/" target="_blank" rel="noopener">창유공원</a></div></td></tr>'+
+  '<tr class="tot"><td class="n">8/6<br>20:00</td><td><b>자금성 오전권</b>'+
+  '<s class="du">8/13 관람 · 당일권 없음 · 위챗 「故宫博物院」</s>'+
+  '<div class="lk"><a href="https://ticket.dpm.org.cn/" target="_blank" rel="noopener">공식 예매</a></div></td></tr>'+
+  '<tr><td class="n">8/6<br>21:00</td><td>이화원 <b>연표 60元</b><s class="du">8/13 관람</s>'+
+  '<div class="lk"><a href="https://www.bjgyol.com.cn/" target="_blank" rel="noopener">창유공원</a></div></td></tr>'+
   '</tbody></table></div>'+
   '<div class="msg bad"><p><b>8/6 저녁에 두 번 대기해야 합니다.</b> 자금성이 20:00, 이화원과 천단이 '+
   '21:00으로 <b>한 시간 다릅니다.</b> 자금성만 당일권이 없어 놓치면 그날 일정이 통째로 무너집니다.</p></div>';
@@ -2124,7 +2129,7 @@ var SHEET={
 
   return out+
   '<h3>비상 · 실무</h3>'+
-  '<div class="tw"><table><thead><tr><th>누구</th><th>번호</th></tr></thead><tbody>'+
+  '<div class="tw nar"><table><thead><tr><th>누구</th><th>번호</th></tr></thead><tbody>'+
   '<tr><td><b>영사콜센터</b><s class="du">24시간 · 카카오톡·위챗 상담도 됨</s></td>'+
   '<td><a href="tel:+82232100404">+82-2-3210-0404</a></td></tr>'+
   '<tr><td>주중국 대한민국 대사관 영사부<s class="du">차오양구 량마차오 둥팡둥로 20호</s></td>'+
@@ -2148,12 +2153,12 @@ var SHEET={
   '<b>둘 다</b> 준비하는 편이 안전하고, 시골 매표소를 위해 현금 소액도 챙기세요.</p></div>'+
 
   '<h3>보여줄 문장</h3>'+
-  '<div class="tw"><table><thead><tr><th>언제</th><th>무엇을 보여주나</th></tr></thead><tbody>'+
+  '<div class="tw nar"><table><thead><tr><th>언제</th><th>무엇을 보여주나</th></tr></thead><tbody>'+
   '<tr><td>8/10 택시</td><td class="cn">请送我到大召附近的酒店。</td></tr>'+
   '<tr><td>역 개찰</td><td class="cn">外国护照，可以走人工通道吗？</td></tr>'+
-  '<tr><td><b>패키지 확인</b><s class="du">가장 중요합니다</s></td>'+
+  '<tr><td><b>패키지 확인</b></td>'+
   '<td class="cn">住宿在响沙湾景区内吗？还是达拉特旗市区？</td></tr>'+
-  '<tr><td>통표 이중지출 방지</td><td class="cn">门票（通票）已经包含在行程里了吗？</td></tr>'+
+  '<tr><td>통표 중복</td><td class="cn">门票（通票）已经包含在行程里了吗？</td></tr>'+
   '<tr><td>8/10 밤 픽업 요청</td><td class="cn">8月10日晚19:55到呼和浩特东站，可以接站吗？纯玩团。</td></tr>'+
   '</tbody></table></div>'+
 
