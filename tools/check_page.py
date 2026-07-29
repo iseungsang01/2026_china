@@ -107,38 +107,10 @@ check("시간표 · 검증기 동기화",
       [] if have and have.group(0) == want
       else ["TT가 검증기와 다릅니다 — python tools/gen_timetable.py --write 를 실행하세요"])
 
-# ---------- 6. 인솔서(GDOC)가 일정에 붙는가 ----------
-# 링크·주의사항은 일정 라벨의 부분 문자열로 매달린다. 라벨이 바뀌면 메모가
-# 조용히 사라지고(오류도 안 난다), 반대로 「점심」처럼 여러 날에 겹치는 키는
-# 엉뚱한 날에 붙는다 — 바오터우 식당이 사막 점심에 붙던 것이 그 예다.
-keys = re.findall(r"\n \['([^']+)',\{", SRC)
-tt4 = gen_timetable.build_tt()["4A"]
-pairs = [(d["d"], b[3], b[2]) for d in tt4 for b in d["b"]]
-
-
-def days_hit(key):
-    day, sep, k = key.partition("|")
-    if not sep:
-        day, k = None, key
-    return sorted({dd for dd, lab, _ in pairs if (day is None or dd == day) and k in lab})
-
-
-bad = []
-for k in keys:
-    got = days_hit(k)
-    if not got:
-        bad.append("'%s' — 4안 일정에 이 라벨이 없어 메모가 안 붙습니다" % k)
-    elif len(got) > 1:
-        bad.append("'%s' — %s에 모두 붙습니다. 날짜를 앞에 붙이세요 (예: '%s|%s')"
-                   % (k, "·".join(got), got[0], k))
-check("인솔서 메모 %d개" % len(keys), bad)
-
-worth = [(dd, lab) for dd, lab, kind in pairs if kind in ("activity", "meal")]
-naked = [(dd, lab) for dd, lab in worth
-         if not any(dd in days_hit(k) and k.split("|")[-1] in lab for k in keys)]
-print("  %-32s %d/%d개" % ("메모가 붙은 활동·식사", len(worth) - len(naked), len(worth)))
-for dd, lab in naked:
-    print("      · 메모 없음: %s %s" % (dd, lab))
+# ---------- 6. 인솔서로 가는 길 ----------
+# 인솔서 본문은 guide.html + guide-data.js로 옮겼다. 그쪽 검사는 check_guide.py에 있다.
+check("인솔서 링크",
+      [] if "guide.html" in SRC else ["사이드바에서 guide.html로 가는 길이 없습니다"])
 
 print()
 if fails:

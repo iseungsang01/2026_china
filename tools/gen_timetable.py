@@ -50,15 +50,28 @@ def line():
     return "var TT=" + json.dumps(build_tt(), ensure_ascii=False, separators=(",", ":")) + ";"
 
 
+def line4():
+    """guide.html(4안 인솔서)은 4안만 싣는다."""
+    return "var TT4=" + json.dumps(build_tt()["4A"], ensure_ascii=False,
+                                   separators=(",", ":")) + ";"
+
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# (파일, 바꿀 줄의 정규식, 넣을 내용을 만드는 함수)
+TARGETS = [("index.html", r"^var TT=.*?;$", line),
+           ("guide.html", r"^var TT4=.*?;$", line4)]
+
+
 if __name__ == "__main__":
-    out = line()
     if "--write" in sys.argv:
-        p = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "index.html")
-        src = open(p, encoding="utf-8").read()
-        new, n = re.subn(r"^var TT=.*?;$", lambda m: out, src, count=1, flags=re.M)
-        if n != 1:
-            sys.exit("index.html에서 'var TT=...;' 줄을 찾지 못했습니다")
-        open(p, "w", encoding="utf-8", newline="\n").write(new)
-        print("index.html의 TT를 교체했습니다 — %d바이트" % len(out))
+        for name, pat, fn in TARGETS:
+            p = os.path.join(ROOT, name)
+            src = open(p, encoding="utf-8").read()
+            out = fn()
+            new, n = re.subn(pat, lambda m: out, src, count=1, flags=re.M)
+            if n != 1:
+                sys.exit("%s에서 '%s' 줄을 찾지 못했습니다" % (name, pat))
+            open(p, "w", encoding="utf-8", newline="\n").write(new)
+            print("%s의 시간표를 교체했습니다 — %d바이트" % (name, len(out)))
     else:
-        print(out)
+        print(line())

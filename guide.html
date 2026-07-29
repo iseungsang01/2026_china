@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>4안 인솔서 — 2026 베이징 · 내몽고</title>
+<meta name="description" content="8/10~8/14 유네스코 안(4안)의 일자별 현장 문서. 시각·링크·함정·대안.">
+<style>
+/* Octo Code — 밝은 배경 기본. 인쇄와 야외 가독성을 우선한다.
+   Google Fonts는 로드하지 않는다 (외부 요청이 막히면 깨진다) */
+:root{
+  --bg:#FFFFFF; --surface:#F6F8FA; --modal:#EAEEF2;
+  --border:#D0D7DE; --border-hi:#AFB8C1;
+  --ink:#1F2328; --muted:#656D76; --dim:#8C959F;
+  --link:#0969DA; --green:#1F883D; --success:#1A7F37;
+  --warn:#9A6700; --error:#CF222E; --active:#BC4C00;
+  --f:system-ui,-apple-system,"Segoe UI","Malgun Gothic",sans-serif;
+  --fm:ui-monospace,"SFMono-Regular","Cascadia Mono","Consolas",monospace;
+}
+:root[data-theme="dark"]{
+  --bg:#0D1117; --surface:#161B22; --modal:#21262D;
+  --border:#30363D; --border-hi:#484F58;
+  --ink:#E6EDF3; --muted:#8B949E; --dim:#6E7681;
+  --link:#58A6FF; --green:#238636; --success:#3FB950;
+  --warn:#D29922; --error:#F85149; --active:#F78166;
+}
+*{box-sizing:border-box; margin:0; padding:0}
+html{scroll-behavior:smooth; scroll-padding-top:104px}
+body{background:var(--bg); color:var(--ink); font-family:var(--f);
+  font-size:15px; line-height:1.72; -webkit-text-size-adjust:100%}
+
+/* ===== 상단 고정 ===== */
+.top{position:sticky; top:0; z-index:50; background:var(--bg);
+  border-bottom:1px solid var(--border)}
+.top .bar{max-width:900px; margin:0 auto; padding:10px 20px 0;
+  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+.top h1{font-size:15px; font-weight:600; letter-spacing:-.01em}
+.top .sub{font-size:12.5px; color:var(--muted); font-family:var(--fm)}
+.top .sp{margin-left:auto; display:flex; gap:6px}
+.top button, .top a.btn{font:inherit; font-size:12px; color:var(--muted);
+  background:var(--surface); border:1px solid var(--border); border-radius:6px;
+  padding:3px 10px; cursor:pointer; text-decoration:none; transition:border-color .12s}
+.top button:hover, .top a.btn:hover{border-color:var(--border-hi); color:var(--ink)}
+nav.days{max-width:900px; margin:0 auto; padding:8px 20px 9px;
+  display:flex; gap:5px; overflow-x:auto; scrollbar-width:none}
+nav.days::-webkit-scrollbar{display:none}
+nav.days a{flex:0 0 auto; font-size:12.5px; color:var(--muted); text-decoration:none;
+  border:1px solid var(--border); border-radius:9999px; padding:3px 12px;
+  white-space:nowrap; transition:all .12s; font-family:var(--fm)}
+nav.days a:hover{border-color:var(--border-hi); color:var(--ink)}
+nav.days a.on{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+
+/* ===== 본문 ===== */
+main{max-width:900px; margin:0 auto; padding:0 20px 120px}
+section{padding-top:34px}
+h2{font-size:23px; font-weight:600; letter-spacing:-.02em; line-height:1.35;
+  padding-bottom:10px; border-bottom:2px solid var(--ink); margin-bottom:2px}
+h2 .dow{color:var(--muted); font-weight:400}
+h3{font-size:16px; font-weight:600; margin:30px 0 8px}
+h4{font-size:13px; font-weight:600; margin:20px 0 6px; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.06em; font-family:var(--fm)}
+p{margin:9px 0}
+b{font-weight:600}
+a{color:var(--link)}
+.lead{color:var(--muted); font-size:14px}
+.q{font-size:14.5px; color:var(--muted); border-left:2px solid var(--border);
+  padding:2px 0 2px 14px; margin:12px 0}
+
+/* 그날 한눈에 */
+.hero{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr));
+  gap:1px; background:var(--border); border:1px solid var(--border);
+  border-radius:8px; overflow:hidden; margin:14px 0}
+.hero div{background:var(--bg); padding:10px 13px}
+.hero dt{font-size:11px; color:var(--dim); font-family:var(--fm); letter-spacing:.03em}
+.hero dd{font-size:14px; font-weight:600; margin-top:2px; line-height:1.45}
+.hero dd s{display:block; font-size:11.5px; font-weight:400; color:var(--muted);
+  text-decoration:none}
+
+/* 메시지 박스 */
+.msg{border:1px solid var(--border); border-left:3px solid var(--muted);
+  background:var(--surface); padding:12px 15px; border-radius:7px; margin:14px 0;
+  font-size:14px}
+.msg.bad{border-left-color:var(--error)} .msg.warn{border-left-color:var(--warn)}
+.msg.ok{border-left-color:var(--success)} .msg.key{border-left-color:var(--active)}
+.msg p:first-child{margin-top:0} .msg p:last-child{margin-bottom:0}
+.msg .h{font-weight:600; display:block; margin-bottom:4px}
+
+/* 표 */
+.tw{overflow-x:auto; margin:13px 0; border:1px solid var(--border); border-radius:7px}
+table{border-collapse:collapse; width:100%; font-size:13.5px}
+th,td{padding:9px 13px; text-align:left; border-bottom:1px solid var(--border);
+  vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{background:var(--surface); font-weight:600; color:var(--muted); white-space:nowrap;
+  font-size:12.5px}
+td.n{font-family:var(--fm); white-space:nowrap; color:var(--muted)}
+td.cn{font-size:14px}
+tr.hi td{background:var(--surface)}
+.cn{font-family:var(--fm)}
+
+/* 시각별 항목 */
+ol.tl{list-style:none; counter-reset:t}
+ol.tl>li{display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--border)}
+ol.tl>li:last-child{border-bottom:0}
+.tm{flex:0 0 62px; text-align:right; font-family:var(--fm); padding-top:2px}
+.tm b{display:block; font-size:14px; font-weight:600}
+.tm s{display:block; font-size:11px; color:var(--dim); text-decoration:none;
+  white-space:nowrap}
+.bd{flex:1 1 auto; min-width:0}
+.bd>h5{font-size:15.5px; font-weight:600; line-height:1.45; margin-bottom:2px}
+.bd p{font-size:14px; margin:7px 0}
+li.mv .bd>h5{font-weight:400; color:var(--muted); font-size:14px}
+li.mv .tm b{font-weight:400; color:var(--muted)}
+
+/* 링크 칩 */
+.lk{display:flex; flex-wrap:wrap; gap:6px; margin:9px 0 0}
+.lk a{font-size:12px; color:var(--link); text-decoration:none; background:var(--surface);
+  border:1px solid var(--border); border-radius:9999px; padding:3px 11px;
+  transition:border-color .12s; white-space:nowrap}
+.lk a:hover{border-color:var(--link)}
+.lk a.tel{color:var(--success); font-family:var(--fm)}
+.lk a.map{color:var(--muted)}
+
+/* 작은 표 (항목 안) */
+.mini{margin:9px 0; border:1px solid var(--border); border-radius:6px; overflow:hidden}
+.mini table{font-size:12.5px}
+.mini th,.mini td{padding:6px 11px}
+.mini th{width:33%; background:var(--surface); font-size:12px}
+
+.tag{display:inline-block; font-size:11px; font-weight:600; padding:1px 8px;
+  border-radius:4px; margin-left:6px; vertical-align:middle; font-family:var(--f)}
+.tag.bk{background:rgba(154,103,0,.14); color:var(--warn)}
+.tag.est{background:transparent; border:1px solid var(--warn); color:var(--warn);
+  font-weight:500}
+.tag.no{background:rgba(207,34,46,.12); color:var(--error)}
+
+.src{font-size:12.5px; color:var(--dim); margin-top:26px; padding-top:13px;
+  border-top:1px solid var(--border)}
+.foot{margin-top:60px; padding-top:20px; border-top:1px solid var(--border);
+  font-size:12.5px; color:var(--dim)}
+.foot a{color:var(--muted)}
+
+@media (max-width:640px){
+  body{font-size:14.5px}
+  main{padding:0 14px 90px}
+  .top .bar{padding:9px 14px 0}
+  nav.days{padding:7px 14px 8px}
+  h2{font-size:20px}
+  .tm{flex:0 0 52px}
+  ol.tl>li{gap:10px}
+  table{font-size:13px} th,td{padding:8px 10px}
+  .mini th{width:38%}
+  .top .sub{display:none}            /* 세로 공간을 탭에 양보한다 */
+  /* 2열로 고정하고, 항목이 홀수면 마지막 칸을 늘려 빈 회색 칸이 남지 않게 한다 */
+  .hero{grid-template-columns:1fr 1fr}
+  .hero div:last-child:nth-child(odd){grid-column:1/-1}
+  /* 열이 넷이면 360px에서 「후허하오터」가 글자 단위로 쪼개진다.
+     좁은 화면에서는 행을 카드로 쌓고 열 이름을 각 줄 앞에 붙인다 */
+  table.stack thead{display:none}
+  table.stack tr{display:block; padding:10px 12px; border-bottom:1px solid var(--border)}
+  table.stack tr:last-child{border-bottom:0}
+  table.stack td{display:block; border:0; padding:1px 0}
+  table.stack td::before{content:attr(data-l); display:inline-block; min-width:64px;
+    color:var(--dim); font-size:11px; font-family:var(--fm)}
+  table.stack td.n{color:var(--ink); font-weight:600; margin-bottom:3px}
+}
+@media print{
+  .top{display:none}
+  body{font-size:10.5pt}
+  main{max-width:none; padding:0}
+  section{page-break-before:always; padding-top:0}
+  section:first-of-type{page-break-before:avoid}
+  ol.tl>li{page-break-inside:avoid}
+  .msg,.tw,.hero{page-break-inside:avoid}
+  a{text-decoration:none}
+  .lk a::after{content:" (" attr(href) ")"; font-size:8pt; color:#666}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="bar">
+    <h1>4안 인솔서 · 유네스코</h1>
+    <span class="sub">8/10 PEK 14:00 도착 — 8/14 10:40 출발 · 성인 4인</span>
+    <span class="sp">
+      <a class="btn" href="index.html">지도로</a>
+      <button onclick="print()">인쇄</button>
+      <button id="tb" onclick="tog()">어둡게</button>
+    </span>
+  </div>
+  <nav class="days" id="nav"></nav>
+</header>
+
+<main id="main"></main>
+
+<script>
+/* 시각과 일정 이름은 verify_itinerary.py가 만든 것을 그대로 쓴다.
+   python tools/gen_timetable.py --write 가 아래 TT4 줄을 교체하므로 손으로 고치지 말 것. */
+var TT4=[{"d":"8/10","b":[[840,75,"transit","PEK T3 도착 · 입국심사 · 수하물"],[915,75,"car","공항 → 베이징북역 (택시 2대)"],[990,50,"meal","역에서 이른 저녁 · 발권 · 보안"],[1040,155,"rail","고속철 1등석 → 후허하오터동"],[1195,15,"transit","하차 · 짐 찾기 · 택시 승차"],[1210,20,"car","역 → 구시가 호텔 (다자오 도보권)"],[1230,25,"rest","체크인 · 짐 정리"],[1255,65,"activity","사이상라오제 야경 · 통순대항 야식 (도보 5분)"]],"stay":"후허하오터 1박 (구시가)"},{"d":"8/11","b":[[450,60,"meal","조식 · 체크아웃"],[510,180,"car","후허하오터 → 샹사완 (직행)"],[690,60,"rest","리조트 체크인 · 짐 보관"],[750,60,"meal","점심"],[810,60,"activity","케이블카 → 셴사다오"],[870,90,"activity","낙타 타기"],[960,105,"activity","모래썰매 · 사막 액티비티"],[1080,60,"rest","휴식 · 샤워"],[1140,60,"meal","저녁"],[1200,60,"activity","사막 일몰"],[1320,120,"activity","사막 별보기 (극대기 하루 전)"]],"stay":"사막 게르 1박"},{"d":"8/12","b":[[420,60,"meal","조식 · 체크아웃"],[480,120,"car","샹사완 → 바오터우 (58km)"],[600,45,"meal","점심"],[645,45,"transit","역 도착 · 발권 · 보안"],[690,222,"rail","고속철 1등석 → 베이징북"],[912,48,"car","역 → 호텔 (짐만 맡김)"],[960,30,"car","호텔 → 천단 (지하철)"],[990,60,"activity","천단 관람 (통표 · 경점 17:30 마감)"],[1050,30,"car","천단 → 첸먼"],[1080,90,"meal","베이징덕 저녁 (첸먼)"],[1170,60,"activity","첸먼다제 · 다잔란 야간 산책"]],"stay":"베이징 1박"},{"d":"8/13","b":[[450,60,"meal","조식 · 체크아웃 (짐은 호텔 보관)"],[510,30,"car","호텔 → 천안문 (지하철)"],[540,180,"activity","자금성 관람 (오전권 · 예약 필수)"],[720,60,"meal","점심"],[780,60,"car","자금성 → 이화원 (지하철 4호선)"],[840,210,"activity","이화원 관람"],[1050,60,"car","이화원 → 시내 (짐 회수)"],[1120,70,"meal","저녁"],[1190,75,"car","시내 → 공항 인근 호텔"]],"stay":"베이징 1박 (공항 인근)"},{"d":"8/14","b":[[380,45,"meal","조식 · 체크아웃"],[430,50,"car","호텔 → PEK T3 (공항 인근 숙박 기준)"],[480,160,"transit","체크인 · 보안 · 출국심사 (10:40 출발)"]],"stay":""}];
+
+var DOW={'8/10':'월','8/11':'화','8/12':'수','8/13':'목','8/14':'금'};
+var AMAP='https://www.amap.com/search?query=';
+
+/* ============================================================
+   G — 일자별 본문. items의 키는 일정 라벨의 부분 문자열이다.
+   p: 문단 배열 · t: 실무 표 · l: 링크 · w: 함정 · b: 늦거나 막혔을 때
+   ============================================================ */
+var G={};
+</script>
+<script src="guide-data.js"></script>
+<script>
+function pad(n){return (n<10?'0':'')+n}
+function hm(m){return pad(Math.floor(m/60)%24)+':'+pad(m%60)}
+function dur(m){var h=Math.floor(m/60),r=m%60;
+  return m<60? m+'분' : h+'시간'+(r?' '+r+'분':'');}
+
+function tbl(rows,cls){
+  if(!rows||!rows.length) return '';
+  var s='<div class="'+(cls||'mini')+'"><table><tbody>';
+  for(var i=0;i<rows.length;i++)
+    s+='<tr><th>'+rows[i][0]+'</th><td>'+rows[i][1]+'</td></tr>';
+  return s+'</tbody></table></div>';
+}
+function links(a){
+  if(!a||!a.length) return '';
+  var s='<div class="lk">';
+  for(var i=0;i<a.length;i++){
+    var u=a[i][1], k=u.indexOf('tel:')===0?' class="tel"'
+      : u.indexOf('amap.com')>0?' class="map"':'';
+    s+='<a href="'+u+'"'+k+(k?'':'')+
+       (u.indexOf('tel:')===0?'':' target="_blank" rel="noopener"')+'>'+a[i][0]+'</a>';
+  }
+  return s+'</div>';
+}
+function paras(p){
+  if(!p) return '';
+  if(typeof p==='string') p=[p];
+  return p.map(function(x){return '<p>'+x+'</p>'}).join('');
+}
+function find(day,lab){
+  var it=(G[day]||{}).items||{};
+  for(var k in it) if(lab.indexOf(k)>=0) return it[k];
+  return null;
+}
+
+function render(){
+  var nav='', out='';
+
+  /* ---- 표지 ---- */
+  nav+='<a href="#top0">개요</a><a href="#prep">준비</a>';
+  out+=COVER;
+
+  /* ---- 일자 ---- */
+  for(var i=0;i<TT4.length;i++){
+    var d=TT4[i], g=G[d.d]||{}, id='d'+d.d.replace('/','');
+    nav+='<a href="#'+id+'">'+d.d+'</a>';
+
+    out+='<section id="'+id+'"><h2>'+d.d+' <span class="dow">('+DOW[d.d]+')</span> — '+
+         (g.title||'')+'</h2>';
+    if(g.lead) out+='<p class="lead">'+g.lead+'</p>';
+
+    if(g.hero){
+      out+='<dl class="hero">';
+      for(var h=0;h<g.hero.length;h++)
+        out+='<div><dt>'+g.hero[h][0]+'</dt><dd>'+g.hero[h][1]+
+             (g.hero[h][2]?'<s>'+g.hero[h][2]+'</s>':'')+'</dd></div>';
+      out+='</dl>';
+    }
+    if(g.key) out+='<div class="msg key"><span class="h">이 날의 성패를 가르는 것</span>'+
+      paras(g.key)+'</div>';
+
+    out+='<h4>시각별</h4><ol class="tl">';
+    for(var j=0;j<d.b.length;j++){
+      var b=d.b[j], it=find(d.d,b[3]),
+          mv=(b[2]==='car'||b[2]==='rail'||b[2]==='transit'||b[2]==='rest');
+      out+='<li'+(mv&&!it?' class="mv"':'')+'>'+
+        '<div class="tm"><b>'+hm(b[0])+'</b><s>'+dur(b[1])+'</s></div>'+
+        '<div class="bd"><h5>'+b[3]+'</h5>';
+      if(it){
+        out+=paras(it.p)+tbl(it.t)+links(it.l);
+        if(it.w) out+='<div class="msg warn">'+paras(it.w)+'</div>';
+        if(it.b) out+='<div class="msg"><span class="h">늦거나 막히면</span>'+paras(it.b)+'</div>';
+      }
+      out+='</div></li>';
+    }
+    out+='</ol>';
+
+    if(g.pack){
+      out+='<h4>이 날 손에 있어야 하는 것</h4><div class="tw"><table><tbody>';
+      for(var k=0;k<g.pack.length;k++)
+        out+='<tr><th>'+g.pack[k][0]+'</th><td>'+g.pack[k][1]+'</td></tr>';
+      out+='</tbody></table></div>';
+    }
+    if(g.cn){
+      out+='<h4>이 날 쓸 문장</h4><div class="tw"><table><tbody>';
+      for(var m=0;m<g.cn.length;m++)
+        out+='<tr><th>'+g.cn[m][0]+'</th><td class="cn">'+g.cn[m][1]+'</td></tr>';
+      out+='</tbody></table></div>';
+    }
+    if(g.delay){
+      out+='<h4>늦으면 어디서 자르나</h4><div class="tw"><table><thead><tr>'+
+           '<th>얼마나 늦었나</th><th>무엇을 버리나</th></tr></thead><tbody>';
+      for(var n=0;n<g.delay.length;n++)
+        out+='<tr><td class="n">'+g.delay[n][0]+'</td><td>'+g.delay[n][1]+'</td></tr>';
+      out+='</tbody></table></div>';
+    }
+    if(g.note) out+='<div class="msg">'+paras(g.note)+'</div>';
+    out+='</section>';
+  }
+
+  /* ---- 부록 ---- */
+  nav+='<a href="#ref">부록</a>';
+  out+=REF;
+
+  document.getElementById('nav').innerHTML=nav;
+  document.getElementById('main').innerHTML=out;
+
+  /* 스크롤에 따라 상단 탭을 물들인다 */
+  var secs=[].slice.call(document.querySelectorAll('section'));
+  var tabs=[].slice.call(document.querySelectorAll('nav.days a'));
+  function mark(){
+    var y=scrollY+130, cur=secs[0];
+    for(var i=0;i<secs.length;i++) if(secs[i].offsetTop<=y) cur=secs[i];
+    tabs.forEach(function(a){
+      a.classList.toggle('on', a.getAttribute('href')==='#'+cur.id);
+    });
+  }
+  addEventListener('scroll',mark,{passive:true}); mark();
+}
+
+function tog(){
+  var d=document.documentElement;
+  var dark=d.getAttribute('data-theme')==='dark';
+  d.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('tb').textContent=dark?'어둡게':'밝게';
+  try{localStorage.setItem('gtheme',dark?'light':'dark')}catch(e){}
+}
+try{
+  var t=localStorage.getItem('gtheme');
+  if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');}
+}catch(e){}
+
+render();
+if(document.documentElement.getAttribute('data-theme')==='dark')
+  document.getElementById('tb').textContent='밝게';
+</script>
+</body>
+</html>
