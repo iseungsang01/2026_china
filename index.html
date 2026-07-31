@@ -429,11 +429,11 @@
       <div class="grp-t">일정 순서</div>
       <button class="cbtn" id="ob-1A" onclick="setOrder('1A')">
         <b>1안 · 사막 극대기</b><s>천단 · 후허하오터 · 사막 · 광장</s></button>
-      <button class="cbtn" id="ob-1V" onclick="setOrder('1V')">
+      <button class="cbtn on" id="ob-1V" onclick="setOrder('1V')">
         <b>1안 + 화산</b><s>8/11을 우란하다 화산으로</s></button>
       <button class="cbtn" id="ob-2A" onclick="setOrder('2A')">
         <b>2안-A · 자금성 8/13</b><s>베이징 넷 · 사막은 반나절</s></button>
-      <button class="cbtn on" id="ob-2B" onclick="setOrder('2B')">
+      <button class="cbtn" id="ob-2B" onclick="setOrder('2B')">
         <b>2안-B · 전부 담기<span class="rec">추천</span></b><s>베이징 넷 + 사막 극대기</s></button>
       <button class="ttbtn" onclick="open_('sch')">시간표 보기</button>
     </div>
@@ -801,7 +801,7 @@ var SPOT={
    ["우타사 <span class='cn'>五塔寺</span>","금강좌사리보탑. 벽면 몽골어 천문도가 유명합니다"]]}
 };
 
-var ORDER="2B", cur=null, curSheet=null;
+var ORDER="1V", cur=null, curSheet=null;
 var cam=document.getElementById('cam'), map=document.getElementById('map'),
     pc=document.getElementById('pc'), hint=document.getElementById('hint');
 var CX=640, CY=384, MW=1280, MH=768;
