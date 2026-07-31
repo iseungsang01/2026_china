@@ -1276,11 +1276,22 @@ var PLAN="A";
 function pm(k){for(var i=0;i<PMETA.length;i++) if(PMETA[i].k===(k||PLAN)) return PMETA[i];
   return PMETA[0]}
 
+/* 일정 골격은 둘뿐이다 — 8/11을 후허하오터에 쓰느냐(A·B·E) 화산에 쓰느냐(C·D).
+   같은 골격끼리 묶어야 「무엇이 다른지」가 값 하나로 좁혀진다. */
+var GRP=[{t:"① 사막 당일만",s:"8/11 후허하오터 · 8/12 사막 · 8/13 베이징",ks:["A","B","E"]},
+         {t:"② 사막 + 화산",s:"8/11 화산 · 8/12 사막 · 8/13 베이징",ks:["C","D"]}];
+function grpOf(k){for(var i=0;i<GRP.length;i++) if(GRP[i].ks.indexOf(k)>=0) return GRP[i];
+  return GRP[0]}
+
 function renderPlans(){
   var h="";
-  for(var i=0;i<PMETA.length;i++){var p=PMETA[i];
-    h+='<button class="cbtn'+(p.k===PLAN?' on':'')+'" onclick="setPlan(\''+p.k+'\')">'+
-       '<b>'+p.k+' · '+p.nm+'</b><s>'+p.price+' — '+p.sub+'</s></button>';
+  for(var g=0;g<GRP.length;g++){
+    h+='<div class="grp-t" style="padding:8px 0 4px">'+GRP[g].t+
+       '<s class="du" style="display:block;font-weight:400">'+GRP[g].s+'</s></div>';
+    for(var i=0;i<GRP[g].ks.length;i++){var p=pm(GRP[g].ks[i]);
+      h+='<button class="cbtn'+(p.k===PLAN?' on':'')+'" onclick="setPlan(\''+p.k+'\')">'+
+         '<b>'+p.k+' · '+p.nm+'</b><s>'+p.price+' — '+p.sub+'</s></button>';
+    }
   }
   document.getElementById('planbtns').innerHTML=h;
   document.getElementById('mtt').textContent=PLAN+' · '+pm().nm;
@@ -1291,10 +1302,11 @@ function setPlan(k){
 }
 /* 안 배지 — 시트 맨 위에 「지금 보고 있는 안」을 못박아 둔다.
    5안이 같은 화면을 쓰므로 이것이 없으면 어느 안의 표인지 알 수 없다. */
-function pbadge(){var p=pm();
-  return '<div class="msg ok"><p><b>'+p.k+' · '+p.nm+'</b> — '+p.sub+' · <b>1인 '+p.price+'</b>'+
-    ' · 사막 쪽 숙박 <b>'+p.night+'</b><br>'+
-    '<s class="du">사이드바에서 다른 안을 누르면 이 화면이 그대로 바뀝니다</s></p></div>'}
+function pbadge(){var p=pm(), g=grpOf(p.k),
+  sib=g.ks.filter(function(k){return k!==p.k});
+  return '<div class="msg ok"><p><b>'+p.k+' · '+p.nm+'</b> — '+p.sub+' · <b>1인 '+p.price+'</b><br>'+
+    '<b>'+g.t+'</b> '+g.s+' · 같은 일정 <b>'+(sib.length?sib.join(' · '):'없음')+'</b>'+
+    ' — 이 안들과는 <b>값과 상품만 다릅니다</b></p></div>'}
 
 var SHEET={
  days:{title:"일정표",body:function(){
