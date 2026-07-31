@@ -5,12 +5,8 @@
 사용법:  python tools/gen_timetable.py          # TT 한 줄을 표준출력에 찍는다
          python tools/gen_timetable.py --write  # index.html의 TT 줄을 교체한다
 
-guide.html(인솔서)의 TT4도 여기서 만든다.
-
-⚠️ 2026-07-31에 **사막 패키지 5안(A~E)으로 전면 개편**되면서 인솔서 본문(guide-data.js)이
-구판(1M) 일정에 붙어 있는 상태가 됐다. 안을 하나로 좁히기 전에는 본문을 다시 쓸 수 없으므로
-GUIDE_PLAN을 None으로 두어 **TT4를 동결**한다. 안이 확정되면 그 코드로 재타깃하고
-guide-data.js를 함께 고쳐야 한다 — 라벨이 어긋나면 check_guide.py가 잡는다."""
+(구판 인솔서 guide.html + guide-data.js는 2026-08-01 단일안 개편에서 삭제됐다.
+ 인솔서를 되살리려면 git 이력에서 꺼내 새 일정으로 다시 쓸 것.)"""
 import sys, io, os, json, re
 
 if __name__ == "__main__":      # import될 때 stdout을 건드리지 않는다
@@ -21,10 +17,6 @@ import verify_itinerary as V
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DAYS = ["8/10", "8/11", "8/12", "8/13", "8/14"]
-TT4_RE = r"^var TT4=.*?;$"
-# None이면 TT4를 재생성하지 않고 guide.html의 현재 값을 동결로 취급한다.
-# 5안 비교 단계에서는 인솔서를 어느 안에 붙일지 정할 수 없어 동결한다 (위 주석 참조).
-GUIDE_PLAN = None
 
 
 def kind(e):
@@ -60,7 +52,7 @@ def build_tt():
     return {code: to_tt(V.build(code)) for code, _pkg, _price, _nm in V.PLANS}
 
 
-# index.html에 싣는 플랜. 사막 패키지 5안을 전부 싣는다 (2026-07-31 사용자 지시).
+# index.html에 싣는 플랜 — 단일 최종안 F.
 PAGE_PLANS = tuple(code for code, _pkg, _price, _nm in V.PLANS)
 
 
@@ -70,35 +62,8 @@ def line():
     return "var TT=" + json.dumps(page, ensure_ascii=False, separators=(",", ":")) + ";"
 
 
-def frozen4():
-    """guide.html에 지금 들어 있는 TT4 줄. 동결 중에는 이것이 곧 정답이다."""
-    src = open(os.path.join(ROOT, "guide.html"), encoding="utf-8").read()
-    m = re.search(TT4_RE, src, re.M)
-    if not m:
-        sys.exit("guide.html에서 'var TT4=' 줄을 찾지 못했습니다")
-    return m.group(0)
-
-
-def line4():
-    """guide.html(인솔서)용 TT4.
-    ⚠️ GUIDE_PLAN이 None인 동안에는 guide.html의 현재 값을 그대로 돌려준다. 즉
-    check_guide.py의 「시간표 · 검증기 동기화」 검사는 **동결 중에는 아무것도 검증하지 않는다.**
-    구판 인솔서가 계속 통과하게 하려는 의도적 조치이니, 재타깃할 때 반드시 되살릴 것."""
-    if GUIDE_PLAN is None:
-        return frozen4()
-    return "var TT4=" + json.dumps(build_tt()[GUIDE_PLAN], ensure_ascii=False,
-                                   separators=(",", ":")) + ";"
-
-
-def guide_tt():
-    """TT4의 내용(일자 배열). check_guide.py가 날짜 키·라벨 대조에 쓴다."""
-    return json.loads(line4()[len("var TT4="):-1])
-
-
 # (파일, 바꿀 줄의 정규식, 넣을 내용을 만드는 함수)
 TARGETS = [("index.html", r"^var TT=.*?;$", line)]
-if GUIDE_PLAN is not None:
-    TARGETS.append(("guide.html", TT4_RE, line4))
 
 
 if __name__ == "__main__":
@@ -112,7 +77,5 @@ if __name__ == "__main__":
                 sys.exit("%s에서 '%s' 줄을 찾지 못했습니다" % (name, pat))
             open(p, "w", encoding="utf-8", newline="\n").write(new)
             print("%s의 시간표를 교체했습니다 — %d바이트" % (name, len(out)))
-        if GUIDE_PLAN is None:
-            print("guide.html의 TT4는 동결 상태라 건드리지 않았습니다 (GUIDE_PLAN=None)")
     else:
         print(line())

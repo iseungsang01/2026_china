@@ -107,10 +107,7 @@ check("시간표 · 검증기 동기화",
       [] if have and have.group(0) == want
       else ["TT가 검증기와 다릅니다 — python tools/gen_timetable.py --write 를 실행하세요"])
 
-# ---------- 6. 인솔서로 가는 길 ----------
-# 인솔서 본문은 guide.html + guide-data.js로 옮겼다. 그쪽 검사는 check_guide.py에 있다.
-check("인솔서 링크",
-      [] if "guide.html" in SRC else ["사이드바에서 guide.html로 가는 길이 없습니다"])
+# (구판 인솔서 guide.html은 2026-08-01 단일안 개편에서 삭제됐다 — 검사도 함께 뺐다.)
 
 print()
 if fails:
