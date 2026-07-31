@@ -219,7 +219,20 @@ def d0814():
 
 def build(code="F"):
     """단일 최종안. code 인자는 gen_timetable.py와의 계약을 위해 남긴다."""
-    return d0810() + d0811() + d0812() + d0813() + d0814()
+    return _mark_pkg(d0810() + d0811() + d0812() + d0813() + d0814())
+
+
+def _mark_pkg(P):
+    """Klook 상품이 커버하는 구간에 pkg 표시를 단다 — **차량이 떠나는 순간부터
+    돌아와 내리는 순간까지**가 상품 범위다. 시간표에서 한 테두리 상자로 묶여
+    「어디까지가 산 것이고 어디부터가 자력인지」가 보인다."""
+    legs = [e for e in P if e.get("key") == "car_hh_ds"]
+    if len(legs) == 2:
+        a, b = legs[0]["t"], legs[1]["t"] + legs[1]["dur"]
+        for e in P:
+            if e["d"] == legs[0]["d"] and a <= e["t"] < b:
+                e["pkg"] = True
+    return P
 
 
 # ===================== 검증 라운드 =====================
