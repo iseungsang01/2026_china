@@ -48,13 +48,19 @@ def to_tt(P):
 
 
 def build_tt():
-    """검증기의 PLANS를 그대로 따라간다 — 키(1A·1V·2A·2B)가 index.html의 순서 선택과 대응한다.
-    1V(화산 변형)는 페이지 구현 대상이 아니지만 생성해 둔다."""
+    """검증기의 PLANS를 그대로 따라간다. 대안 플랜(1A·2A·2B)은 검증기에만 남아 있고
+    페이지에는 PAGE_PLANS(확정안)만 싣는다 — cleanup-plan-1v.md 참조."""
     return {code: to_tt(V.build(o, var)) for o, var, code, _pkg, _nm in V.PLANS}
 
 
+# index.html에 싣는 플랜. 화면이 1V 단일이 된 뒤로는 하나뿐이다.
+PAGE_PLANS = ("1V",)
+
+
 def line():
-    return "var TT=" + json.dumps(build_tt(), ensure_ascii=False, separators=(",", ":")) + ";"
+    tt = build_tt()
+    page = {k: tt[k] for k in PAGE_PLANS}
+    return "var TT=" + json.dumps(page, ensure_ascii=False, separators=(",", ":")) + ";"
 
 
 def frozen4():
