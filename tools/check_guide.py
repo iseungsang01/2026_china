@@ -42,7 +42,9 @@ check("시간표 · 검증기 동기화",
       [] if have and have.group(0) == want
       else ["TT4가 검증기와 다릅니다 — python tools/gen_timetable.py --write 를 실행하세요"])
 
-tt4 = gen_timetable.build_tt()["4A"]
+# 구 4안 키("4A")는 2026-07-30 재설계로 없어졌다. TT4가 동결돼 있으므로
+# guide.html에 들어 있는 값을 그대로 읽는다 (gen_timetable.GUIDE_PLAN 주석 참조).
+tt4 = gen_timetable.guide_tt()
 days = [d["d"] for d in tt4]
 
 # ---------- 2. G의 날짜 키 ----------
