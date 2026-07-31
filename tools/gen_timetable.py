@@ -5,11 +5,9 @@
 사용법:  python tools/gen_timetable.py          # TT 한 줄을 표준출력에 찍는다
          python tools/gen_timetable.py --write  # index.html의 TT 줄을 교체한다
 
-⚠️ **guide.html의 TT4는 동결했다** (2026-07-30 재설계). 인솔서 본문은 폐기된 구 4안 기준이라
-신규 안의 시각만 밀어 넣으면 시각과 본문이 어긋난다 — 특히 「바오터우 → 베이징 15:12 도착」
-편이 실재하지 않는 것으로 확인돼 구판의 8/12·8/13 시각은 이미 신뢰할 수 없다.
-어느 안을 채택할지 정해지면 아래 GUIDE_PLAN에 그 코드(예 "2B")를 넣어 동결을 풀고,
-같은 커밋에서 guide-data.js를 다시 쓴다. 순서를 어기면 check_guide.py가 exit 1이 된다."""
+guide.html(인솔서)의 TT4도 여기서 만든다. 2026-07-31에 확정안이 1V로 정해져
+GUIDE_PLAN="1V"로 동결을 풀었다 — 인솔서 본문(guide-data.js)도 같은 날 1V 기준으로
+다시 썼다. 라벨이 어긋나면 check_guide.py가 잡는다."""
 import sys, io, os, json, re
 
 if __name__ == "__main__":      # import될 때 stdout을 건드리지 않는다
@@ -22,8 +20,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DAYS = ["8/10", "8/11", "8/12", "8/13", "8/14"]
 TT4_RE = r"^var TT4=.*?;$"
 # None이면 TT4를 재생성하지 않고 guide.html의 현재 값을 동결로 취급한다.
-# 채택 안이 정해지면 V.PLANS의 코드("1A"·"1V"·"2A"·"2B") 중 하나를 넣는다.
-GUIDE_PLAN = None
+# 확정안 1V (2026-07-31). 바꾸면 guide-data.js도 함께 다시 써야 한다.
+GUIDE_PLAN = "1V"
 
 
 def kind(e):
