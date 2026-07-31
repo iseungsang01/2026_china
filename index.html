@@ -452,6 +452,8 @@
         <span class="tx"><b>일정표</b><s>언제 어디에 있는가</s></span></button>
       <button class="navbtn" onclick="open_('cost')"><span class="dot" style="background:#8B949E"></span>
         <span class="tx"><b>비용</b><s>1인 48~55만원 — 패키지가 가른다</s></span></button>
+      <button class="navbtn" onclick="open_('pkg')"><span class="dot" style="background:#DB61A2"></span>
+        <span class="tx"><b>패키지</b><s>8/12 하루뿐 — 상품 · 여행사 · 견적서</s></span></button>
       <button class="navbtn" onclick="open_('hard')"><span class="dot" style="background:#D29922"></span>
         <span class="tx"><b>예약 난이도</b><s>지금 당장 해야 할 것 3건</s></span><span class="warnmark">!</span></button>
       <button class="navbtn" onclick="open_('policy')"><span class="dot" style="background:#8250DF"></span>
@@ -1399,6 +1401,161 @@ var SHEET={
   '<p class="src">아직 <b>추정</b>인 값 — 병합단 실견적 · D1068 1등석 요금 · '+
   '샹사완→바오터우 택시 실가(200~300元) · 大众点评 쿠폰 절감률. '+
   '견적을 받으면 이 표를 대체하세요.</p>'}},
+
+ pkg:{title:"패키지",body:function(){return ''+
+  '<div class="msg warn"><p><b>5일 중 패키지가 필요한 날은 8/12 하루입니다.</b> '+
+  '그마저도 <b>왕복 상품을 사서 편도만 쓰고 이탈</b>하는 변칙 사용입니다. '+
+  '패키지를 쓰는 이유는 편해서가 아니라 <b>샹사완에 대중교통이 아예 없기 때문</b>입니다 '+
+  '(<span class="cn">不通公共交通，自驾或跟团</span>).</p></div>'+
+
+  '<div class="tw"><table><thead><tr><th class="n">날짜</th><th>패키지</th><th>상태</th></tr></thead><tbody>'+
+  '<tr><td class="n">8/10</td><td>없음</td><td>자력 — 택시 · 지하철 · 도보</td></tr>'+
+  '<tr><td class="n"><b>8/11</b><br>화산</td><td><b>상품은 있으나 쓰지 않음</b></td>'+
+  '<td><b>출발 시각을 공개하지 않는 것</b>이 결격 사유. 아래에 이유</td></tr>'+
+  '<tr><td class="n"><b>8/12</b><br>사막</td><td><b>이것 하나</b></td>'+
+  '<td>상품 특정 완료 · <b>실견적 미확보</b></td></tr>'+
+  '<tr><td class="n">8/13</td><td>없음 (<span class="cn">离团</span>)</td><td>자력 — 택시 2대 + 고속철</td></tr>'+
+  '<tr><td class="n">8/14</td><td>없음</td><td>자력</td></tr>'+
+  '</tbody></table></div>'+
+
+  '<h3>8/12 사막 — 찾던 상품</h3>'+
+  '<div class="tw"><table><thead><tr><th class="n">항목</th><th>'+
+  '<span class="cn">帐篷营地经济版</span> · <span class="cn">蒙旅国际旅行社</span></th></tr></thead><tbody>'+
+  '<tr><td class="n"><b>가격</b></td><td><b>성인 980~1,280元</b> — 전원 성인이라 아동 요금 해당 없음</td></tr>'+
+  '<tr><td class="n"><b>숙박</b></td><td><b><span class="cn">悦沙岛帐篷营地</span> 1박</b> · 독립 욕실 · 에어컨 · '+
+  '<b><span class="cn">免排队</span> 특권</b>(케이블카 · 꼬마열차 줄 안 섬)</td></tr>'+
+  '<tr><td class="n"><b>문표</b></td><td><b><span class="cn">全项目套票</span> 380元 등급</b></td></tr>'+
+  '<tr><td class="n">차량</td><td>후허하오터 <b>왕복</b> 전용차</td></tr>'+
+  '<tr><td class="n">식사</td><td>1조식 2정찬 · 여행사 책임보험 + 상해보험</td></tr>'+
+  '<tr><td class="n"><b>연락처</b></td><td><b>4008118796</b> · 위챗 <span class="cn">NmgMlLy</span> · '+
+  '<span class="cn">qqadgbb</span></td></tr>'+
+  '</tbody></table></div>'+
+  '<div class="msg ok"><p><b>「980~1,280元」은 추정치가 아니라 이 상품의 실제 가격표였습니다.</b> '+
+  '그동안 값만 있고 <b>파는 곳이 없어서</b> 못 찾은 것처럼 보였습니다.</p></div>'+
+  '<div class="msg bad"><p><b>다만 「상품이 있다」이지 「이 값에 살 수 있다」가 아닙니다.</b> '+
+  '출처가 전부 여행사 홍보 기사(<span class="cn">软文</span>)이고 <b>거래 플랫폼의 상품 페이지가 아닙니다.</b> '+
+  '같은 회사의 위챗 번호가 기사마다 다르게 나옵니다. '+
+  '<b>실제 재고 · 4인 단독 발단 여부 · <span class="cn">离团</span> 수용 여부는 전화로만 나옵니다.</b></p></div>'+
+
+  '<h3>왕복을 사서 편도만 쓰는 문제</h3>'+
+  '<p class="lead">상품이 <b>「후허하오터 왕복」</b>인데 8/13 아침에 바오터우로 빠져나갑니다. '+
+  '즉 <b>돌아오는 차를 사고 안 타는 것</b>입니다.</p>'+
+  '<div class="tw"><table><tbody>'+
+  '<tr><td class="n">여행사 입장</td><td>왕복 차량이 <b>이미 원가에 들어가 있어</b> 편도만 쓴다고 원가가 줄지 않음</td></tr>'+
+  '<tr><td class="n"><b>따라서</b></td><td><b>감액을 기대하지 말 것.</b> 협상 목표는 할인이 아니라 '+
+  '<b><span class="cn">离团</span> 허가</b>입니다</td></tr>'+
+  '<tr><td class="n">근거</td><td><span class="cn">携程</span> 표준계약 <b>제14조</b> — 협의 일치 시 이탈 허용, 단 <b>서면</b></td></tr>'+
+  '<tr><td class="n">금지</td><td><b>제13조 무단 이탈</b> — 환불 전무 + 손해배상</td></tr>'+
+  '</tbody></table></div>'+
+
+  '<h3>견적서에 못박을 다섯 줄</h3>'+
+  '<div class="tw"><table><thead><tr><th>중국어</th><th>왜</th></tr></thead><tbody>'+
+  '<tr><td><span class="cn">纯玩团，不进购物店</span></td>'+
+  '<td>쇼핑 코스가 들어가면 <b>8/12 오후가 통째로 날아갑니다</b></td></tr>'+
+  '<tr><td><span class="cn">住响沙湾景区内<br>（悦沙岛帐篷营地）</span></td>'+
+  '<td>경구 밖이면 <b>일몰과 유성우를 잃습니다</b> — 절감이 아니라 일정 파괴</td></tr>'+
+  '<tr><td><span class="cn">套票380元等级（全项目）</span></td>'+
+  '<td>저가 단체는 <b>80元 대문표만</b> 넣어 <b>낙타가 현장 추가 요금</b>이 됩니다</td></tr>'+
+  '<tr><td><span class="cn">8月13日早上离团去包头站</span></td>'+
+  '<td>서면이 아니면 <b>무단 이탈</b>이 됩니다</td></tr>'+
+  '<tr><td><span class="cn">四位成人能单独成团吗？</span></td>'+
+  '<td><b>6~10인 성단</b>이라 미달 시 취소인지 합석인지 먼저 답을 받습니다</td></tr>'+
+  '</tbody></table></div>'+
+
+  '<h3><span class="cn">套票</span> 등급 — 가장 큰 함정</h3>'+
+  '<div class="tw"><table><thead><tr><th>등급</th><th class="n">값</th><th>포함</th></tr></thead><tbody>'+
+  '<tr><td><span class="cn">门票</span> 대문표</td><td class="n">80~120元</td>'+
+  '<td>입장 + 케이블카만. <b>낙타 · 모래썰매 전부 별도</b></td></tr>'+
+  '<tr><td><span class="cn">双岛</span></td><td class="n">250~260元</td><td>두 섬 놀이시설</td></tr>'+
+  '<tr><td><b><span class="cn">全项目</span></b></td><td class="n"><b>380元</b></td>'+
+  '<td>대문 + <span class="cn">索道</span> + 셴사다오 + 웨사다오 <b>전부</b></td></tr>'+
+  '</tbody></table></div>'+
+  '<div class="msg warn"><p>대문표만 넣고 「샹사완 포함」이라 광고한 뒤 현장에서 <b>1인 약 280元</b>을 더 받습니다. '+
+  '<b>견적서의 <span class="cn">门票</span> · <span class="cn">套票</span> 글자를 확인하는 것이 '+
+  '이 여행에서 가장 큰 절감입니다.</b></p></div>'+
+
+  '<h3>8/11 화산 — 패키지가 있는데도 안 쓰는 이유</h3>'+
+  '<div class="tw"><table><thead><tr><th>상품</th><th class="n">값</th><th>출발</th></tr></thead><tbody>'+
+  '<tr><td>화산 당일투어</td><td class="n">138元~</td><td>우란차부 <b>시내 호텔</b> 상문 픽업</td></tr>'+
+  '<tr><td>초원 + 화산 + 라오리하이</td><td class="n">189元~</td>'+
+  '<td>우란차부 <b>시내</b> 무료 픽업 · 7인승 · 기사겸해설</td></tr>'+
+  '<tr><td>화산 + 초원 2일1박</td><td class="n">680~1,080元</td><td>후허하오터 · 초원 게르 1박</td></tr>'+
+  '</tbody></table></div>'+
+  '<div class="tw"><table><thead><tr><th class="n">결격</th><th>내용</th></tr></thead><tbody>'+
+  '<tr><td class="n">①</td><td><b>출발 시각을 공개하지 않습니다.</b> 「출유 당일 <b>0시 전</b>에 연락」이고 '+
+  '구매도 전날 22:00까지 — <b>검증기에 넣을 고정 수치가 없습니다</b></td></tr>'+
+  '<tr><td class="n">②</td><td><b>「시내 상문 픽업」이지 「고속철역 픽업」이 아닙니다.</b> '+
+  '1V는 우란차부<b>역</b> 11:53 도착입니다 <span class="est">미확인</span></td></tr>'+
+  '<tr><td class="n">③</td><td>D2005 <b>18:56</b>에 맞춰 돌아와야 하는데 초원까지 도는 구성이라 '+
+  '<b>종료 시각을 우리가 정할 수 없습니다</b></td></tr>'+
+  '</tbody></table></div>'+
+  '<div class="msg ok"><p><b>시각이 공개된 직통버스가 오히려 안전합니다.</b> '+
+  '역 출발 10:10 · 11:40 · 13:10 / 경구 출발 16:00 · 17:00 · 18:00 · 편도 35元. '+
+  '하루 여섯 편뿐이지만 <b>여섯 편이 전부 확정 시각</b>이라는 것이 패키지보다 낫습니다. '+
+  '⚠️ 화산은 <b>입장 무료지만 3일 전 실명 예약</b>이 필요합니다 — 패키지를 안 사도 해야 합니다.</p></div>'+
+
+  '<h3>사지 않기로 한 것들</h3>'+
+  '<div class="tw"><table><thead><tr><th>상품</th><th class="n">값</th><th>탈락 사유</th></tr></thead><tbody>'+
+  '<tr><td>Klook 샹사완 일일투어</td><td class="n">535元</td>'+
+  '<td>08:00~20:00 당일 왕복 — <b>일몰 때 이미 차 안. 사막의 밤이 없습니다</b></td></tr>'+
+  '<tr><td>Klook 샹사완 &amp; 화산 소그룹</td><td class="n">₩580,300~</td><td><b>5일 상품</b> — 4박에 안 들어감</td></tr>'+
+  '<tr><td>바오터우 출발 당일투어</td><td class="n">128元~</td><td>가장 싸지만 <b>밤이 없음</b></td></tr>'+
+  '<tr><td>시내 숙박형 <span class="cn">品质型</span></td><td class="n">698~898元</td>'+
+  '<td>숙박이 <b>다라터기 시내</b> — 사막에서 안 잠</td></tr>'+
+  '<tr><td>시라무런 초원 + 샹사완 2일</td><td class="n">380元</td>'+
+  '<td>사막은 당일. 게다가 <b>초원은 사용자 지시로 제외</b></td></tr>'+
+  '<tr><td>후허하오터 3일2박 <span class="cn">包车</span></td><td class="n">1,375~1,750元</td>'+
+  '<td>숙박이 시내. <b>전세차라 사용자 지시 위반</b></td></tr>'+
+  '</tbody></table></div>'+
+  '<div class="msg warn"><p><b>값의 차이가 곧 「밤값」입니다.</b> 당일투어 535元과 텐트 상품 980~1,280元의 '+
+  '차액 445~745元이 정확히 <b>경구 내 숙박 1인 부담(250~400元)</b>과 같은 크기입니다. '+
+  '<b>「싼 상품」이 아니라 「밤이 빠진 상품」입니다.</b></p></div>'+
+
+  '<h3>패키지를 아예 안 쓰는 길</h3>'+
+  '<div class="tw"><table><thead><tr><th class="n"></th><th>⒜ 병합단</th><th>⒝ 자력 + 연꽃호텔</th></tr></thead><tbody>'+
+  '<tr><td class="n">8/12 이동</td><td>병합단 차량 07:30 집합 · 3시간</td>'+
+  '<td>D6752 08:00 → 바오터우 09:26 → 택시 80분</td></tr>'+
+  '<tr><td class="n">숙박</td><td>웨사다오 텐트 (여행사가 잡음)</td><td><b>연꽃호텔</b> (직접 예약)</td></tr>'+
+  '<tr><td class="n"><b>1인</b></td><td><b>980~1,280元</b></td><td><b>약 2,100元</b></td></tr>'+
+  '<tr><td class="n">기상</td><td><b>05:30</b></td><td>06:20</td></tr>'+
+  '<tr><td class="n">8/13</td><td><span class="cn">离团</span> <b>서면 합의 필요</b></td>'+
+  '<td><b>불필요</b> — 애초에 단에 안 들어감</td></tr>'+
+  '<tr><td class="n">확실성</td><td>✗ 전화로만 · 실견적 미확보</td>'+
+  '<td>✅ <b>8/9 23:00까지 무료 취소</b> · 즉시확정</td></tr>'+
+  '</tbody></table></div>'+
+  '<div class="msg bad"><p><b>지금 할 수 있는 무손실 수</b> — 연꽃호텔은 <b>8/9 23:00까지 무료 취소</b>입니다. '+
+  '먼저 잡아 두고 병합단 견적을 받은 뒤 싸면 취소하면 <b>손해가 0</b>입니다. '+
+  '반대로 지금 안 잡으면 마감됩니다 — <b>순사도는 8/12만 이미 매진</b>입니다.</p></div>'+
+
+  '<h3>연락처</h3>'+
+  '<div class="tw"><table><thead><tr><th>대상</th><th class="n">연락처</th><th>메모</th></tr></thead><tbody>'+
+  '<tr><td><b><span class="cn">蒙旅国际旅行社</span></b></td><td class="n"><b>4008118796</b></td>'+
+  '<td><b>1순위</b> — 유일하게 <b>경구 내 텐트 포함</b>을 명시</td></tr>'+
+  '<tr><td><b>샹사완 예약 핫라인</b></td><td class="n"><b>400-070-8999</b></td>'+
+  '<td><b>공식 사이트에서 확인.</b> 여행사를 안 거치는 길</td></tr>'+
+  '<tr><td>샹사완 경구 문의</td><td class="n">400-878-5550</td><td>—</td></tr>'+
+  '<tr><td>샹사완 온라인 예약</td><td class="n">위챗 미니프로그램<br><span class="cn">响沙湾</span></td>'+
+  '<td>웹에서는 QR 안내만 나옵니다 — <b>미니프로그램 안을 열어야 확인 가능</b> <span class="est">미확인</span></td></tr>'+
+  '<tr><td>웨사다오 텐트 캠프</td><td class="n">0477-5186666</td>'+
+  '<td><b>국제 채널 판매 없음</b> — 전화 또는 패키지</td></tr>'+
+  '<tr><td>연꽃호텔</td><td class="n">+86-477-3963388</td><td>국제 채널 예약 가능</td></tr>'+
+  '<tr><td>우란하다 화산</td><td class="n">위챗 <span class="cn">乌兰哈达火山景区</span></td>'+
+  '<td><b>3일 전 실명 예약 · 무료</b></td></tr>'+
+  '<tr><td><span class="cn">内蒙古中青旅</span></td><td class="n">0471-3121880</td><td>숙박이 경구 밖이라 탈락</td></tr>'+
+  '</tbody></table></div>'+
+
+  '<h3>순서</h3>'+
+  '<div class="tw"><table><thead><tr><th class="n">언제</th><th>무엇을</th></tr></thead><tbody>'+
+  '<tr><td class="n"><b>지금 ①</b></td><td><b>연꽃호텔 8/12 예약</b> — 무료 취소라 잡아 두는 것이 무손실</td></tr>'+
+  '<tr><td class="n"><b>지금 ②</b></td><td><b><span class="cn">蒙旅</span> 4008118796에 문의</b> — '+
+  '실견적 · 발단 여부 · <span class="cn">离团</span>이 전화로만 나옴</td></tr>'+
+  '<tr><td class="n"><b>지금 ③</b></td><td>샹사완 400-070-8999로 <b>텐트 직접 예약 가능 여부</b> 확인</td></tr>'+
+  '<tr><td class="n">8/8까지</td><td>우란하다 화산 실명 예약 (무료 · 패키지와 무관하게 필수)</td></tr>'+
+  '<tr><td class="n"><b>8/9까지</b></td><td><b>연꽃호텔 유지 / 취소 결정</b> (23:00 마감)</td></tr>'+
+  '</tbody></table></div>'+
+  '<div class="msg bad"><p><b>8/9 23:00이 이 화면의 마감 시각입니다.</b> '+
+  '그때까지 병합단이 확정되지 않으면 <b>연꽃호텔을 유지하는 것이 정답</b>입니다 — '+
+  '900元을 더 내고 확실성을 사는 것입니다.</p></div>'}},
 
  hard:{title:"예약 난이도",body:function(){return ''+
   '<div class="msg bad"><p><b>오늘 당장 해야 하는 것이 셋입니다.</b></p></div>'+
