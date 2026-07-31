@@ -46,7 +46,12 @@ def to_tt(P):
             # 00:00~06:00 사이의 취침은 전날 밤에 속한다
             days[i - 1 if e["t"] < V.M("06:00") and i > 0 else i]["stay"] = e["lab"]
             continue
-        days[i]["b"].append([e["t"], e["dur"], kind(e), e["lab"]])
+        # 5번째 요소는 **패키지가 커버하는 구간**이라는 표시다 (index.html에서 테두리로 묶는다).
+        # 없는 블록에는 아예 넣지 않아 TT 크기를 키우지 않는다.
+        bar = [e["t"], e["dur"], kind(e), e["lab"]]
+        if e.get("pkg"):
+            bar.append(1)
+        days[i]["b"].append(bar)
     return days
 
 
