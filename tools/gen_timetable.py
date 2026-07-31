@@ -5,9 +5,12 @@
 사용법:  python tools/gen_timetable.py          # TT 한 줄을 표준출력에 찍는다
          python tools/gen_timetable.py --write  # index.html의 TT 줄을 교체한다
 
-guide.html(인솔서)의 TT4도 여기서 만든다. 2026-07-31에 확정안이 1V로 정해져
-GUIDE_PLAN="1V"로 동결을 풀었다 — 인솔서 본문(guide-data.js)도 같은 날 1V 기준으로
-다시 썼다. 라벨이 어긋나면 check_guide.py가 잡는다."""
+guide.html(인솔서)의 TT4도 여기서 만든다.
+
+⚠️ 2026-07-31에 **사막 패키지 5안(A~E)으로 전면 개편**되면서 인솔서 본문(guide-data.js)이
+구판(1M) 일정에 붙어 있는 상태가 됐다. 안을 하나로 좁히기 전에는 본문을 다시 쓸 수 없으므로
+GUIDE_PLAN을 None으로 두어 **TT4를 동결**한다. 안이 확정되면 그 코드로 재타깃하고
+guide-data.js를 함께 고쳐야 한다 — 라벨이 어긋나면 check_guide.py가 잡는다."""
 import sys, io, os, json, re
 
 if __name__ == "__main__":      # import될 때 stdout을 건드리지 않는다
@@ -20,8 +23,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DAYS = ["8/10", "8/11", "8/12", "8/13", "8/14"]
 TT4_RE = r"^var TT4=.*?;$"
 # None이면 TT4를 재생성하지 않고 guide.html의 현재 값을 동결로 취급한다.
-# 확정안 1V (2026-07-31). 바꾸면 guide-data.js도 함께 다시 써야 한다.
-GUIDE_PLAN = "1V"
+# 5안 비교 단계에서는 인솔서를 어느 안에 붙일지 정할 수 없어 동결한다 (위 주석 참조).
+GUIDE_PLAN = None
 
 
 def kind(e):
@@ -48,13 +51,12 @@ def to_tt(P):
 
 
 def build_tt():
-    """검증기의 PLANS를 그대로 따라간다. 대안 플랜(1A·2A·2B)은 검증기에만 남아 있고
-    페이지에는 PAGE_PLANS(확정안)만 싣는다 — cleanup-plan-1v.md 참조."""
-    return {code: to_tt(V.build(o, var)) for o, var, code, _pkg, _nm in V.PLANS}
+    """검증기의 PLANS를 그대로 따라간다."""
+    return {code: to_tt(V.build(code)) for code, _pkg, _price, _nm in V.PLANS}
 
 
-# index.html에 싣는 플랜. 화면이 1V 단일이 된 뒤로는 하나뿐이다.
-PAGE_PLANS = ("1V",)
+# index.html에 싣는 플랜. 사막 패키지 5안을 전부 싣는다 (2026-07-31 사용자 지시).
+PAGE_PLANS = tuple(code for code, _pkg, _price, _nm in V.PLANS)
 
 
 def line():
