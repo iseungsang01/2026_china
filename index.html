@@ -38,7 +38,9 @@
   [hidden]{display:none !important}
   html,body{height:100%}
   body{margin:0; background:var(--bg); color:var(--ink); overflow:hidden;
-    font-family:var(--f); font-size:14px; line-height:1.55; font-weight:400}
+    font-family:var(--f); font-size:14px; line-height:1.55; font-weight:400;
+    /* keep-all: 한국어를 단어 단위로만 줄 바꿈. break-word는 긴 URL·코드 넘침 방지 */
+    word-break:keep-all; overflow-wrap:break-word}
   button{font:inherit; color:inherit; cursor:pointer; background:none; border:none}
   b,strong{font-weight:600}
   .app{display:flex; height:100vh; height:100dvh}
@@ -204,7 +206,8 @@
   td.n{text-align:right; font-family:var(--fm); white-space:nowrap}
   tr.tot td{font-weight:600; background:var(--surface)}
   .est{font-size:11px; font-weight:500; color:var(--warn); border:1px solid var(--warn);
-    padding:0 5px; border-radius:3px; margin-left:6px; font-family:var(--f)}
+    padding:0 5px; border-radius:3px; margin-left:6px; font-family:var(--f);
+    white-space:nowrap}
   .ok-i{color:var(--success); font-weight:600} .no-i{color:var(--error); font-weight:600}
   .tl{list-style:none; padding:0; margin:0}
   .tl>li{padding:12px 0; border-bottom:1px solid var(--border)}
