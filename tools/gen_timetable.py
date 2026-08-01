@@ -52,7 +52,7 @@ def build_tt():
     return {code: to_tt(V.build(code)) for code, _pkg, _price, _nm in V.PLANS}
 
 
-# index.html에 싣는 플랜 — 단일 최종안 F.
+# index.html에 싣는 플랜 — 단일 확정안 F2 (2026-08-01 가족 결정).
 PAGE_PLANS = tuple(code for code, _pkg, _price, _nm in V.PLANS)
 
 
