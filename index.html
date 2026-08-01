@@ -440,6 +440,8 @@
       <div class="grp-t">자세히</div>
       <button class="navbtn" onclick="open_('resv')"><span class="dot" style="background:#D29922"></span>
         <span class="tx"><b>예약 · 링크</b><s>8/6 20:00 자금성 오픈런</s></span><span class="warnmark">!</span></button>
+      <button class="navbtn" onclick="open_('stay')"><span class="dot" style="background:#3FB950"></span>
+        <span class="tx"><b>숙소</b><s>사이상라오제 · 첸먼 도보권 후보</s></span></button>
     </div>
 
   </aside>
@@ -1294,8 +1296,8 @@ var SHEET={
   '1인 <b>₩74,775</b> — 결제 직전에 쿠폰 조건을 확인하세요</td></tr>'+
 
   '<tr><td class="n"><b>지금</b></td>'+
-  '<td><b>숙박 2건</b> — 후허하오터 2박(Feronia · 사이상라오제 50m) + 첸먼 2박(LeftBank) '+
-  '<s class="du">Trip.com · 무료취소 요금제로</s></td>'+
+  '<td><b>숙박 2건</b> — 후허하오터 2박(사이상라오제 도보권) + 첸먼 2박(첸먼역 도보권) '+
+  '<s class="du">Trip.com · 무료취소 요금제로 · 후보 링크는 「숙소」 시트</s></td>'+
   '<td class="n">약 455元<span class="est">추정</span></td>'+
   '<td>두 밤 모두 도착이 늦어(20:32 · 20:00 복귀) <b>도보권을 벗어나면 밤 일정이 무너집니다</b> — '+
   '위치가 요금보다 먼저입니다</td></tr>'+
@@ -1357,6 +1359,77 @@ var SHEET={
   '<p class="src">2026-08-01 조회 — 자금성 공식(7일 전 20:00 · 월요일 휴관) · 北京本地宝(바다링 '+
   '분시단 · 발매 규칙 · 광장-자금성 예약 관계) · gaotie.com.cn(칭허↔바다링 시각) · 창유공원 · '+
   '颐和园 공중번호 · 乌兰哈达火山景区 · Klook · Trip.com. 링크는 전부 접속을 확인했습니다.</p>'}},
+
+ stay:{title:"숙소",body:function(){
+  return pbadge()+
+  '<div class="msg ok"><p><b>기준은 요금보다 위치입니다.</b> 두 도시 모두 도착·복귀가 늦어 '+
+  '(후허하오터 20:32 도착 · 20:00 투어 복귀 / 베이징 21:19 도착) <b>도보권을 벗어나면 '+
+  '밤 일정이 무너집니다.</b> 전부 Trip.com 링크 — 예약은 <b>무료취소 요금제 · 2실 · '+
+  '8/10→12 · 8/12→14</b>로 날짜를 넣고 잡습니다.</p></div>'+
+
+  '<h3>후허하오터 2박 (8/10~12) — 사이상라오제 · 다자오 도보권 · 가격 오름차순</h3>'+
+  '<div class="tw"><table class="stack"><thead><tr><th>숙소</th><th class="n">1박 / 실</th>'+
+  '<th class="n">평점 · 후기</th><th>위치 · 왜</th></tr></thead><tbody>'+
+  '<tr class="tot"><td><a href="https://kr.trip.com/hotels/hohhot-hotel-detail-99918522/feronia-hotel/" '+
+  'target="_blank" rel="noopener"><b>페로니아 화메이스(花美时)</b></a></td>'+
+  '<td class="n">저가 · ₩17,097~<span class="est">추정</span></td>'+
+  '<td class="n"><b>9.5</b> · 847건</td>'+
+  '<td><b>현 확정 후보.</b> 사이상라오제 130m · 다자오 110m — 구시가 한복판이라 밤 산책과 '+
+  '8/11 아침 집합 이동이 전부 도보입니다. 예산은 273元/실 기준</td></tr>'+
+  '<tr><td><a href="https://kr.trip.com/hotels/hohhot-hotel-detail-119262226/qinghan-homestay/" '+
+  'target="_blank" rel="noopener">칭한 홈스테이(青涵宿)</a></td>'+
+  '<td class="n">저가 · ₩17,097~<span class="est">추정</span></td>'+
+  '<td class="n">9.6 · 1,009건</td>'+
+  '<td>다자오 광장 바로 옆 120m · 최저가형(2성 홈스테이). <b>외국인 접수 가능 여부를 예약 전 '+
+  '반드시 문의</b> — 저가 로컬 숙소가 거절하는 일이 있습니다</td></tr>'+
+  '<tr><td><a href="https://kr.trip.com/hotels/hohhot-hotel-detail-11426981/sheyi-chashi-inn/" '+
+  'target="_blank" rel="noopener">셰이 차스(舍一茶事) 다자오점</a></td>'+
+  '<td class="n">중간 · ₩35,905~<span class="est">추정</span></td>'+
+  '<td class="n">9.6 · 934건</td>'+
+  '<td>4성 부티크 · 사이상라오제 480m(도보 7분). 페로니아가 차면 다음 순서입니다</td></tr>'+
+  '<tr><td><a href="https://kr.trip.com/hotels/hohhot-hotel-detail-133002022/hohhot-dazhao-temple-bao-erhan-buddha-pagoda-atour-hotel/" '+
+  'target="_blank" rel="noopener">아투어(亚朵) 다자오 바오얼한불탑점</a></td>'+
+  '<td class="n">상급 · ₩135,071~<span class="est">추정</span></td>'+
+  '<td class="n">9.6 · 326건</td>'+
+  '<td>체인 4성 · 사이상라오제 560m. 시설·조식이 확실한 대신 값이 세 배 이상입니다</td></tr>'+
+  '</tbody></table></div>'+
+
+  '<h3>첸먼 2박 (8/12~14) — 첸먼역 · 볜이팡 도보권 · 가격 오름차순</h3>'+
+  '<div class="tw"><table class="stack"><thead><tr><th>숙소</th><th class="n">1박 / 실</th>'+
+  '<th class="n">평점 · 후기</th><th>위치 · 왜</th></tr></thead><tbody>'+
+  '<tr class="tot"><td><a href="https://kr.trip.com/hotels/beijing-hotel-detail-99120632/manxin-hotel-beijing-tiananmen-qianmen-street/" '+
+  'target="_blank" rel="noopener"><b>만신(漫心) 첸먼다제점</b></a></td>'+
+  '<td class="n">중간 · ₩49,155~<span class="est">추정</span></td>'+
+  '<td class="n"><b>9.8</b> · 3,284건</td>'+
+  '<td><b>위치·평점·값의 균형이 가장 좋습니다.</b> 첸먼다제 58호 — 거리 위 · 지하철 첸먼역 '+
+  '0.43km · 8/14 새벽 6인승 승차도 대로변이라 쉽습니다</td></tr>'+
+  '<tr><td><a href="https://kr.trip.com/hotels/beijing-hotel-detail-71798009/the-yard-hotel-beijingbianyifang/" '+
+  'target="_blank" rel="noopener">더 야드(四合院) 볜이팡점</a></td>'+
+  '<td class="n">중간 · ₩61,765~<span class="est">추정</span></td>'+
+  '<td class="n">9.3 · 2,581건</td>'+
+  '<td><b>볜이팡과 같은 셴위커우제 골목</b> — 8/13 저녁 20:30을 먹고 걸어서 방까지 5분. '+
+  '첸먼다제 도보 5분</td></tr>'+
+  '<tr><td><a href="https://kr.trip.com/hotels/beijing-hotel-detail-9293254/manxin-mansion-beijing-qianmen-courtyard/" '+
+  'target="_blank" rel="noopener">만신푸(漫心府) 첸먼 사합원</a></td>'+
+  '<td class="n">상급 · ₩177,815~<span class="est">추정</span></td>'+
+  '<td class="n">9.7 · 3,116건</td>'+
+  '<td>사합원(전통 가옥) 체험형 · 첸먼 동측 후통. 정취가 우선일 때 — 후통 안이라 새벽 '+
+  '캐리어 이동이 한 구간 깁니다</td></tr>'+
+  '<tr><td><a href="https://kr.trip.com/hotels/beijing-hotel-detail-110461921/tian-anmen-front-street-left-court-hotel-beijing/" '+
+  'target="_blank" rel="noopener">쭤팅상위안(左庭上院)</a></td>'+
+  '<td class="n">상급 · ₩209,873~<span class="est">추정</span></td>'+
+  '<td class="n"><b>9.8</b> · 1,120건</td>'+
+  '<td>첸먼다제 90m 부티크(방 21개 전부 다른 구성) · 평점은 최상급이지만 예산 초과형입니다</td></tr>'+
+  '</tbody></table></div>'+
+
+  '<div class="msg warn"><p><b>예약 때 셋을 같이 확인합니다</b> — ① 외국인 투숙 가능'+
+  '(<span class="cn">接待外宾</span>) 여부 ② 후허하오터 숙소의 이른 조식·도시락 '+
+  '(8/12 D1006 08:26 — 07:15 출발) ③ 첸먼 숙소에 8/14 06:20 새벽 출발 통지. '+
+  '보증금(100~500元/실)은 퇴실 때 돌려받습니다.</p></div>'+
+  '<p class="src">2026-08-01 Trip.com(kr) 실조회 — 표시 가격은 날짜 미지정 최저가라 전부 '+
+  '추정이며 8월 성수기 실가는 이보다 높습니다. 링크는 전부 접속을 확인했습니다. 구판 기록의 '+
+  '「LeftBank 364元/2실」은 재검색에서 첸먼 도보권에 해당 숙소가 없어(무시위안 유스호스텔만 '+
+  '검색됨) 후보에서 뺐습니다.</p>'}},
 };
 
 
