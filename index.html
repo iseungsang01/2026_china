@@ -209,6 +209,23 @@
     padding:0 5px; border-radius:3px; margin-left:6px; font-family:var(--f);
     white-space:nowrap}
   .ok-i{color:var(--success); font-weight:600} .no-i{color:var(--error); font-weight:600}
+  /* 노션식 하위 페이지 — 허브 시트의 페이지 목록(.pgl)과 하위 시트의 돌아가기(.back).
+     ⚠ .bk는 시간 격자의 보수 배지가 이미 쓰고 있다 — 여기서 다시 쓰면 안 된다. */
+  .pgl{display:flex; flex-direction:column; gap:8px; margin:12px 0}
+  .pg{display:flex; align-items:center; gap:12px; width:100%; text-align:left;
+    padding:12px 14px; border:1px solid var(--border); border-radius:6px;
+    background:var(--surface); transition:border-color .12s, background .12s}
+  .pg:hover{border-color:var(--border-hi)}
+  .pg .dot{flex:0 0 8px; height:8px; border-radius:9999px}
+  .pg .tx{flex:1; min-width:0}
+  .pg .tx b{display:block; font-size:14px; font-weight:600}
+  .pg .tx s{display:block; font-size:12.5px; color:var(--muted); text-decoration:none;
+    margin-top:2px}
+  .pg .go{flex:0 0 auto; color:var(--dim); font-family:var(--fm); font-size:13px}
+  .back{display:inline-block; font-size:12.5px; color:var(--muted); padding:3px 10px;
+    border:1px solid var(--border); border-radius:6px; margin-bottom:8px;
+    transition:background .12s, color .12s}
+  .back:hover{background:var(--surface); color:var(--ink)}
   .tl{list-style:none; padding:0; margin:0}
   .tl>li{padding:12px 0; border-bottom:1px solid var(--border)}
   .tl>li:last-child{border-bottom:0}
@@ -441,10 +458,10 @@
 
     <div class="grp" style="padding-bottom:12px">
       <div class="grp-t">자세히</div>
-      <button class="navbtn" onclick="open_('resv')"><span class="dot" style="background:#D29922"></span>
-        <span class="tx"><b>예약 · 링크</b><s>8/6 20:00 자금성 오픈런</s></span><span class="warnmark">!</span></button>
-      <button class="navbtn" onclick="open_('stay')"><span class="dot" style="background:#3FB950"></span>
-        <span class="tx"><b>숙소</b><s>사이상라오제 · 첸먼 도보권 후보</s></span></button>
+      <button class="navbtn" onclick="open_('pre')"><span class="dot" style="background:#D29922"></span>
+        <span class="tx"><b>여행 전</b><s>예약 · 숙소 · 준비물 — 관문 8/6 20:00</s></span><span class="warnmark">!</span></button>
+      <button class="navbtn" onclick="open_('trip')"><span class="dot" style="background:#3FB950"></span>
+        <span class="tx"><b>여행 중</b><s>이동 · 현장 수칙 · 플랜 B</s></span></button>
     </div>
 
   </aside>
@@ -1189,8 +1206,191 @@ function pbadge(){var p=pm();
   return '<div class="msg ok"><p><b>'+p.k+' · '+p.nm+'</b> — '+p.sub+'<br>'+
     p.skel+' · <b>사막 패키지 1인 '+p.price+'</b> · 1인 총액 '+p.total+' ≈ <b>'+p.won+
     '</b><span class="est">추정 · 항공 제외</span></p></div>'}
+/* 노션식 하위 페이지 — 허브(여행 전 · 여행 중)의 페이지 목록 한 줄과, 하위 시트 맨 위의
+   돌아가기. onclick 안에 따옴표를 넣지 않으려고 data-k로 넘긴다 (check_page의 문자열 추출 보호). */
+function pglink(k,c,t,s){
+  return '<button class="pg" data-k="'+k+'" onclick="open_(this.dataset.k)">'+
+    '<span class="dot" style="background:'+c+'"></span>'+
+    '<span class="tx"><b>'+t+'</b><s>'+s+'</s></span><span class="go">열기 →</span></button>'}
+function bk(k,t){
+  return '<button class="back" data-k="'+k+'" onclick="open_(this.dataset.k)">← '+t+'</button>'}
 
 var SHEET={
+
+ pre:{title:"여행 전 — 예약 · 준비",body:function(){
+  return pbadge()+
+  '<div class="msg ok"><p><b>떠나기 전에 끝낼 일은 두 갈래입니다</b> — 예약(전부 링크 · 전화 0건)과 '+
+  '폰·짐 준비. 관문은 <b>자금성 8/6 20:00 오픈런</b> 하나입니다.</p></div>'+
+  '<div class="pgl">'+
+  pglink('resv','#D29922','예약 · 링크','이 여행이 사는 것 전부 · 시간순 — 지금 5건 · 8/6 저녁 3건 · 8/9까지 3건')+
+  pglink('stay','#3FB950','숙소','도시별 후보 4곳 · 가격 오름차순 · 무료취소 요금제로')+
+  pglink('prep','#2F81F7','준비물 · 앱','출발 전 폰에서 끝낼 설정 8가지 · 서류 · 짐')+
+  '</div>'+
+  '<h3>마감 순서 — 이 네 줄만 지키면 됩니다</h3>'+
+  '<div class="tw"><table><thead><tr><th class="n">언제</th><th>무엇</th></tr></thead><tbody>'+
+  '<tr><td class="n"><b>지금</b></td><td>고속철 3구간 · 칭허↔바다링 왕복 · 바다링 문표 · '+
+  'Klook 사막 · 숙소 2건 — 전부 발매 중</td></tr>'+
+  '<tr class="tot"><td class="n"><b>8/6 20:00</b></td><td>★ 자금성 오픈런 — 1시간 뒤 21:00 '+
+  '천단·이화원까지 <b>같은 저녁에 셋</b></td></tr>'+
+  '<tr><td class="n"><b>8/9까지</b></td><td>화산 실명 예약 · 볜이팡 20:30 예약 · '+
+  '디디 6인승 예약콜(8/10 T3)</td></tr>'+
+  '<tr><td class="n"><b>8/13 밤</b></td><td>디디 6인승 예약콜 (8/14 06:20 첸먼 → T3)</td></tr>'+
+  '</tbody></table></div>'}},
+
+ trip:{title:"여행 중 — 현장",body:function(){
+  return pbadge()+
+  '<div class="msg ok"><p><b>현장에서 찾게 될 것을 네 페이지로 모았습니다.</b> 항상 지닐 것은 '+
+  '<b>여권 원본</b> 하나 — 개찰·광장·명소·호텔 전부 이것으로 통과합니다.</p></div>'+
+  '<div class="pgl">'+
+  pglink('sch','#8B949E','시간 격자','5일 전체 분 단위 — 검증기가 만든 표 · 보수치 배치')+
+  pglink('move','#2F81F7','이동 · 개찰','열차 개찰 규칙 · 놓치면 탈 후속 편 · 택시 원칙 · 화산 버스 시각')+
+  pglink('onsite','#3FB950','현장 수칙','명소 입장 마감 시각 · 결제 · 보증금 · 날씨와 옷')+
+  pglink('planb','#DA3633','플랜 B · 긴급','어긋났을 때 시나리오별 대안 · 긴급 연락처')+
+  '</div>'+
+  '<div class="msg warn"><p><b>세 가지만 외웁니다</b> — ① 개찰은 발차 5분 전 마감 · 외국 여권은 '+
+  '유인 통로 ② 명소는 폐관이 아니라 <b>입장 마감</b>이 기준 ③ 결제는 QR — 알리페이·위챗에 '+
+  '등록한 카드로 갑니다.</p></div>'}},
+
+ prep:{title:"준비물 · 앱",body:function(){
+  return bk('pre','여행 전')+
+  '<h3>폰 — 출발 전에 끝낼 설정</h3>'+
+  '<div class="tw"><table class="stack"><thead><tr><th>앱</th><th>왜 · 어떻게</th></tr></thead><tbody>'+
+  '<tr class="tot"><td><b>알리페이(支付宝)</b></td><td><b>결제의 기본.</b> 해외 Visa/Mastercard 등록 — '+
+  '200元 이하 수수료 없음 · 초과 3%. 택시(Didi)도 이 앱 안에서 부를 수 있습니다</td></tr>'+
+  '<tr class="tot"><td><b>위챗(微信)</b></td><td><b>예약 3건이 위챗 안에 있습니다</b> — 화산(공중번호 '+
+  '<span class="cn">乌兰哈达火山景区</span> · 8/9까지) · 이화원(공중번호 <span class="cn">颐和园</span> · '+
+  '8/6 21:00) · 바다링(미니프로그램 <span class="cn">长城内外旅游</span>). 계정·실명 인증을 미리 끝냅니다</td></tr>'+
+  '<tr><td><b>Trip.com</b></td><td>기차 5구간 + 숙소 — <b>4인 여권 정보를 미리 입력</b>해 두면 '+
+  '오픈런이 빨라집니다</td></tr>'+
+  '<tr><td><b>Klook</b></td><td>사막 패키지 — 결제 직전 25% 쿠폰(4인 합산 ₩144,253 이상 조건) 확인</td></tr>'+
+  '<tr><td><b>디디추싱(滴滴出行)</b></td><td>6인승(六座) 예약콜 3회 — 새벽·공항 구간은 전날 예약</td></tr>'+
+  '<tr><td><b>가오더지도(高德地图)</b></td><td>구글지도는 중국에서 안 됩니다 — 한자로 검색합니다</td></tr>'+
+  '<tr><td><b>번역 앱</b></td><td>파파고·구글번역의 <b>중국어 오프라인 팩</b>을 미리 다운로드</td></tr>'+
+  '<tr><td><b>통신</b></td><td>한국 통신사 로밍 또는 여행용 eSIM — 이 경로는 구글·카카오톡이 보통 '+
+  '그대로 됩니다. <b>현지 유심은 차단이 그대로 적용</b>되니 피합니다</td></tr>'+
+  '</tbody></table></div>'+
+  '<h3>서류 · 짐</h3>'+
+  '<div class="tw"><table class="stack"><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>'+
+  '<tr class="tot"><td><b>여권 원본 4개</b></td><td>유효기간 확인 · 2026년 관광 무비자 30일 대상 · '+
+  '<b>사본과 사진을 클라우드에도</b> 올려 둡니다 — 분실 시 재발급이 빨라집니다</td></tr>'+
+  '<tr><td><b>숙소 주소 중문</b></td><td>두 숙소의 중문 주소를 캡처 — 입국 서류와 택시에서 씁니다</td></tr>'+
+  '<tr><td><b>어댑터</b></td><td>중국은 한국과 같은 220V라 변압기는 불필요. 다만 표준 콘센트 모양이 달라 '+
+  '한국 둥근 플러그가 안 맞는 벽이 있습니다 — <b>멀티 어댑터 1~2개</b>면 안심 (호텔은 겸용 콘센트가 흔함)</td></tr>'+
+  '<tr><td><b>보조배터리</b></td><td>기내 <b>휴대만</b> 가능(위탁 금지) · 역·명소 보안검색이 잦으니 '+
+  '꺼내기 쉽게 둡니다</td></tr>'+
+  '<tr><td><b>사막 · 화산</b></td><td>선글라스 · 모래 대비(끈 있는 신발 · 지퍼 주머니) · 자외선 차단 · '+
+  '겉옷 한 벌 — 내몽고는 아침저녁이 쌀쌀합니다</td></tr>'+
+  '<tr><td><b>상비약 · 보험</b></td><td>해열·소화제·밴드 등 기본 상비약 · 여행자보험은 출국 전 가입</td></tr>'+
+  '</tbody></table></div>'+
+  '<p class="src">예약 채널·수수료·무비자는 예약 · 링크 시트와 같은 조사(2026-08-01) 기준입니다. '+
+  '통신·어댑터·기내 반입은 일반 규정이라 출발 전 항공사·통신사 안내로 최종 확인하세요.</p>'}},
+
+ move:{title:"이동 · 개찰",body:function(){
+  return bk('trip','여행 중')+
+  '<h3>열차 — 여권이 곧 표입니다</h3>'+
+  '<div class="tw"><table><tbody>'+
+  '<tr><td><b>개찰</b></td><td>발차 <b>15분 전 시작 · 5분 전 마감</b> — 외국 여권은 자동 게이트가 '+
+  '안 되니 <b>유인 통로</b>로 갑니다</td></tr>'+
+  '<tr><td><b>종이표 없음</b></td><td>Trip.com 예매 후 <b>여권 원본</b>으로 진입 — 예약자와 탑승자가 '+
+  '같아야 합니다</td></tr>'+
+  '<tr><td><b>보안검색</b></td><td>역 입구에서 짐 X-ray — 시간표의 역 도착 여유에 이미 반영돼 있습니다</td></tr>'+
+  '</tbody></table></div>'+
+  '<h3>놓치면 탈 후속 편 — 본선이 어긋났을 때</h3>'+
+  '<div class="tw"><table class="stack"><thead><tr><th>구간</th><th class="n">본선</th><th>후속 · 대안</th></tr></thead><tbody>'+
+  '<tr><td>베이징북 → 후허하오터동 <s class="du">8/10 저녁</s></td><td class="n">G2485 17:48</td>'+
+  '<td>G2457 19:03 · G2475 19:42 · G2477 20:58</td></tr>'+
+  '<tr><td>후허하오터동 → 우란차부 <s class="du">8/12 아침</s></td><td class="n">D1006 08:26</td>'+
+  '<td>D1004 08:08(더 이른 편) · G3780 08:55 · D1008 08:59</td></tr>'+
+  '<tr><td>우란차부 → 베이징북 <s class="du">8/12 저녁</s></td><td class="n">G2486 19:29</td>'+
+  '<td>G2478 20:24 · D1034 21:11</td></tr>'+
+  '<tr class="tot"><td>칭허 → 바다링장성 <s class="du">8/13 오후</s></td><td class="n">G7835 15:25</td>'+
+  '<td><b>후속 없음</b> — 다음 편 D6707은 16:42 도착이라 오후장 검표 마감(16:30)을 넘깁니다. '+
+  '이 표가 마지노선입니다</td></tr>'+
+  '<tr><td>바다링장성 → 칭허 <s class="du">8/13 저녁</s></td><td class="n">D9278 18:50</td>'+
+  '<td>G2488 19:22 · D6710 19:43 · G7886 20:43</td></tr>'+
+  '</tbody></table></div>'+
+  '<div class="msg warn"><p>후속 편 시각도 <b>제3자 시각표(2026-08-01 조회)</b>입니다 — 현장에서는 '+
+  '역 전광판과 Trip.com 재조회가 최종입니다.</p></div>'+
+  '<h3>택시 · 버스</h3>'+
+  '<div class="tw"><table><tbody>'+
+  '<tr><td><b>택시 원칙</b></td><td><b>짐이 실리는 세 구간만 디디 6인승(六座)</b> — T3→베이징북(8/10) · '+
+  '베이징북→첸먼(8/12) · 첸먼→T3(8/14). 짐 없는 8/13 시내는 일반 택시 1대 — 세단 트렁크에 '+
+  '캐리어 4개가 안 들어가는 것이 이유입니다</td></tr>'+
+  '<tr><td><b>새벽 · 공항</b></td><td>전날 <b>예약콜</b> — 8/10 T3행은 8/9 밤 · 8/14 06:20 첸먼발은 8/13 밤</td></tr>'+
+  '<tr class="tot"><td><b>화산 직통버스</b></td><td>우란차부역 출발 <b>10:10 · 11:40 · 13:10</b> / 경구 출발 '+
+  '<b>16:00 · 17:00 · 18:00</b> · 편도 35元 · <b>하루 여섯 편이 전부</b> — 18:00 막차를 놓치면 '+
+  '현지 택시 협상뿐입니다</td></tr>'+
+  '</tbody></table></div>'+
+  '<p class="src">개찰 규칙은 기차 구매 채널 안내(2026-08-01) · 후속 편은 hao86 · gaotie.com.cn '+
+  '제3자 시각표 · 직통버스는 2026-07-16 개통 노선 기준입니다.</p>'}},
+
+ onsite:{title:"현장 수칙",body:function(){
+  return bk('trip','여행 중')+
+  '<h3>명소 — 폐관이 아니라 입장 마감이 기준</h3>'+
+  '<div class="tw"><table class="stack"><thead><tr><th>곳</th><th class="n">시간</th><th>급소</th></tr></thead><tbody>'+
+  '<tr class="tot"><td><b>자금성</b> <s class="du">8/13 오전</s></td><td class="n">08:30 개관 · 16:00 입장 마감</td>'+
+  '<td>자금성 예약 기록으로 천안문 광장 진입 — 별도 광장 예약 불필요 · 여권 원본 검표</td></tr>'+
+  '<tr><td><b>천단</b> <s class="du">8/13 아침</s></td><td class="n">경점 08:00~18:00 · 17:30 마감</td>'+
+  '<td>기년전·회음벽은 <b>통표(34元)</b>여야 들어갑니다 — 대문표(15元)로는 못 들어감</td></tr>'+
+  '<tr><td><b>이화원</b> <s class="du">8/13 낮</s></td><td class="n">06:00~20:00 · 19:00 입장 마감</td>'+
+  '<td>내부 전각(불향각 등)은 08:00~18:00으로 더 짧습니다</td></tr>'+
+  '<tr class="tot"><td><b>바다링</b> <s class="du">8/13 오후</s></td><td class="n">오후장 12:31~16:30 입장</td>'+
+  '<td>16:30 검표 중지 뒤에도 입원객은 계속 관람 · <b>여권 예약은 등성구 종합서비스 창구에서 '+
+  '환표</b> — 일정에 26분 반영돼 있습니다</td></tr>'+
+  '<tr><td><b>화산</b> <s class="du">8/12</s></td><td class="n">07:30~20:00 · 18:00 입원 종료</td>'+
+  '<td>입장 무료 · 셔틀 30元 현장 지불 · 실명 예약(8/9까지) 없으면 입장 불가</td></tr>'+
+  '<tr><td><b>샹사완</b> <s class="du">8/11</s></td><td class="n">08:00~18:30</td>'+
+  '<td>패키지 일정(08:00~20:00)대로 움직입니다 — 집합 신화광장 서쪽 중신은행 아래</td></tr>'+
+  '</tbody></table></div>'+
+  '<h3>돈</h3>'+
+  '<div class="tw"><table><tbody>'+
+  '<tr><td><b>QR 결제</b></td><td>알리페이·위챗이 기본 — 등록한 해외 카드로 200元 이하 수수료 없음 · 초과 3%</td></tr>'+
+  '<tr><td><b>현금 소액</b></td><td>노점·시장 대비 — 대부분은 QR로 끝납니다</td></tr>'+
+  '<tr><td><b>보증금</b></td><td>호텔 100~500元/실 — 퇴실 때 반환</td></tr>'+
+  '<tr><td><b>현장 지불</b></td><td>화산 실비 100元(셔틀 30 + 직통버스 왕복 70) · 바다링 케이블카 왕복 '+
+  '약 140元<span class="est">추정</span> — 운영시간 미확정이라 현장 구매</td></tr>'+
+  '</tbody></table></div>'+
+  '<h3>날씨 · 몸</h3>'+
+  '<div class="tw"><table><tbody>'+
+  '<tr><td><b>베이징 8월</b></td><td>한낮 더위 + 갑작스런 소나기 — 물과 우산을 지닙니다. 8/13은 '+
+  '명소 셋 + 장성이라 <b>물이 특히 중요</b>합니다</td></tr>'+
+  '<tr><td><b>내몽고</b></td><td>한낮 사막은 뜨겁고 아침저녁은 쌀쌀 — 겉옷 한 벌을 배낭에</td></tr>'+
+  '<tr><td><b>밤참</b></td><td>사이상라오제 거리는 연중 종일 · 통순대항이 먹자골목 · 사오마이는 '+
+  '<span class="cn">麦香村</span> 06:30~21:30</td></tr>'+
+  '</tbody></table></div>'+
+  '<p class="src">시간·요금은 2026-08-01 조회(공식 채널 · 北京本地宝 등) — 상세 근거는 예약 · 링크 '+
+  '시트와 같습니다. 날씨는 출발 주간에 weather.com.cn에서 확인하세요.</p>'}},
+
+ planb:{title:"플랜 B · 긴급",body:function(){
+  return bk('trip','여행 중')+
+  '<h3>어긋났을 때 — 시나리오별</h3>'+
+  '<div class="tw"><table class="stack"><thead><tr><th>상황</th><th>플랜 B</th></tr></thead><tbody>'+
+  '<tr class="tot"><td><b>자금성 8/6 예매 실패</b></td><td>징산공원 만춘정(2元)에서 자금성 전경 + '+
+  '<b>취소표(매일 갱신) 감시</b> — 천단·이화원·바다링은 그대로 성립합니다</td></tr>'+
+  '<tr><td><b>G2485 놓침 <s class="du">8/10</s></b></td><td>후속 19:03 · 19:42 · 20:58 — 이동일이라 '+
+  '일정 훼손이 없습니다</td></tr>'+
+  '<tr><td><b>8/12 비로 화산 무산</b></td><td>G2460 후허하오터동 08:00 → 베이징북 10:09 직행'+
+  '(1등석 338元)으로 베이징 하루를 앞당깁니다</td></tr>'+
+  '<tr class="tot"><td><b>G7835 매진 · 놓침</b></td><td><b>주간 등성 무산</b> — 구제책은 야간표'+
+  '(18:30 입원)뿐 · 안 되면 그 오후는 첸먼·시내로 전환합니다</td></tr>'+
+  '<tr><td><b>볜이팡 20:30 불가</b></td><td>쓰지민푸 왕푸징점 — 지하철 두 정거장</td></tr>'+
+  '<tr><td><b>케이블카 운휴</b></td><td>도보 하산 여유 45분이 설계에 있어 D9278(18:50)에 닿습니다</td></tr>'+
+  '<tr><td><b>우란차부역 짐 보관 없음</b></td><td>화산 게스트센터에 보관 협의 — 8/12 아침 역에서 확인</td></tr>'+
+  '<tr><td><b>디디 6인승 안 잡힘</b></td><td>후허하오터는 역 앞 대형 택시 협의 — 안 되면 짐을 나눠 안고 '+
+  '일반 택시로 갑니다</td></tr>'+
+  '</tbody></table></div>'+
+  '<h3>긴급 연락처</h3>'+
+  '<div class="tw"><table><tbody>'+
+  '<tr><td><b>현지 긴급</b></td><td><b>110</b> 경찰 · <b>120</b> 구급 · <b>119</b> 화재</td></tr>'+
+  '<tr><td><b>영사콜센터</b></td><td>24시간 <b>+82-2-3210-0404</b> · 무료 통화는 「영사콜센터」 앱 · '+
+  '<a href="https://www.0404.go.kr/" target="_blank" rel="noopener">0404.go.kr</a></td></tr>'+
+  '<tr><td><b>주중국 대사관</b></td><td><a href="https://overseas.mofa.go.kr/cn-ko" target="_blank" '+
+  'rel="noopener">overseas.mofa.go.kr/cn-ko</a> — 연락처·찾아가는 길이 여기 있습니다</td></tr>'+
+  '<tr><td><b>여권 분실</b></td><td>가까운 파출소 신고 → 대사관 여행증명서 — <b>클라우드의 사본·사진</b>이 '+
+  '있으면 빨라집니다</td></tr>'+
+  '</tbody></table></div>'+
+  '<p class="src">시나리오의 시각·요금은 확정 일정과 같은 조사(2026-07-31 ~ 08-01) 기준 · G2460의 '+
+  '우란차부 정차는 미확인이라 본선에는 쓰지 않습니다. 긴급 번호는 표준 안내입니다.</p>'}},
 
  sch:{title:"시간 격자",body:function(){
   var t=TT[PLAN];
@@ -1260,7 +1460,7 @@ var SHEET={
    '이 표는 <b>검증기가 만든 것</b>이라 손으로 고칠 수 없습니다.</p>'}},
 
  resv:{title:"예약 · 링크",body:function(){
-  return pbadge()+
+  return bk('pre','여행 전')+pbadge()+
   '<div class="msg ok"><p><b>예약은 전부 링크로 끝납니다 — 전화 0건.</b> '+
   '기차는 <b>Trip.com에서 여권으로 즉시 구매</b>합니다 (12306 인증 불필요 · 개찰은 발차 15분 전 '+
   '시작 · 5분 전 마감 · 외국 여권은 유인 통로). 관문은 둘 — <b>자금성 8/6 20:00 오픈런</b>과 '+
@@ -1364,7 +1564,7 @@ var SHEET={
   '颐和园 공중번호 · 乌兰哈达火山景区 · Klook · Trip.com. 링크는 전부 접속을 확인했습니다.</p>'}},
 
  stay:{title:"숙소",body:function(){
-  return pbadge()+
+  return bk('pre','여행 전')+pbadge()+
   '<div class="msg ok"><p><b>기준은 요금보다 위치입니다.</b> 두 도시 모두 도착·복귀가 늦어 '+
   '(후허하오터 20:32 도착 · 20:00 투어 복귀 / 베이징 21:19 도착) <b>도보권을 벗어나면 '+
   '밤 일정이 무너집니다.</b> 전부 Trip.com 링크 — 예약은 <b>무료취소 요금제 · 2실 · '+
