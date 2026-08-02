@@ -11,7 +11,6 @@
   3. hidden 속성이 display 규칙에 덮이지 않는가
      — .cbtn{display:block}이 [hidden]을 이겨 빈 버튼이 보이던 문제
   4. 시트 HTML의 태그 균형과 표의 열 개수
-  5. TT(시간표)가 검증기와 동기화돼 있는가
 """
 import re, sys, io, os, json
 
@@ -99,14 +98,7 @@ for name, body in sheets.items():
                 bad.append("[%s] 표 열 %d ≠ 헤더 %d — %s" % (name, n, ncol, tr[:50]))
 check("시트 HTML 구조", bad)
 
-# ---------- 5. TT 동기화 ----------
-import gen_timetable  # noqa: E402
-want = gen_timetable.line()
-have = re.search(r"^var TT=.*?;$", SRC, re.M)
-check("시간표 · 검증기 동기화",
-      [] if have and have.group(0) == want
-      else ["TT가 검증기와 다릅니다 — python tools/gen_timetable.py --write 를 실행하세요"])
-
+# (검증기·TT 자동생성 파이프라인은 2026-08-02 폐지 — 시간표는 이제 index.html을 손으로 고친다.)
 # (구판 인솔서 guide.html은 2026-08-01 단일안 개편에서 삭제됐다 — 검사도 함께 뺐다.)
 
 print()
