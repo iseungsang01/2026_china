@@ -30,8 +30,7 @@
     --mapfilter:none;
   }
   :root[data-theme="light"] .scrim{background:rgba(31,35,40,.5)}
-  :root[data-theme="light"] .poicard,
-  :root[data-theme="light"] .sheet{box-shadow:0 8px 24px rgba(31,35,40,.15)}
+  :root[data-theme="light"] .poicard{box-shadow:0 8px 24px rgba(31,35,40,.15)}
   :root[data-theme="light"] .attrib{background:rgba(255,255,255,.85); color:#656D76}
   *{box-sizing:border-box}
   /* .cbtn{display:block} 같은 규칙이 hidden 속성을 덮어써 빈 버튼이 보이던 문제 방지 */
@@ -176,19 +175,22 @@
   .scrim{position:fixed; inset:0; background:rgba(1,4,9,.8); z-index:40; opacity:0;
     pointer-events:none; transition:opacity .12s}
   .scrim.show{opacity:1; pointer-events:auto}
-  .sheet{position:fixed; z-index:50; left:50%; top:50%; width:min(1000px,calc(100vw - 32px));
-    max-height:min(84vh,780px); overflow:hidden; display:flex; flex-direction:column;
-    background:var(--modal); border:1px solid var(--border); border-radius:6px;
-    transform:translate(-50%,-48%); opacity:0; pointer-events:none;
+  /* 시트는 데스크톱에서도 전체화면 — 시간 격자가 좁은 창에서 글자를 잘라먹었다 */
+  .sheet{position:fixed; z-index:50; left:0; top:0; width:100vw; height:100dvh;
+    max-height:100dvh; overflow:hidden; display:flex; flex-direction:column;
+    background:var(--modal); border:0; border-radius:0;
+    transform:translateY(10px); opacity:0; pointer-events:none;
     transition:opacity .12s, transform .12s}
-  .sheet.show{opacity:1; transform:translate(-50%,-50%); pointer-events:auto}
+  .sheet.show{opacity:1; transform:none; pointer-events:auto}
   .sh-h{display:flex; align-items:center; gap:12px; padding:16px;
     border-bottom:1px solid var(--border); background:var(--surface)}
   .sh-h h2{margin:0; font-size:19px; font-weight:600; flex:1}
   .sh-h .x{width:28px; height:28px; border-radius:6px; color:var(--muted); font-size:16px;
     transition:background .12s}
   .sh-h .x:hover{background:var(--modal); color:var(--ink)}
-  .sh-b{padding:16px; overflow-y:auto}
+  /* pre-line — brkAll()이 텍스트 노드에 넣은 \n을 그대로 줄바꿈으로 읽는다.
+     HTML 소스에는 개행이 없다(전부 문자열 이어붙이기)이므로 의도치 않은 줄바꿈은 생기지 않는다 */
+  .sh-b{padding:16px; overflow-y:auto; white-space:pre-line}
   .sh-b h3{font-size:18px; font-weight:600; margin:24px 0 8px}
   .sh-b h3:first-child{margin-top:0}
   .sh-b p{margin:8px 0; font-size:16px}
@@ -334,25 +336,38 @@
   .bdet h3{margin-top:0}
   /* 시간표 2단 */
   /* ===== 시간 격자 ===== */
-  .tgwrap{overflow-x:auto; margin:12px 0; border:1px solid var(--border); border-radius:6px}
+  /* 격자는 3360px라 통째로는 못 본다 — 시트 본문을 그대로 내려 보고, 날짜 머리글만 붙여 둔다.
+     ⚠ 여기에 overflow를 걸면 .tgh의 sticky가 이 상자 기준이 돼 머리글이 같이 밀려 올라간다 */
+  .tgwrap{margin:12px 0 0; border:1px solid var(--border); border-radius:6px 6px 0 0}
   .tg{display:flex; min-width:620px; background:var(--border); gap:1px}
   .tgc{background:var(--bg); display:flex; flex-direction:column}
-  .tgc.axis{flex:0 0 44px}
-  .tgc.day{flex:1 1 0; min-width:104px}
-  .tgh{background:var(--surface); padding:6px 4px; text-align:center;
-       border-bottom:1px solid var(--border); height:46px}
-  .tgh b{display:block; font-size:12px; font-weight:600}
-  .tgh s{display:block; font-size:10px; color:var(--muted); text-decoration:none;
-         font-family:var(--fm); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-  .tgb{position:relative; height:680px}
+  /* 축은 가로 스크롤(폰)에서 왼쪽에 붙는다 — 머리글보다는 낮아야 시각이 머리글을 뚫지 않는다 */
+  .tgc.axis{flex:0 0 52px; position:sticky; left:0; z-index:5}
+  .tgc.day{flex:1 1 0; min-width:150px}
+  /* 높이는 고정 — 열마다 다르면 그 아래 시각 격자의 0시 기준이 어긋난다 */
+  .tgh{background:var(--surface); padding:6px 6px; text-align:center;
+       border-bottom:1px solid var(--border); height:72px;
+       position:sticky; top:0; z-index:7}
+  /* 머리글이 붙어 있는 동안 그 위 시트 여백(16px)으로 격자가 비쳐 지나간다 — 같은 배경으로 덮는다 */
+  .tgh::before{content:''; position:absolute; left:0; right:0; top:-16px; height:16px;
+       background:var(--modal)}
+  .axis .tgh{z-index:8}
+  .tgh b{display:block; font-size:13px; font-weight:600}
+  /* 넘침은 부제에서만 자른다 — 머리글 자체를 잘라내면 위 여백을 덮는 ::before까지 사라진다 */
+  .tgh s{display:block; font-size:10.5px; color:var(--muted); text-decoration:none;
+         font-family:var(--fm); line-height:1.25; max-height:39px; overflow:hidden}
+  /* 1분 = 2.8px — 강제 줄바꿈으로 늘어난 줄 수를 담으려면 이 정도 세로가 필요하다.
+     세로가 짧으면 15~25분짜리 블록이 통째로 잘린다 (전체 3360px · 시트 안에서 스크롤) */
+  .tgb{position:relative; height:3360px}
   .tgb .hr{position:absolute; left:0; right:0; border-top:1px solid var(--border); opacity:.55}
   .tgb .hr.day6{opacity:.9}
-  .axis .tgb i{position:absolute; right:5px; font-size:10px; color:var(--dim);
+  .axis .tgb i{position:absolute; right:5px; font-size:11px; color:var(--dim);
        font-family:var(--fm); font-style:normal; transform:translateY(-50%)}
-  .blk{position:absolute; left:2px; right:2px; border-radius:3px; padding:2px 4px;
-       font-size:10px; line-height:1.22; overflow:hidden; border-left:2px solid;
-       background:var(--surface)}
-  .blk em{display:block; font-style:normal; font-family:var(--fm); font-size:9px;
+  /* pre-line — 블록 글에 넣은 \n을 그대로 줄바꿈으로 읽는다 (tgbr()가 넣는다) */
+  .blk{position:absolute; left:2px; right:2px; border-radius:3px; padding:1px 5px;
+       font-size:10.5px; line-height:1.18; overflow:hidden; border-left:2px solid;
+       background:var(--surface); white-space:pre-line}
+  .blk em{display:block; font-style:normal; font-family:var(--fm); font-size:9.5px;
           color:var(--muted)}
   .blk.car{border-left-color:var(--warn); background:rgba(210,153,34,.13)}
   .blk.rail{border-left-color:var(--primary); background:rgba(47,129,247,.13)}
@@ -369,7 +384,8 @@
   .du{display:block; font-size:10.5px; color:var(--dim); text-decoration:none;
       font-family:var(--fm); margin-top:1px}
   .tgleg{display:flex; gap:12px; flex-wrap:wrap; padding:8px 10px; font-size:11px;
-         color:var(--muted); border-top:1px solid var(--border); background:var(--surface)}
+         color:var(--muted); border:1px solid var(--border); border-top:0;
+         border-radius:0 0 6px 6px; background:var(--surface); margin-bottom:12px}
   .tgleg span{display:flex; align-items:center; gap:5px}
   .tgleg i{width:10px; height:10px; border-radius:2px; display:inline-block}
   /* ============ 모바일 전용 (기본 숨김) ============ */
@@ -439,10 +455,11 @@
       padding:0 5px; border-radius:9999px; margin-left:4px; vertical-align:1px}
 
     .poicard{left:10px; right:10px; bottom:10px; width:auto; max-height:70vh; z-index:45}
-    .sheet{width:100vw; max-width:100vw; height:100dvh; max-height:100dvh;
-      border-radius:0; border:0; left:0; top:0; transform:translateY(12px)}
-    .sheet.show{transform:none}
     .sh-b{padding:12px}
+    /* 폰은 5일이 한 화면에 안 들어간다 — 열 폭은 그대로 두고 가로로 밀어서 본다.
+       열을 좁히면 강제 줄바꿈한 글이 또 꺾여 블록 밖으로 넘친다.
+       (가로 스크롤을 켜면 날짜 머리글의 sticky는 이 상자 기준이 돼 세로 고정은 포기된다) */
+    .tgwrap{overflow-x:auto}
   }
 
   /* 세운 화면 — POI 상세는 지도를 덮지 않고 지도 아래 목록 맨 위에 끼어든다 */
@@ -1168,6 +1185,43 @@ function dur(m){
   return h+'시간'+(r?' '+r+'분':'');
 }
 
+/* 강제 줄바꿈 — 칸 폭에 맡기면 글이 애매한 자리에서 꺾여 읽기 어렵다.
+   구분자(·)와 —, →, 여는 괄호, 문장 끝(.)에서 무조건 줄을 바꾼다.
+   붙여 쓴 「6·5·4·3호」는 공백이 없어 그대로 남는다. white-space:pre-line이 받는다.
+   같은 글에 두 번 걸어도 결과가 같다(멱등). */
+function brk(s){
+  return s.replace(/[ \t]*\n[ \t]*/g,'\n')
+          .replace(/\s+·\s+/g,'\n')
+          .replace(/\s+—\s+/g,'\n— ')
+          .replace(/\s+→\s+/g,'\n→ ')
+          .replace(/\.\s+/g,'.\n')
+          .replace(/\s+\(/g,'\n(');
+}
+
+/* 시트 본문 전체에 같은 규칙을 건다 — 텍스트 노드만 손대므로 태그와 속성(href·title)은 그대로다.
+   제외 = 이미 처리한 격자 블록 · 높이가 고정된 격자 머리글 · nowrap이라 줄이 안 바뀌는 것들. */
+function brkAll(root){
+  var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null,false), n, ns=[];
+  while((n=w.nextNode())) ns.push(n);
+  var prev=null, prevBlock=null;
+  for(var i=0;i<ns.length;i++){
+    var p=ns[i].parentElement;
+    if(!p||p.closest('.blk,.tgh,.tgleg,.est,.bt,.bk,th,td.n')) continue;
+    var v=brk(ns[i].nodeValue), blk=blockOf(ns[i]);
+    /* 「…끝납니다</b> 기차는」처럼 태그가 끊어 놓은 자리 — 한 노드 안이 아니라서 위 규칙이 못 잡는다.
+       같은 문단 안이고 앞이 마침표·구분자로 끝났으면 여기서 줄을 바꾼다. */
+    if(prev&&blk===prevBlock&&/^[ \t]+/.test(v)&&/[.·—→)]$/.test(prev)) v=v.replace(/^[ \t]+/,'\n');
+    ns[i].nodeValue=v;
+    if(/\S/.test(v)){ prev=v.replace(/\s+$/,''); prevBlock=blk; }
+  }
+}
+/* 인라인 태그를 걷어낸 진짜 문단 — 문단이 다르면 줄은 이미 바뀌어 있다 */
+function blockOf(n){
+  var IN={B:1,I:1,EM:1,A:1,S:1,SPAN:1,SMALL:1,CODE:1,STRONG:1,U:1}, e=n.parentElement;
+  while(e&&IN[e.tagName]) e=e.parentElement;
+  return e;
+}
+
 /* ============ 모바일 ============ */
 /* CSS 미디어쿼리와 같은 기준 — 눕힌 핸드폰은 폭이 넓어 높이로도 판단해야 한다 */
 function isMobile(){ return innerWidth<=820 || innerHeight<=520 }
@@ -1612,7 +1666,7 @@ var SHEET={
 
  sch:{title:"시간 격자",body:function(){
   var t=TT[PLAN];
-  var T0=6*60, T1=26*60, PX=680/(T1-T0);      // 06:00~다음날 02:00 — 이동 가능 시간대와 같다
+  var T0=6*60, T1=26*60, PX=3360/(T1-T0);     // 06:00~다음날 02:00 — 이동 가능 시간대와 같다 (1분=2.8px)
 
   var axis='<div class="tgc axis"><div class="tgh"></div><div class="tgb">';
   for(var m=T0;m<=T1;m+=60){
@@ -1627,12 +1681,13 @@ var SHEET={
     var d=t[i], body='';
     for(var m2=T0;m2<=T1;m2+=60) body+='<div class="hr" style="top:'+((m2-T0)*PX)+'px"></div>';
     for(var j=0;j<d.b.length;j++){
-      var b=d.b[j], top=(b[0]-T0)*PX, hgt=Math.max(13,b[1]*PX-2);
+      var b=d.b[j], top=(b[0]-T0)*PX, hgt=Math.max(16,b[1]*PX-2);
       if(b[0]+b[1]<T0||b[0]>T1) continue;
       var txt=b[3].replace(/<[^>]+>/g,'');
+      /* 시각 줄은 한 줄을 통째로 먹는다 — 짧은 블록에서는 글을 살리고 시각은 축·툴팁에 맡긴다 */
       body+='<div class="blk '+b[2]+'" style="top:'+top+'px;height:'+hgt+'px" title="'+
             hm(b[0])+'–'+hm(b[0]+b[1])+'  '+txt+'">'+
-            (hgt>=26?'<em>'+hm(b[0])+'</em>':'')+txt+'</div>';
+            (hgt>=60?'<em>'+hm(b[0])+'</em>':'')+brk(txt)+'</div>';
     }
     /* 패키지 상자 — 상품이 커버하는 구간 전체를 테두리 하나로 묶는다.
        블록마다 점선을 치면 낱개로 보인다: 상자 하나가 곧 패키지 하나다. */
@@ -1659,7 +1714,8 @@ var SHEET={
      '</tbody></table></div>'+
      '<div class="msg bad"><p><b>이 일정의 급소</b> — '+p.risk+'</p></div>';
 
-  return head+'<div class="tgwrap"><div class="tg">'+axis+cols+'</div>'+
+  /* 범례는 격자 상자 밖 — 안에 두면 3360px를 다 내려야 나온다 */
+  return head+'<div class="tgwrap"><div class="tg">'+axis+cols+'</div></div>'+
    '<div class="tgleg">'+
    '<span><i style="background:rgba(47,129,247,.6)"></i>고속철</span>'+
    '<span><i style="background:rgba(210,153,34,.6)"></i>차량 · 도보</span>'+
@@ -1668,7 +1724,7 @@ var SHEET={
    '<span><i style="background:rgba(110,118,129,.5)"></i>수속·휴식</span>'+
    '<span><i style="background:transparent;outline:1.5px dashed #DB61A2;outline-offset:-1px"></i>'+
    '<b>패키지 상자</b> — 상품이 커버하는 범위</span>'+
-   '<span>블록에 마우스를 올리면 정확한 시각이 나옵니다</span></div></div>'+
+   '<span>블록에 마우스를 올리면 정확한 시각이 나옵니다</span></div>'+
    '<p class="src">세로축은 <b>06:00부터 다음날 02:00</b>까지이고, 이것이 곧 '+
    '<b>이동 가능 시간대</b>입니다. 모든 이동은 <b>보수치</b>(최대 소요)로 배치했고 '+
    '8/10 도착은 14:00 · 입국 수속 75분 기준입니다. '+
@@ -1798,6 +1854,7 @@ function open_(k){
   var s=SHEET[k]; if(!s) return; curSheet=k;
   document.getElementById('sh-title').textContent=s.title;
   var b=document.getElementById('sh-body'); b.innerHTML=s.body(); b.scrollTop=0;
+  brkAll(b);                                // 「자세히」의 모든 글에 강제 줄바꿈
   if(k==='chk') ckSum();                    // 진행률 막대는 그린 뒤에 센다
   document.getElementById('sheet').classList.add('show');
   document.getElementById('scrim').classList.add('show');
