@@ -367,7 +367,7 @@
   /* 한 줄로 자르고 넘치면 … — 격자는 형태를 보는 곳이고, 설명 전문은 툴팁에 있다 */
   .blk{position:absolute; left:2px; right:2px; border-radius:3px; padding:0 5px;
        font-size:10px; line-height:1.15; overflow:hidden; border-left:2px solid;
-       background:var(--surface); white-space:nowrap; text-overflow:ellipsis; min-height:8px}
+       background:var(--surface); white-space:nowrap; text-overflow:ellipsis; min-height:5px}
   .blk em{display:block; font-style:normal; font-family:var(--fm); font-size:9px;
           color:var(--muted); line-height:1.1}
   /* 실제 높이를 재서 fitBlocks()가 붙인다 — 한 줄도 못 담는 블록은 색 막대만 남기고,
@@ -467,6 +467,18 @@
        블록 글이 사라지면 색 막대만 남는다. 세로로 길게 두고 라벨을 여러 줄로 다 보여준다 */
     .tgb{height:1600px}
     .blk{white-space:normal}
+    /* 폰에서 3~4열 표는 가로로 밀어야 읽힌다 — 행 하나를 카드처럼 쌓는다.
+       머리글은 숨기고 첫 칸(언제·구간)을 제목처럼, 숫자 칸은 오른쪽에 붙인다.
+       ⚠ 클래스만 있고 규칙이 없어 2026-08-05까지 이 표들은 폰에서 잘려 있었다. */
+    /* 데스크톱의 min-width:420px는 폰에서 항상 가로 스크롤을 만든다 — 화면 폭에 맡긴다 */
+    table{min-width:0}
+    table.stack{min-width:0}
+    table.stack thead{display:none}
+    table.stack tr{display:block; padding:10px 12px}
+    table.stack tr+tr{border-top:1px solid var(--border)}
+    table.stack td{display:block; border:0; padding:1px 0}
+    table.stack td:first-child{font-weight:600; margin-bottom:2px}
+    table.stack td.n{text-align:left; white-space:normal}
   }
 
   /* 세운 화면 — POI 상세는 지도를 덮지 않고 지도 아래 목록 맨 위에 끼어든다 */
@@ -1437,7 +1449,7 @@ var SHEET={
  move:{title:"이동 · 개찰",body:function(){
   return bk('trip','여행 중')+
   '<h3>본선 5구간 — 일자별</h3>'+
-  '<div class="tw"><table><thead><tr><th class="n">날짜</th><th>구간</th>'+
+  '<div class="tw"><table class="stack"><thead><tr><th class="n">날짜</th><th>구간</th>'+
   '<th class="n">열차</th><th class="n">시각</th><th>비고</th></tr></thead><tbody>'+
   '<tr><td class="n">8/10(월)</td><td>베이징북 → 후허하오터동</td><td class="n">G2477</td>'+
   '<td class="n">20:58→23:42</td><td>낮에 천단 경유 · 여유 15분 · 막차</td></tr>'+
@@ -1589,7 +1601,9 @@ var SHEET={
       if(b[0]+b[1]<T0||b[0]>T1) continue;
       var txt=b[3].replace(/<[^>]+>/g,'');
       /* 시각 줄은 한 줄을 통째로 먹는다 — 짧은 블록에서는 글을 살리고 시각은 축·툴팁에 맡긴다 */
-      body+='<div class="blk '+b[2]+'" style="top:'+pc(b[0])+';height:'+ht(b[1])+'" title="'+
+      /* 높이에서 2px를 빼 블록 사이에 틈을 준다 — 안 그러면 다음 칸과 1px 겹쳐
+         아래 블록의 왼쪽 색 띠가 위 블록에 덮인다 */
+      body+='<div class="blk '+b[2]+'" style="top:'+pc(b[0])+';height:calc('+ht(b[1])+' - 2px)" title="'+
             hm(b[0])+'–'+hm(b[0]+b[1])+'  '+txt+'">'+
             '<em>'+hm(b[0])+'</em>'+lab(txt)+'</div>';
     }
@@ -1748,7 +1762,7 @@ function fitBlocks(){
   var bs=document.querySelectorAll('.blk');
   for(var i=0;i<bs.length;i++){
     var h=bs[i].clientHeight;
-    bs[i].classList.toggle('tiny',h<13);
+    bs[i].classList.toggle('tiny',h<12);
     bs[i].classList.toggle('one',h<24);
   }
 }
