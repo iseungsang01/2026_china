@@ -27,7 +27,7 @@ catch (e) {
 }
 
 const URL = 'file:///' + path.resolve(__dirname, '..', 'index.html').replace(/\\/g, '/');
-const SHEETS = ['pre', 'trip', 'chk', 'resv', 'prep', 'sch', 'move', 'onsite', 'planb'];
+const SHEETS = ['pre', 'trip', 'chk', 'resv', 'prep', 'sch', 'move', 'onsite', 'food', 'planb'];
 
 const CASES = [
   { name: 'phone-390x844', viewport: { width: 390, height: 844 }, mobile: true },
