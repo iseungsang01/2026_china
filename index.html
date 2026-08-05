@@ -188,9 +188,7 @@
   .sh-h .x{width:28px; height:28px; border-radius:6px; color:var(--muted); font-size:16px;
     transition:background .12s}
   .sh-h .x:hover{background:var(--modal); color:var(--ink)}
-  /* pre-line — brkAll()이 텍스트 노드에 넣은 \n을 그대로 줄바꿈으로 읽는다.
-     HTML 소스에는 개행이 없다(전부 문자열 이어붙이기)이므로 의도치 않은 줄바꿈은 생기지 않는다 */
-  .sh-b{padding:16px; overflow-y:auto; white-space:pre-line}
+  .sh-b{padding:16px; overflow-y:auto}
   .sh-b h3{font-size:18px; font-weight:600; margin:24px 0 8px}
   .sh-b h3:first-child{margin-top:0}
   .sh-b p{margin:8px 0; font-size:16px}
@@ -356,17 +354,16 @@
   /* 넘침은 부제에서만 자른다 — 머리글 자체를 잘라내면 위 여백을 덮는 ::before까지 사라진다 */
   .tgh s{display:block; font-size:10.5px; color:var(--muted); text-decoration:none;
          font-family:var(--fm); line-height:1.25; max-height:39px; overflow:hidden}
-  /* 1분 = 2.8px — 강제 줄바꿈으로 늘어난 줄 수를 담으려면 이 정도 세로가 필요하다.
-     세로가 짧으면 15~25분짜리 블록이 통째로 잘린다 (전체 3360px · 시트 안에서 스크롤) */
-  .tgb{position:relative; height:3360px}
+  /* 1분 = 1.6px — 전체화면이라 열이 넓어 글은 대개 한 줄이고, 창을 1060px까지 좁혀
+     두 줄이 되는 블록(25·26분)도 이 높이면 담긴다 (전체 1920px · 시트 안에서 스크롤) */
+  .tgb{position:relative; height:1920px}
   .tgb .hr{position:absolute; left:0; right:0; border-top:1px solid var(--border); opacity:.55}
   .tgb .hr.day6{opacity:.9}
   .axis .tgb i{position:absolute; right:5px; font-size:11px; color:var(--dim);
        font-family:var(--fm); font-style:normal; transform:translateY(-50%)}
-  /* pre-line — 블록 글에 넣은 \n을 그대로 줄바꿈으로 읽는다 (tgbr()가 넣는다) */
   .blk{position:absolute; left:2px; right:2px; border-radius:3px; padding:1px 5px;
        font-size:10.5px; line-height:1.18; overflow:hidden; border-left:2px solid;
-       background:var(--surface); white-space:pre-line}
+       background:var(--surface)}
   .blk em{display:block; font-style:normal; font-family:var(--fm); font-size:9.5px;
           color:var(--muted)}
   .blk.car{border-left-color:var(--warn); background:rgba(210,153,34,.13)}
@@ -1185,43 +1182,6 @@ function dur(m){
   return h+'시간'+(r?' '+r+'분':'');
 }
 
-/* 강제 줄바꿈 — 칸 폭에 맡기면 글이 애매한 자리에서 꺾여 읽기 어렵다.
-   구분자(·)와 —, →, 여는 괄호, 문장 끝(.)에서 무조건 줄을 바꾼다.
-   붙여 쓴 「6·5·4·3호」는 공백이 없어 그대로 남는다. white-space:pre-line이 받는다.
-   같은 글에 두 번 걸어도 결과가 같다(멱등). */
-function brk(s){
-  return s.replace(/[ \t]*\n[ \t]*/g,'\n')
-          .replace(/\s+·\s+/g,'\n')
-          .replace(/\s+—\s+/g,'\n— ')
-          .replace(/\s+→\s+/g,'\n→ ')
-          .replace(/\.\s+/g,'.\n')
-          .replace(/\s+\(/g,'\n(');
-}
-
-/* 시트 본문 전체에 같은 규칙을 건다 — 텍스트 노드만 손대므로 태그와 속성(href·title)은 그대로다.
-   제외 = 이미 처리한 격자 블록 · 높이가 고정된 격자 머리글 · nowrap이라 줄이 안 바뀌는 것들. */
-function brkAll(root){
-  var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null,false), n, ns=[];
-  while((n=w.nextNode())) ns.push(n);
-  var prev=null, prevBlock=null;
-  for(var i=0;i<ns.length;i++){
-    var p=ns[i].parentElement;
-    if(!p||p.closest('.blk,.tgh,.tgleg,.est,.bt,.bk,th,td.n')) continue;
-    var v=brk(ns[i].nodeValue), blk=blockOf(ns[i]);
-    /* 「…끝납니다</b> 기차는」처럼 태그가 끊어 놓은 자리 — 한 노드 안이 아니라서 위 규칙이 못 잡는다.
-       같은 문단 안이고 앞이 마침표·구분자로 끝났으면 여기서 줄을 바꾼다. */
-    if(prev&&blk===prevBlock&&/^[ \t]+/.test(v)&&/[.·—→)]$/.test(prev)) v=v.replace(/^[ \t]+/,'\n');
-    ns[i].nodeValue=v;
-    if(/\S/.test(v)){ prev=v.replace(/\s+$/,''); prevBlock=blk; }
-  }
-}
-/* 인라인 태그를 걷어낸 진짜 문단 — 문단이 다르면 줄은 이미 바뀌어 있다 */
-function blockOf(n){
-  var IN={B:1,I:1,EM:1,A:1,S:1,SPAN:1,SMALL:1,CODE:1,STRONG:1,U:1}, e=n.parentElement;
-  while(e&&IN[e.tagName]) e=e.parentElement;
-  return e;
-}
-
 /* ============ 모바일 ============ */
 /* CSS 미디어쿼리와 같은 기준 — 눕힌 핸드폰은 폭이 넓어 높이로도 판단해야 한다 */
 function isMobile(){ return innerWidth<=820 || innerHeight<=520 }
@@ -1250,76 +1210,35 @@ function placePOI(){
 /* ── 확정 일정 — 단일안 F2 (2026-08-01 가족 결정) ──────────────────
    사막 필수 · 링크 예약(전화 0건) · 화산 · 자금성/천단/이화원 · 만리장성(바다링 오후) ·
    베이징덕 1회 · 숙소 2곳 · 택시 1대(일반 4인승). 초원·유성우는 제외 (사용자 지시).
-   won은 1인 값이고 total은 항공권을 뺀 1인 총액(元)이다. */
+
+   2026-08-05 — 시트 맨 위마다 반복되던 안 배지(pbadge)를 없애면서, 그 배지에만 쓰이던
+   필드(sub·skel·price·keep·drop·how·buy·incl·excl·night)도 함께 지웠다. 같은 내용이
+   예약 시트·사막 SPOT 카드·플랜 B에 이미 있다. 남은 것은 총액과 급소뿐이다.
+
+   총액 계산 (2026-08-04 · 구판 2,630元에서 사막 예매분만 교체):
+     구판 사막 예매 ₩50,856 ÷ 190 ≈ 268元 → 신판 ₩102,064 ÷ 190 ≈ 537元
+     2,630 − 268 + 537 = 2,899元 ≈ 55만원 (× 190)
+   현장 지출은 반대로 줄었다 — 케이블카·낙타가 값에 들어와 약 330元 → 점심+모래썰매 약 70元. */
 var PMETA=[
- {k:"F2",nm:"확정안",sub:"8/13 세 명소 오전 압축 + 오후 바다링 — 칭허 고속철 왕복",
-  skel:"8/10 이동+천단 → 8/11 사막 → 8/12 화산 → 8/13 베이징 3곳 + 만리장성",
-  /* 2026-08-04 — 사막을 Trip.com 104990274 패키지 B(중문 단체 · 낙타 포함 ₩102,064)로 예약 완료.
-     총액 수기 재계산: 구판 2,630元에서 사막 예매분만 교체한다.
-       구판 사막 예매 ₩50,856 ÷ 190 ≈ 268元 → 신판 ₩102,064 ÷ 190 ≈ 537元
-       2,630 − 268 + 537 = 2,899元 ≈ 55만원 (× 190)
-     현장 지출은 반대로 줄었다 — 케이블카·낙타가 값에 들어와 약 330元 → 점심+모래썰매 약 70元. */
-  price:"₩102,064 + 약 70元",total:"약 2,900元",won:"약 55만원",
-  buy:"https://kr.trip.com/things-to-do/detail/104990274/",
-  buyt:"Trip.com 중문 단체 패키지 B — 예약 완료",
-  how:"전 항목 링크 예약 · 전화 0건 — 바다링 문표는 <b>매일 20:00에 15일치 발매</b> "+
-      "(여권 예약 가능 · 오후장 12:31~16:30 입장 · 携程 등 제3자 판매 · 8/13분 발매 중)",
-  night:"후허하오터 2박 + 첸먼 2박",
-  keep:"샹사완 5A · <b>화산</b> · <b>자금성 · 천단 · 이화원</b> · "+
-       "<b>만리장성(바다링 북선)</b> · 베이징덕 · 숙소 2곳 · 짐 싸기 1회",
-  drop:"사막의 밤(일몰·별) · 웨사다오 · 초원 · <b>세 명소 체류 반토막</b> "+
-       "(자금성 195→110분 · 천단 115→75분 · 이화원 145→75분) · 점심이 역 간편식",
-  /* 2026-08-04 Trip.com 104990274 상품 페이지 실조회 — 패키지 B(중문 단체 · 낙타 포함)로 예약 완료 */
-  incl:"샹사완 <b>입장권 + 왕복 케이블카 + 셴사다오 낙타 체험</b> + <b>중국어 가이드·기사</b> + "+
-       "왕복 전세버스(₩102,064 · <b>07:15 집합 → 19:00~20:00 해산</b>) · 집합 "+
-       "<b>신화광장 서쪽 중신은행</b> — 바다링은 자력입니다",
-  excl:"<b>점심(자율식사) · 모래썰매 1회 20元 · 모래양말 15元 · 팁 · 영어 가이드</b> · "+
-       "<b>바다링 일체</b>(문표 40 + 칭허 왕복 열차 약 50 + 케이블카 왕복 약 140元 · "+
-       "운영시간 미확정) · 화산 실비 100元 · 고속철 · 숙박 · 시내 이동",
-  risk:"사막은 <b>중문 단체 조인투어</b>라 인원이 안 차면 상품 고지대로 <b>일정 변경 또는 전액 "+
-       "환불</b> 연락이 옵니다 — 전날 22:00까지 담당자 연락이 규정이고, 없으면 먼저 문의합니다. "+
-       "가이드 해설이 중국어뿐이라 번역 앱을 준비합니다. "+
-       "바다링 사슬은 "+
-       "<b>G7835 15:25 칭허발이 마지노선</b> — 다음 편 D6707은 바다링 16:42 도착이라 "+
-       "오후장 검표 마감(16:30)을 넘겨 주간 등성이 무산됩니다 (구제책은 야간표 18:30 입원뿐). "+
-       "저녁이 20:30으로 밀려 <b>볜이팡 라스트오더(미확인)</b>가 급소이고, 돈과 별개의 최대 "+
-       "관문은 <b>자금성 8/6 20:00 예매 오픈런</b>입니다 — 실패하면 자금성 슬롯을 징산공원 "+
-       "만춘정(2元) 전망으로 바꾸고 취소표(매일 갱신)를 노립니다"}
+ {k:"F2",nm:"확정안",total:"약 2,900元",won:"약 55만원",
+  risk:"① <b>자금성 8/6 20:00 예매 오픈런</b> ② <b>G7835 15:25 칭허발</b> — 놓치면 주간 등성 무산 "+
+       "③ <b>G2477 20:58</b> — 8/10 막차라 후속이 없습니다 ④ <b>볜이팡 20:30 라스트오더</b> 미확인. "+
+       "어긋났을 때 대안은 「플랜 B · 긴급」에 있습니다"}
 ];
 var PLAN="F2";
 function pm(k){for(var i=0;i<PMETA.length;i++) if(PMETA[i].k===(k||PLAN)) return PMETA[i];
   return PMETA[0]}
 
-/* 단일 확정안 체제 — F(만리장성 없음) · F3(사막의 밤)은 2026-08-01 가족 결정으로 폐기.
-   되살리려면 git 이력에서 꺼낼 것. */
-var GRP=[{t:"확정 — 2026-08-01 가족 결정",
-          s:"8/10 이동+천단 · 8/11 사막 · 8/12 화산 · 8/13 베이징 3곳 + 만리장성",ks:["F2"]}];
-function grpOf(k){for(var i=0;i<GRP.length;i++) if(GRP[i].ks.indexOf(k)>=0) return GRP[i];
-  return GRP[0]}
-
+/* 사이드바 일정 카드 — 단일 확정안이라 고를 것이 없다. 골격 한 줄과 총액만 보여준다
+   (F·F3은 2026-08-01 가족 결정으로 폐기 · 되살리려면 git 이력에서 꺼낼 것). */
 function renderPlans(){
-  var h="";
-  for(var g=0;g<GRP.length;g++){
-    h+='<div class="grp-t" style="padding:8px 0 4px">'+GRP[g].t+
-       '<s class="du" style="display:block;font-weight:400">'+GRP[g].s+'</s></div>';
-    for(var i=0;i<GRP[g].ks.length;i++){var p=pm(GRP[g].ks[i]);
-      h+='<button class="cbtn'+(p.k===PLAN?' on':'')+'" onclick="setPlan(\''+p.k+'\')">'+
-         '<b>'+p.k+' · '+p.nm+'</b><s>'+p.price+' — '+p.sub+'</s></button>';
-    }
-  }
-  document.getElementById('planbtns').innerHTML=h;
-  document.getElementById('mtt').textContent=PLAN+' · '+pm().nm;
+  var p=pm();
+  document.getElementById('planbtns').innerHTML=
+    '<div class="cbtn on"><b>'+p.k+' · '+p.nm+'</b>'+
+    '<s>8/10 이동+천단 · 8/11 사막 · 8/12 화산 · 8/13 베이징 3곳 + 만리장성</s>'+
+    '<s>1인 '+p.total+' ≈ '+p.won+' · 항공 제외</s></div>';
+  document.getElementById('mtt').textContent=p.k+' · '+p.nm;
 }
-function setPlan(k){
-  PLAN=k; renderPlans();
-  if(curSheet) open_(curSheet);      // 열려 있는 시트를 새 안으로 다시 그린다
-}
-/* 안 배지 — 시트 맨 위에 일정 골격을 못박아 둔다. 비용 시트를 없앤 대신
-   1인 총액(항공 제외)을 여기서 상시 노출한다. */
-function pbadge(){var p=pm();
-  return '<div class="msg ok"><p><b>'+p.k+' · '+p.nm+'</b> — '+p.sub+'<br>'+
-    p.skel+' · <b>사막 패키지 1인 '+p.price+'</b> · 1인 총액 '+p.total+' ≈ <b>'+p.won+
-    '</b><span class="est">추정 · 항공 제외</span></p></div>'}
 /* 노션식 하위 페이지 — 허브(여행 전 · 여행 중)의 페이지 목록 한 줄과, 하위 시트 맨 위의
    돌아가기. onclick 안에 따옴표를 넣지 않으려고 data-k로 넘긴다 (check_page의 문자열 추출 보호). */
 function pglink(k,c,t,s){
@@ -1371,8 +1290,7 @@ function ckReset(){
 var SHEET={
 
  pre:{title:"여행 전 — 예약 · 준비",body:function(){
-  return pbadge()+
-  '<div class="msg ok"><p><b>떠나기 전에 끝낼 일은 두 갈래입니다</b> — 예약(전부 링크 · 전화 0건)과 '+
+  return '<div class="msg ok"><p><b>떠나기 전에 끝낼 일은 두 갈래입니다</b> — 예약(전부 링크 · 전화 0건)과 '+
   '폰·짐 준비. 관문은 <b>자금성 8/6 20:00 오픈런</b> 하나입니다.</p></div>'+
   '<div class="pgl">'+
   pglink('chk','#3FB950','출발 전 체크리스트','눌러서 지우는 목록 — D-6부터 출발 당일 아침까지 · 저장됩니다')+
@@ -1391,8 +1309,7 @@ var SHEET={
   '</tbody></table></div>'}},
 
  trip:{title:"여행 중 — 현장",body:function(){
-  return pbadge()+
-  '<div class="msg ok"><p><b>현장에서 찾게 될 것을 네 페이지로 모았습니다.</b> 항상 지닐 것은 '+
+  return '<div class="msg ok"><p><b>현장에서 찾게 될 것을 네 페이지로 모았습니다.</b> 항상 지닐 것은 '+
   '<b>여권 원본</b> 하나 — 개찰·광장·명소·호텔 전부 이것으로 통과합니다.</p></div>'+
   '<div class="pgl">'+
   pglink('sch','#8B949E','시간 격자','5일 전체 분 단위 — 수기 관리 · 보수치 배치')+
@@ -1666,7 +1583,7 @@ var SHEET={
 
  sch:{title:"시간 격자",body:function(){
   var t=TT[PLAN];
-  var T0=6*60, T1=26*60, PX=3360/(T1-T0);     // 06:00~다음날 02:00 — 이동 가능 시간대와 같다 (1분=2.8px)
+  var T0=6*60, T1=26*60, PX=1920/(T1-T0);     // 06:00~다음날 02:00 — 이동 가능 시간대와 같다 (1분=1.6px)
 
   var axis='<div class="tgc axis"><div class="tgh"></div><div class="tgb">';
   for(var m=T0;m<=T1;m+=60){
@@ -1687,7 +1604,7 @@ var SHEET={
       /* 시각 줄은 한 줄을 통째로 먹는다 — 짧은 블록에서는 글을 살리고 시각은 축·툴팁에 맡긴다 */
       body+='<div class="blk '+b[2]+'" style="top:'+top+'px;height:'+hgt+'px" title="'+
             hm(b[0])+'–'+hm(b[0]+b[1])+'  '+txt+'">'+
-            (hgt>=60?'<em>'+hm(b[0])+'</em>':'')+brk(txt)+'</div>';
+            (hgt>=45?'<em>'+hm(b[0])+'</em>':'')+txt+'</div>';
     }
     /* 패키지 상자 — 상품이 커버하는 구간 전체를 테두리 하나로 묶는다.
        블록마다 점선을 치면 낱개로 보인다: 상자 하나가 곧 패키지 하나다. */
@@ -1700,19 +1617,9 @@ var SHEET={
           (d.stay||'출국')+'</s></div><div class="tgb">'+body+'</div></div>';
   }
 
-  var p=pm();
-  var head = pbadge()+
-     '<div class="msg warn"><p><b>얻는 것</b> '+p.keep+' · <b>버리는 것</b> '+p.drop+'</p></div>'+
-     /* 시간표에서 바로 살 수 있게 구매처를 붙인다. */
-     '<div class="tw"><table><tbody>'+
-     '<tr><td class="n">사는 법</td><td>'+p.how+' → '+
-     (p.buy.indexOf('http')===0
-       ? '<a href="'+p.buy+'" target="_blank" rel="noopener"><b>'+p.buyt+'</b></a>'
-       : '<a href="'+p.buy+'"><b>'+p.buyt+'</b></a>')+'</td></tr>'+
-     '<tr><td class="n"><b>패키지에<br>포함</b></td><td>'+p.incl+'</td></tr>'+
-     '<tr><td class="n">불포함</td><td>'+p.excl+'</td></tr>'+
-     '</tbody></table></div>'+
-     '<div class="msg bad"><p><b>이 일정의 급소</b> — '+p.risk+'</p></div>';
+  /* 격자가 주인공이라 위에는 급소 한 상자만 둔다 — 패키지 포함·불포함과 구매처는
+     예약 시트와 사막 카드에 이미 있다 (2026-08-05 중복 제거). */
+  var head = '<div class="msg bad"><p><b>이 일정의 급소</b> — '+pm().risk+'</p></div>';
 
   /* 범례는 격자 상자 밖 — 안에 두면 3360px를 다 내려야 나온다 */
   return head+'<div class="tgwrap"><div class="tg">'+axis+cols+'</div></div>'+
@@ -1733,7 +1640,7 @@ var SHEET={
    '이 표는 <b>수기로 관리</b>합니다 — 시각이 바뀌면 var TT를 직접 고칩니다.</p>'}},
 
  resv:{title:"예약 · 링크",body:function(){
-  return bk('pre','여행 전')+pbadge()+
+  return bk('pre','여행 전')+
   '<div class="msg ok"><p><b>예약은 전부 링크로 끝납니다 — 전화 0건.</b> '+
   '기차는 <b>Trip.com에서 여권으로 즉시 구매</b>합니다 (12306 인증 불필요 · 개찰은 발차 15분 전 '+
   '시작 · 5분 전 마감 · 외국 여권은 유인 통로). 관문은 둘 — <b>자금성 8/6 20:00 오픈런</b>과 '+
@@ -1824,6 +1731,11 @@ var SHEET={
   '<td><b>택시 예약콜</b> — 8/14 06:20 첸먼 → T3 · 짐 정리</td><td class="n">〃</td>'+
   '<td>새벽 배차 실패면 <b>마지노선 08:40(여유 85분)</b>이 위협받습니다 — 정체가 걱정되면 '+
   '06:00 출발로 당깁니다</td></tr>'+
+  /* 비용 시트가 없으므로 1인 총액은 이 표의 마지막 줄로만 노출한다 (2026-08-05). */
+  '<tr class="tot"><td class="n"><b>합계</b></td>'+
+  '<td><b>1인 총액</b> — 위 예약분 + 현장 실비(입장료 · 택시 · 식비)</td>'+
+  '<td class="n"><b>'+pm().total+'</b><span class="est">추정</span></td>'+
+  '<td>≈ <b>'+pm().won+'</b> (1 CNY ≈ 190원) · <b>항공권 제외</b> · 2인 1실 · 1등석 기준</td></tr>'+
   '</tbody></table></div>'+
 
   '<h3>대체가 없는 것</h3>'+
@@ -1854,7 +1766,6 @@ function open_(k){
   var s=SHEET[k]; if(!s) return; curSheet=k;
   document.getElementById('sh-title').textContent=s.title;
   var b=document.getElementById('sh-body'); b.innerHTML=s.body(); b.scrollTop=0;
-  brkAll(b);                                // 「자세히」의 모든 글에 강제 줄바꿈
   if(k==='chk') ckSum();                    // 진행률 막대는 그린 뒤에 센다
   document.getElementById('sheet').classList.add('show');
   document.getElementById('scrim').classList.add('show');
