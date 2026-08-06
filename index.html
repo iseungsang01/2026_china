@@ -476,10 +476,12 @@
 
     <div class="grp" style="padding-bottom:12px">
       <div class="grp-t">자세히</div>
-      <button class="navbtn" onclick="open_('pre')"><span class="dot" style="background:#D29922"></span>
-        <span class="tx"><b>여행 전</b><s>체크리스트 · 예약 · 준비물 — 관문 8/6 20:00</s></span><span class="warnmark">!</span></button>
+      <button class="navbtn" onclick="open_('resv')"><span class="dot" style="background:#D29922"></span>
+        <span class="tx"><b>예약</b><s>눌러서 지우는 8건 — 관문 8/6 20:00 자금성</s></span><span class="warnmark">!</span></button>
+      <button class="navbtn" onclick="open_('pre')"><span class="dot" style="background:#8B949E"></span>
+        <span class="tx"><b>여행 전</b><s>체크리스트 · 준비물 · 앱</s></span></button>
       <button class="navbtn" onclick="open_('trip')"><span class="dot" style="background:#3FB950"></span>
-        <span class="tx"><b>여행 중</b><s>이동 · 현장 수칙 · 플랜 B</s></span></button>
+        <span class="tx"><b>여행 중</b><s>이동 · 현장 수칙 · 식당 · 플랜 B</s></span></button>
     </div>
 
   </aside>
@@ -1478,7 +1480,9 @@ var DTL={
   dtb(["항목","내용"],[
    ["공식 규칙","<b>당일권 없음 · 참관 7일 전 20:00 발매</b>. 매일 20:00에 7일 뒤 날짜가 열립니다(예: 7/12에 7/19분) — 이 규칙대로면 <b>8/13분은 8/6 20:00</b>입니다"],
    ["*지금 8/11까지만 보인다면","두 가지 중 하나입니다 — ① <b>8/12분은 이미 풀렸고 매진</b>돼 목록에서 빠진 것(여름 성수기는 분 단위 매진) ② 발매 창이 규칙과 다른 것. <b>어느 쪽이든 20:00에 확인하는 것이 답</b>이고, 8/13이 안 뜨면 다음 날 같은 시각에 다시 봅니다(8/7 20:00이어도 6일 전이라 늦지 않습니다)"],
-   ["채널","외국 여권은 <b>bookingticket.dpm.org.cn</b>(공식 영문)이 확실합니다 — 여권·거주증 예약 안내가 명시돼 있습니다. 중문 채널(위챗 미니프로그램 · 공식 웹 · 공식 앱 · 전국 문화관광 예약 플랫폼)도 같은 20:00 규칙으로 공지돼 있으나 <b>가입에 중국 실명 인증이 필요한지는 미확인</b>입니다"],
+   ["*채널 ① 영문","<a href=\"https://bookingticket.dpm.org.cn/\" target=\"_blank\" rel=\"noopener\"><b>bookingticket.dpm.org.cn</b></a> — 공식 영문 예매. 여권·거주증 예약 안내가 명시돼 있어 <b>외국 여권은 여기가 확실</b>합니다"],
+   ["채널 ② 중문","<a href=\"https://ticket.dpm.org.cn/\" target=\"_blank\" rel=\"noopener\"><b>ticket.dpm.org.cn</b></a> — 공식 중문 예매. <b>여권 예약을 명시</b>하고(<span class=\'cn\'>非中国内地观众请使用…护照订票</span>) <b>「참관 7일 전 20:00 발매」·「매일 오전·오후 두 시간대」도 같은 안내</b>입니다(2026-08-05 확인). 20:00에 <b>둘 다 열어 두고</b> 먼저 뜨는 쪽에서 잡습니다"],
+   ["그 외 중문 채널","위챗 미니프로그램 · 공식 앱 · 전국 문화관광 예약 플랫폼 — 같은 20:00 규칙이나 <b>가입에 중국 실명 인증이 필요한지는 미확인</b>입니다"],
    ["미리 해 둘 것","계정 가입 · <b>4인 여권번호와 영문 이름 입력</b>까지 20:00 전에 끝냅니다. 한 번에 최대 5명까지 넣을 수 있습니다"],
    ["증명서 규칙","<b>같은 증명서로 하루 한 장</b>이고 표는 그 증명서 본인만 씁니다 — 입장 때 여권 원본이 있어야 합니다"]])+
   '<h3>오전장 안에서도 — 몇 시까지 들어가야 하나</h3>'+
@@ -1771,10 +1775,10 @@ var SHEET={
 
  pre:{title:"여행 전 — 예약 · 준비",body:function(){
   return '<div class="msg ok"><p><b>떠나기 전에 끝낼 일은 두 갈래입니다</b> — 예약(전부 링크 · 전화 0건)과 '+
-  '폰·짐 준비. 관문은 <b>자금성 8/6 20:00 오픈런</b> 하나입니다.</p></div>'+
+  '폰·짐 준비. 관문은 <b>자금성 8/6 20:00 오픈런</b> 하나이고, <b>예약은 사이드바에서 바로 열립니다</b>.</p></div>'+
   '<div class="pgl">'+
-  pglink('chk','#3FB950','출발 전 체크리스트','눌러서 지우는 목록 — D-6부터 출발 당일 아침까지 · 저장됩니다')+
   pglink('resv','#D29922','예약 · 링크','눌러서 지우는 목록 (지금 4건 · 8/6 저녁 2건 · 8/9까지 2건 · 사막 완료)')+
+  pglink('chk','#3FB950','출발 전 체크리스트','눌러서 지우는 목록 — D-6부터 출발 당일 아침까지 · 저장됩니다')+
   pglink('prep','#2F81F7','준비물 · 앱','출발 전 폰에서 끝낼 설정 · 서류 · 짐')+
   '</div>'+
   '<h3>마감 순서 — 이 세 줄만 지키면 됩니다</h3>'+
@@ -2286,7 +2290,8 @@ var SHEET={
      '<b>이화원을 버리는 조건</b>으로만 성립합니다. 발매는 <b>참관 7일 전 20:00</b>이라 8/13분은 '+
      '8/6 20:00인데, <b>20:00에 8/13이 안 뜨면 다음 날 같은 시각에 다시</b> 봅니다. '+
      '둘 다 매진이면 징산공원 만춘정(2元) + 취소표 감시',
-     'bookingticket.dpm.org.cn (공식 영문 예매 · 여권 가능)','https://bookingticket.dpm.org.cn/')+
+     'bookingticket.dpm.org.cn (공식 영문) · 중문 ticket.dpm.org.cn도 같은 20:00 규칙 — 둘 다 열어 둘 것',
+     'https://bookingticket.dpm.org.cn/')+
    rvItem('b3','이화원 (8/13분) — 21:00','30元',
      '1~7일 전 매일 21:00 오픈 · 자금성 한 시간 뒤라 <b>같은 저녁에 둘을 다 잡습니다</b>. '+
      '<b>통표 60元이 아니라 대문표 30元</b>입니다 — 불향각·소주가·덕화원·문창원을 안 보므로 '+
