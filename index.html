@@ -250,7 +250,7 @@
     border-radius:var(--r); margin-left:8px}
   .ckrs{background:var(--surface)}
   .ckrs:hover{color:var(--ink); background:var(--fill)}
-  .ckg{margin:20px 0 0}
+  .ckg{margin:13px 0 0}
   .ckh{display:flex; align-items:baseline; gap:8px; padding-bottom:6px; font-size:16px;
     font-weight:600; border-bottom:1px solid var(--border)}
   .ckh s{text-decoration:none; color:var(--muted); font-size:14px; font-weight:400}
@@ -289,19 +289,19 @@
   /* 표형 체크리스트 (chk 시트) — 행 하나가 통째로 버튼처럼 눌린다.
      상태·진행률은 목록형(button.ck)과 같은 저장소를 쓰므로 .ck 클래스를 그대로 얹는다.
      ⚠ 그래서 위의 .ck 규칙은 button.ck로 좁혀 두었다 — tr에 display:flex가 걸리면 표가 깨진다.
-     첫 칸이 18px 아이콘이라 실질 2열이고, 폰에서도 stack 없이 읽힌다. */
+     🔴 한 그룹(9행)이 한 화면에 들어와야 한다 — 그래서 머리글이 없고, 셀은 모두 nowrap
+     한 줄이며(마지막 열만 늘어난다) 글자·여백을 줄여 행 높이를 34px 안팎으로 묶었다.
+     설명을 길게 쓰면 줄이 꺾여 이 전제가 깨진다 — 근거와 값은 「예약 · 링크」 시트에 둔다. */
   table.ckt{min-width:0}
   table.ckt tr.ck{cursor:pointer}
-  table.ckt td{font-size:14.5px; vertical-align:top}
-  table.ckt td.c{width:30px; padding-right:0}
-  table.ckt td.t{width:24%}
+  table.ckt td{font-size:14px; padding:7px 10px; white-space:nowrap}
+  table.ckt td.c{width:26px; padding-right:0}
+  table.ckt td.t{font-weight:600}
   table.ckt td.w{color:var(--muted)}
+  table.ckt td.w:last-child{width:100%; white-space:normal}
   table.ckt td.w b{color:var(--ink); font-weight:600}
   table.ckt tr.ck.on td, table.ckt tr.ck.on td b{color:var(--dim)}
-  table.ckt tr.ck.on td.t b{text-decoration:line-through}
-  table.ckt td.t em{display:block; font-style:normal; font-family:var(--fm); font-size:13px;
-    color:var(--warn); margin-top:2px}
-  table.ckt tr.ck.on td.t em{color:var(--dim)}
+  table.ckt tr.ck.on td.t{text-decoration:line-through}
   .tag{display:inline-block; font-size:12px; font-weight:500; padding:1px 7px;
     border-radius:3px; margin-right:6px}
   .tag.r{background:rgba(42,109,244,.12); color:var(--link)}
@@ -462,15 +462,13 @@
     table.stack td{display:block; border:0; padding:1px 0}
     table.stack td:first-child{font-weight:600; margin-bottom:2px}
     table.stack td.n{text-align:left; white-space:normal}
-    /* 표형 체크리스트는 stack을 쓰지 않는다 — 체크 아이콘이 제 줄을 차지하면 표가 아니라
-       그냥 목록이 된다. 아이콘만 왼쪽에 세로로 걸치고 제목·설명을 오른쪽에 쌓는다 */
-    table.ckt thead{display:none}
-    table.ckt tr.ck{display:grid; grid-template-columns:28px 1fr; padding:10px 12px;
-      border-bottom:1px solid var(--border)}
+    /* 표형 체크리스트는 stack을 쓰지 않는다 — 칸마다 줄을 바꾸면 한 항목이 네 줄이 된다.
+       폰에서는 칸을 한 문단처럼 이어 흘리고 사이에 가운뎃점을 CSS로 넣는다 */
+    table.ckt tr.ck{display:block; padding:8px 12px; border-bottom:1px solid var(--border)}
     table.ckt tr.ck:last-child{border-bottom:0}
-    table.ckt tr.ck td{border:0; padding:0}
-    table.ckt td.c{grid-row:1/3}
-    table.ckt td.t{margin-bottom:3px}
+    table.ckt tr.ck td{display:inline; border:0; padding:0; white-space:normal}
+    table.ckt tr.ck td.w:last-child{width:auto}
+    table.ckt tr.ck td.w:not(:empty)::before{content:'·'; margin:0 5px; color:var(--dim)}
   }
 
   /* 세운 화면 — POI 상세는 지도를 덮지 않고 지도 아래 목록 맨 위에 끼어든다 */
@@ -1337,17 +1335,20 @@ function ckItem(id,t,s){
 function ckGroup(t,s,items){
   return '<div class="ckg"><div class="ckh">'+t+'<s>'+s+'</s><span class="ckp"></span></div>'+
     '<ul class="ckl">'+items+'</ul></div>'}
-/* 표형 (chk 시트 · 2026-08-09 사용자 지시 「체크리스트 표로 간소화」).
+/* 표형 (chk 시트 · 2026-08-09 사용자 지시 「체크리스트 표로 간소화 · 한 화면에 다 들어가게」).
    행 전체가 눌리고, id·저장소·진행률은 목록형과 같다 (resv와 같은 id를 쓰는 항목은
-   한쪽에서 지우면 다른 쪽도 지워진다). 값은 제목 아래 em 한 줄, 설명은 오른쪽 한 칸. */
-function ckRow(id,t,v,s){
-  return '<tr class="ck'+(CK[id]?' on':'')+'" data-i="'+id+'" onclick="ckTog(this)">'+
-    '<td class="c"><i>✓</i></td><td class="t"><b>'+t+'</b>'+(v?'<em>'+v+'</em>':'')+'</td>'+
-    '<td class="w">'+s+'</td></tr>'}
-function ckTab(t,s,h,rows){
+   한쪽에서 지우면 다른 쪽도 지워진다).
+   칸 수는 그룹마다 다르다 — ckRow(id, 제목, 칸…)로 필요한 만큼만 넘긴다.
+   🔴 한 칸은 한 줄이다. 꺾일 만큼 길게 쓰면 그룹이 한 화면에 안 들어간다. */
+function ckRow(id){
+  var s='<tr class="ck'+(CK[id]?' on':'')+'" data-i="'+id+'" onclick="ckTog(this)">'+
+    '<td class="c"><i>✓</i></td>', i;
+  for(i=1;i<arguments.length;i++) s+='<td class="'+(i===1?'t':'w')+'">'+arguments[i]+'</td>';
+  return s+'</tr>';
+}
+function ckTab(t,s,rows){
   return '<div class="ckg"><div class="ckh">'+t+'<s>'+s+'</s><span class="ckp"></span></div>'+
-    '<div class="tw"><table class="ckt"><thead><tr><th></th><th>무엇</th><th>'+h+'</th></tr>'+
-    '</thead><tbody>'+rows+'</tbody></table></div></div>'}
+    '<div class="tw"><table class="ckt"><tbody>'+rows+'</tbody></table></div></div>'}
 function ckTog(el){
   var id=el.dataset.i; CK[id]=!CK[id];
   if(CK[id]) el.classList.add('on'); else el.classList.remove('on');
@@ -2232,79 +2233,38 @@ var SHEET={
   '<s class="cknum">0 / 0 완료</s>'+
   '<button class="ckrs" onclick="ckReset()">전체 해제</button></div>'+
   '<div class="rail"><b class="fill"></b></div></div>'+
-  '<div class="msg ok"><p>행을 누르면 지워지고 <b>이 브라우저에 저장</b>됩니다(폰과 노트북은 따로 셉니다). '+
-  '위에서 아래로 <b>마감 순서</b>이고, <br><rd></rd><b>예약 9건은 「예약 · 링크」 시트와 같은 항목</b>이라 '+
-  '한쪽에서 지우면 다른 쪽도 지워집니다 (값의 근거와 링크는 그 시트에 있습니다).</p></div>'+
 
-  ckTab('<rd></rd>① 예약 — 9건','현장에서 못 사는 것은 열차와 유니버설뿐 · 유니버설은 1안·2안 중 하나만',
-   '언제까지 · 어디서',
-   ckRow('b3','이화원 통표','60元 · 8/10분',
-     '<rd></rd><b>오늘 8/9 21:00이 마지막 창</b>이라 아홉 중 가장 급합니다 · 창유공원 bjgyol.com.cn · '+
-     '시간대는 <b>16:00~19:00</b>(원중원 네 곳 포함 · 그 구역은 18:00 마감)')+
-   ckRow('a1','고속철 본선 2구간','690元 (355 + 335)',
-     '<b>지금</b> · 12306 공식(여권 · 수수료 없음) — <b>1등석이 먼저 매진</b>됩니다. '+
-     'G2475 8/10 19:42 → 후허 22:29 · <br><rd></rd><b>G2458 8/12 07:15 → 칭허 09:28</b>')+
-   ckRow('a2','칭허 ↔ 바다링 왕복','72元 (32 + 40)',
-     '<b>지금</b> · 12306 — D6647 10:51 상행 · <br><rd></rd><b>G7834 14:43이 그날의 갈림길</b>입니다'+
-     '(개찰 14:38 마감 · 놓치면 천단이 사라집니다)')+
-   ckRow('a6','유니버설 <b>1안</b> — 인터파크 세트','497,154원 / 4인',
-     '<b>지금</b> · 8/13분 지정 — <b><span class="cn">626元</span> 식사·상품 쿠폰</b>이 붙어 '+
-     '<b>실질 약 378,000원</b>으로 가장 쌉니다 (세트 1 + 낱장 1 · 여권 실명제)')+
-   ckRow('a7','유니버설 <b>2안</b> — 클룩 낱장 4장','464,800원 / 4인',
-     '<b>지금</b> · 8/13분 지정 — <b>현금이 가장 적게</b> 나갑니다(신한 Visa 15%가 되면 395,080원) · '+
-     '⚠ <b>1안과 둘 중 하나만</b> 삽니다')+
-   ckRow('a3','바다링 문표','40元 · 8/12분',
-     '<b>지금</b> · 위챗 <span class="cn">长城内外旅游</span>(여권 예약 가능) — 안 사도 들어가지만 '+
-     '<b>일일 정원</b>이 그대로라 성수기에는 미리 삽니다 · <b>오전장</b>으로 · ⚠ 삭도는 현장 별도 100元')+
-   ckRow('b4','이화원 동문 <b>짐 보관</b>','40元 · 8/10분',
-     '<b>지금</b> · 알리페이 <span class="cn">途简单</span>에서 <span class="cn">颐和园</span> 검색 · '+
-     '동문에서 100m · 08:00~23:00 · 캐리어 2개(20元/일) · <b>18:20에 회수</b>')+
-   ckRow('b5','칭허역 앞 <b>짐 보관</b>','40元 · 8/12분',
-     '<b>지금</b> · 같은 앱에서 <span class="cn">清河站</span> 검색 · 역 앞 180m · '+
-     '<br><rd></rd><b>09:00 개점이라 09:28 도착이 딱 맞습니다</b> · <b>15:03에 회수</b>')+
-   ckRow('a5','천단 통표','34元 · 8/12분',
-     '<b>8/11 21:00까지</b> · 이화원과 <b>같은 사이트</b>(bjgyol.com.cn)라 한 번에 끝냅니다 · '+
-     '대문표로는 기년전에 못 들어갑니다'))+
+  ckTab('<rd></rd>① 예약','9건 · 위에서 아래로 마감 순서 · 값의 근거와 링크는 「예약 · 링크」 시트',
+   ckRow('b3','이화원 통표','60元','<rd></rd><b>오늘 21:00까지</b>','창유공원 bjgyol.com.cn · 8/10분 16~19시')+
+   ckRow('a1','고속철 본선 2구간','690元','<b>지금</b>','12306 여권 · <b>1등석이 먼저 매진</b>')+
+   ckRow('a2','칭허 ↔ 바다링 왕복','72元','<b>지금</b>','12306 · D6647 10:51 · <b>G7834 14:43</b>')+
+   ckRow('a6','유니버설 <b>1안</b>','497,154원','<b>지금</b>','인터파크 세트 · <b>쿠폰 626元</b>이 붙어 실질 최저')+
+   ckRow('a7','유니버설 <b>2안</b>','464,800원','<b>지금</b>','클룩 낱장 4장 · <b>둘 중 하나만</b> 삽니다')+
+   ckRow('a3','바다링 문표','40元','<b>지금</b>','위챗 <span class="cn">长城内外旅游</span> · 8/12 <b>오전장</b>')+
+   ckRow('b4','이화원 짐 보관','40元','<b>지금</b>','<span class="cn">途简单</span>에서 <span class="cn">颐和园</span> · 8/10분')+
+   ckRow('b5','칭허역 짐 보관','40元','<b>지금</b>','<span class="cn">途简单</span>에서 <span class="cn">清河站</span> · 8/12분')+
+   ckRow('a5','천단 통표','34元','<b>8/11 21:00까지</b>','창유공원 · 이화원과 같은 사이트'))+
 
-  ckTab('② 짐 · 폰 — 8건','짐 싸기는 8/12 아침 한 번뿐 · 캐리어 2 + 가방 2','왜 · 어떻게',
-   ckRow('f0','<rd></rd>지하철 승차코드','4인이 각자 · 출발 전',
-     '알리페이에서 <span class="cn">北京地铁乘车—亿通行</span> 검색 → <span class="cn">立即乘车</span> → '+
-     '<span class="cn">领卡</span>까지 해야 QR이 생깁니다. <b>외국 여권·해외 번호로도 됩니다</b>')+
-   ckRow('f1','멀티 어댑터','1~2개',
-     '220V라 변압기는 불필요 — 다만 <b>한국 둥근 플러그가 안 맞는 벽</b>이 있습니다')+
-   ckRow('f2','보조배터리','',
-     '기내 <b>휴대만</b> 가능(위탁 금지) · 역·명소 보안검색이 잦으니 꺼내기 쉽게')+
-   ckRow('f3','선글라스 · 자외선 차단','',
-     '사막에는 그늘도 실내도 없고, 성벽과 유니버설 대기 줄도 대부분 야외입니다')+
-   ckRow('f4','끈 있는 신발 · 지퍼 주머니','',
-     '8/11 낙타·모래썰매의 모래 대비 · <b>8/12 하산 40분</b>도 이 신발로 걷습니다')+
-   ckRow('f5','겉옷 한 벌','',
-     '내몽고는 한낮이 뜨겁고 아침저녁이 쌀쌀합니다')+
-   ckRow('f6','접이식 우산 · 물통','',
-     '베이징 8월은 갑작스런 소나기 · <br><rd></rd><b>8/12는 점심이 없는 날</b>이라 '+
-     '칭허역에서 물을 사서 성벽에 오릅니다')+
-   ckRow('f7','상비약','',
-     '해열 · 소화제 · 밴드'))+
+  ckTab('② 짐 · 폰','8건 · 짐 싸기는 8/12 아침 한 번뿐',
+   ckRow('f0','<rd></rd>지하철 승차코드','4인이 각자','알리페이 <span class="cn">北京地铁乘车—亿通行</span> → <span class="cn">领卡</span>')+
+   ckRow('f1','멀티 어댑터','1~2개','220V라 변압기는 불필요')+
+   ckRow('f2','보조배터리','','기내 <b>휴대만</b> · 위탁 금지')+
+   ckRow('f3','선글라스 · 자외선 차단','','사막 · 성벽 · 유니버설 줄이 전부 야외')+
+   ckRow('f4','끈 있는 신발 · 지퍼 주머니','','8/11 모래 · <b>8/12 하산 40분</b>')+
+   ckRow('f5','겉옷 한 벌','','내몽고는 아침저녁이 쌀쌀합니다')+
+   ckRow('f6','접이식 우산 · 물통','','<rd></rd><b>8/12는 점심이 없는 날</b>입니다')+
+   ckRow('f7','상비약','','해열 · 소화제 · 밴드'))+
 
-  ckTab('③ 떠나기 직전 · 현지 — 5건','날짜가 정해진 것부터','언제 · 무엇을',
-   ckRow('g3','<rd></rd>후허 숙소에 두 가지 확인','예약할 때',
-     '<b>8/10 밤 22:54 심야 체크인</b>과 <b>8/12 새벽 06:10 퇴실·보증금 반환</b> — '+
-     '<span class="cn">振华广场</span> 29층 <b>아파트형</b>이라 유인 프런트가 24시간이 아닐 수 있습니다. '+
-     '<br><rd></rd><b>같은 방 2박</b>이라 짐 보관은 신경 쓸 것이 없습니다')+
-   ckRow('g1','사막 집합지를 지도에 찍기','8/9 밤',
-     '<b>신화광장 서쪽 중신은행 · 07:15</b> — 숙소에서 도보권입니다')+
-   ckRow('g2','사막 담당자 연락 확인','8/10 22:00',
-     '<rd></rd><b>그 시각 우리는 G2475 안</b>(19:42~22:29)입니다 — 로밍·eSIM을 켜고 '+
-     'Trip.com 알림을 열어 둡니다. <b>연락이 없으면 열차에서 먼저 문의</b>합니다')+
-   ckRow('g4','짐 싸기','8/11 밤 · 8/13 밤',
-     '다음 날이 각각 <b>05:40 기상</b>과 <b>06:00 조식</b>이라 아침에 쌀 시간이 없습니다'+
-     '(8/11 밤에는 물·간식도 함께 사 둡니다)')+
-   ckRow('g5','유니버설 운영시간 재확인','8/12 밤',
-     '<b>8/13분은 09:00~21:00으로 공식 확인</b>했지만 「당일 바뀔 수 있다」고 적혀 있어 '+
-     '<b>앱에서 한 번 더</b> 봅니다. <br><rd></rd><b>1안을 샀다면 <span class="cn">626元</span> 쿠폰 사용처</b>도 이때'))+
+  ckTab('③ 떠나기 직전 · 현지','5건 · 날짜가 정해진 것부터',
+   ckRow('g3','<rd></rd>후허 숙소에 확인','예약할 때','<b>22:54 심야 체크인</b>과 <b>06:10 새벽 퇴실</b>(아파트형 29층)')+
+   ckRow('g1','사막 집합지를 지도에','8/9 밤','신화광장 서쪽 중신은행 · 07:15')+
+   ckRow('g2','사막 담당자 연락 확인','8/10 22:00','<b>G2475 안</b>입니다 — 로밍을 켜 둡니다')+
+   ckRow('g4','짐 싸기','8/11 · 8/13 밤','다음 날이 <b>05:40 기상</b>과 <b>06:00 조식</b>')+
+   ckRow('g5','유니버설 시간 재확인','8/12 밤','공식 09:00~21:00 · <b>626元 쿠폰</b> 사용처'))+
 
-  '<p class="src">마감 시각과 채널은 「예약 · 링크」 시트와 같은 근거입니다(2026-08-09 실조회). '+
-  '체크 상태는 서버에 올라가지 않고 이 브라우저에만 남습니다 — 방문 기록을 지우면 함께 지워집니다.</p>'}},
+  '<p class="src">행을 누르면 지워지고 <b>이 브라우저에만</b> 저장됩니다(폰과 노트북은 따로 셉니다) — '+
+  '예약 9건은 「예약 · 링크」 시트와 같은 항목이라 한쪽에서 지우면 다른 쪽도 지워집니다. '+
+  '마감 시각과 채널은 그 시트와 같은 근거입니다(2026-08-09 실조회).</p>'}},
 
  prep:{title:"준비물 · 앱",body:function(){
   return bk('sch','시간 격자')+
