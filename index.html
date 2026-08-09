@@ -257,38 +257,13 @@
   .ckh .ckp{margin-left:auto; font-family:var(--fm); font-size:13px; color:var(--dim);
     font-weight:400}
   .ckg.done .ckh .ckp{color:var(--success)}
-  .ckl{list-style:none; padding:0; margin:0}
-  .ckl li{border-bottom:1px solid var(--border)}
-  .ckl li:last-child{border-bottom:0}
-  button.ck{display:flex; align-items:flex-start; gap:11px; width:100%; text-align:left;
-    padding:11px 4px; font-size:15px; transition:background .12s}
-  button.ck:hover{background:var(--surface)}
-  .ckl li{background:var(--surface)}
-  .ckl{border:1px solid var(--border); border-radius:var(--r); overflow:hidden;
-    box-shadow:var(--sh-sm)}
   .ck i{flex:0 0 18px; display:inline-block; width:18px; height:18px; margin-top:1px;
     border:1px solid var(--border-hi);
     border-radius:4px; font-style:normal; font-size:12px; line-height:17px; text-align:center;
     color:transparent; transition:background .12s, border-color .12s, color .12s}
   .ck.on i{background:var(--success); border-color:var(--success); color:var(--bg)}
-  /* 직계 자식만 — 설명(s) 안에서 강조로 쓰는 <b>가 블록이 되면 줄이 통째로 꺾인다 */
-  .ck .tx{flex:1; min-width:0}
-  .ck .tx>b{display:block; font-weight:600}
-  .ck .tx>s{display:block; font-size:14px; color:var(--muted); text-decoration:none;
-    margin-top:3px}
-  .ck .tx>s b{font-weight:600; color:var(--ink)}
-  .ck.on .tx>b{text-decoration:line-through; color:var(--dim)}
-  .ck.on .tx>s, .ck.on .tx>s b{color:var(--dim)}
-  /* 예약 항목 — 값은 제목 옆에, 채널·링크는 항목 아래 한 줄.
-     ⚠ 링크를 버튼 안에 넣으면 누를 때 체크까지 토글되고 <button> 안의 <a>는 잘못된 HTML이다 */
-  .ck .tx>b em{margin-left:8px; font-style:normal; font-weight:600;
-    font-family:var(--fm); font-size:13px; color:var(--warn)}
-  .ck.on .tx>b em{color:var(--dim)}
-  .rvl{display:block; margin:-3px 0 11px 33px; font-size:14px}
-  .rvl.no{color:var(--dim)}
-  /* 표형 체크리스트 (chk 시트) — 행 하나가 통째로 버튼처럼 눌린다.
-     상태·진행률은 목록형(button.ck)과 같은 저장소를 쓰므로 .ck 클래스를 그대로 얹는다.
-     ⚠ 그래서 위의 .ck 규칙은 button.ck로 좁혀 두었다 — tr에 display:flex가 걸리면 표가 깨진다.
+  /* 표형 체크리스트 (chk · resv) — 행 하나가 통째로 버튼처럼 눌린다.
+     체크 상태는 .ck 클래스가 들고 있고 아이콘(.ck i)만 규칙을 따로 둔다.
      🔴 한 그룹(9행)이 한 화면에 들어와야 한다 — 그래서 머리글이 없고, 셀은 모두 nowrap
      한 줄이며(마지막 열만 늘어난다) 글자·여백을 줄여 행 높이를 34px 안팎으로 묶었다.
      설명을 길게 쓰면 줄이 꺾여 이 전제가 깨진다 — 근거와 값은 「예약 · 링크」 시트에 둔다. */
@@ -464,11 +439,11 @@
     table.stack td.n{text-align:left; white-space:normal}
     /* 표형 체크리스트는 stack을 쓰지 않는다 — 칸마다 줄을 바꾸면 한 항목이 네 줄이 된다.
        폰에서는 칸을 한 문단처럼 이어 흘리고 사이에 가운뎃점을 CSS로 넣는다 */
-    table.ckt tr.ck{display:block; padding:8px 12px; border-bottom:1px solid var(--border)}
-    table.ckt tr.ck:last-child{border-bottom:0}
-    table.ckt tr.ck td{display:inline; border:0; padding:0; white-space:normal}
-    table.ckt tr.ck td.w:last-child{width:auto}
-    table.ckt tr.ck td.w:not(:empty)::before{content:'·'; margin:0 5px; color:var(--dim)}
+    table.ckt tr{display:block; padding:8px 12px; border-bottom:1px solid var(--border)}
+    table.ckt tr:last-child{border-bottom:0}
+    table.ckt td{display:inline; border:0; padding:0; white-space:normal}
+    table.ckt td.w:last-child{width:auto}
+    table.ckt td.w:not(:empty)::before{content:'·'; margin:0 5px; color:var(--dim)}
   }
 
   /* 세운 화면 — POI 상세는 지도를 덮지 않고 지도 아래 목록 맨 위에 끼어든다 */
@@ -1329,13 +1304,8 @@ function bk(k,t){
    getElementById로 참조하면 check_page.py의 「없는 id」 검사에 걸린다. */
 var CKKEY='ck2026cn', CK={};
 try{CK=JSON.parse(localStorage.getItem(CKKEY)||'{}')}catch(e){CK={}}
-function ckItem(id,t,s){
-  return '<li><button class="ck'+(CK[id]?' on':'')+'" data-i="'+id+'" onclick="ckTog(this)">'+
-    '<i>✓</i><span class="tx"><b>'+t+'</b><s>'+s+'</s></span></button></li>'}
-function ckGroup(t,s,items){
-  return '<div class="ckg"><div class="ckh">'+t+'<s>'+s+'</s><span class="ckp"></span></div>'+
-    '<ul class="ckl">'+items+'</ul></div>'}
-/* 표형 (chk 시트 · 2026-08-09 사용자 지시 「체크리스트 표로 간소화 · 한 화면에 다 들어가게」).
+/* 2026-08-09 사용자 지시 「표로 간소화 · 한 화면에 다 들어가게」로 chk·resv가 모두 표가 되어
+   목록형(ckItem/ckGroup/rvItem)은 없앴다 — 되살리지 말 것.
    행 전체가 눌리고, id·저장소·진행률은 목록형과 같다 (resv와 같은 id를 쓰는 항목은
    한쪽에서 지우면 다른 쪽도 지워진다).
    칸 수는 그룹마다 다르다 — ckRow(id, 제목, 칸…)로 필요한 만큼만 넘긴다.
@@ -1374,13 +1344,16 @@ function ckReset(){
   for(var i=0;i<bs.length;i++) bs[i].classList.remove('on');
   ckSum();
 }
-/* 예약 항목 — 체크리스트(chk)와 같은 id를 쓴다: 한쪽에서 지우면 다른 쪽도 지워진다.
-   채널 줄은 버튼 밖에 둔다 (안에 넣으면 링크를 눌러도 체크가 토글된다). */
-function rvItem(id,t,price,why,ch,href){
-  return '<li><button class="ck'+(CK[id]?' on':'')+'" data-i="'+id+'" onclick="ckTog(this)">'+
-    '<i>✓</i><span class="tx"><b>'+t+'<em>'+price+'</em></b><s>'+why+'</s></span></button>'+
-    (href?'<a class="rvl" href="'+href+'" target="_blank" rel="noopener">'+ch+' →</a>'
-         :'<span class="rvl no">'+ch+'</span>')+'</li>'}
+/* 예약 행 — 체크리스트(chk)와 같은 id를 쓴다: 한쪽에서 지우면 다른 쪽도 지워진다.
+   ⚠ 채널 링크는 행 안의 <a>다 — 행 전체가 토글이므로 클릭이 번지지 않게 막아야 한다
+   (옛 목록형에서 링크를 버튼 밖 .rvl 줄에 뒀던 이유가 이것이었다). */
+function rvRow(id,t,price,when,ch,href,memo){
+  return '<tr class="ck'+(CK[id]?' on':'')+'" data-i="'+id+'" onclick="ckTog(this)">'+
+    '<td class="c"><i>✓</i></td><td class="t">'+t+'</td>'+
+    '<td class="w"><b>'+price+'</b></td><td class="w">'+when+'</td>'+
+    '<td class="w">'+(href?'<a href="'+href+'" target="_blank" rel="noopener" '+
+      'onclick="event.stopPropagation()">'+ch+' →</a>':ch)+'</td>'+
+    '<td class="w">'+memo+'</td></tr>'}
 
 /* ── 이동 · 명소 상세 (2026-08-05 사용자 지시) ─────────────────────
    시간 격자의 블록을 누르면 열린다 (TT 블록 6번째 원소 = DTL 키 · openDtl → 시트 dtl).
@@ -2269,53 +2242,48 @@ var SHEET={
  prep:{title:"준비물 · 앱",body:function(){
   return bk('sch','시간 격자')+
   '<h3>폰 — 출발 전에 끝낼 설정</h3>'+
-  '<div class="tw"><table class="stack"><thead><tr><th>앱</th><th>왜 · 어떻게</th></tr></thead><tbody>'+
-  '<tr class="tot"><td><b>알리페이(支付宝)</b></td><td><b>결제의 기본.</b> 해외 Visa/Mastercard 등록 — '+
-  '200元 이하 수수료 없음 · 초과 3%. 택시(Didi)도 이 앱 안에서 부를 수 있습니다. '+
-  '<br><rd></rd><b>지하철 승차코드는 여기서 따로 받아야 합니다</b> — 아래 항목을 봅니다</td></tr>'+
-  '<tr class="tot"><td><rd></rd><b>지하철 승차코드</b><br><span class="cn">乘车码</span></td>'+
-  '<td><rd></rd><b>앱을 깔았다고 되는 것이 아닙니다</b> — 알리페이에서 '+
-  '<b><span class="cn">北京地铁乘车—亿通行</span></b> 검색 → <span class="cn">立即乘车</span> → '+
-  '<span class="cn">领卡</span>까지 해야 QR이 생깁니다. <b>외국 여권·해외 번호로도 되니</b> '+
-  '<b>4인이 각자 출발 전에</b> 끝내 둡니다 (공항선도 같은 코드 · 요금만 별도)</td></tr>'+
-  '<tr class="tot"><td><b>위챗(微信)</b></td><td><b>바다링 문표</b>가 위챗 미니프로그램 '+
-  '<span class="cn">长城内外旅游</span>에 있습니다 (携程·Trip.com에서도 됩니다). 계정·실명 인증을 '+
-  '미리 끝냅니다 — 천단·이화원은 창유공원 웹(bjgyol.com.cn)이라 위챗이 없어도 됩니다</td></tr>'+
-  '<tr class="tot"><td><b>유니버설 앱</b></td><td><rd></rd><b>공식 앱은 외국 카드를 자주 거부</b>합니다 — '+
-  '표는 <b>Klook·Trip.com</b>으로 사고, 앱은 <b>그날 운영시간과 어트랙션 대기 시간</b>을 보는 '+
-  '용도로 깔아 둡니다 (전날 밤에 개·폐장 시각을 확인)</td></tr>'+
-  '<tr class="tot"><td><b>12306</b></td><td><rd></rd><b>기차 4구간을 여기서 삽니다</b> — 공식이라 제3자 수수료가 없습니다. <b>4인 여권 정보를 미리 등록</b>해 두면 빠르고, 개표변경(改签)도 여기서 됩니다</td></tr>'+
-  '<tr><td><b>Trip.com</b></td><td>숙소 + <b>샹사완 패키지(예약 완료)</b> — 사막은 출발 전날 22:00까지 오는 담당자 연락을 앱 알림으로 받게 열어 둡니다</td></tr>'+
-  '<tr><td><b>투젠단(途简单)</b> <s class="du">짐 보관</s></td>'+
-  '<td>짐 보관소 예약 플랫폼입니다 — <b>따로 깔 것 없이 알리페이 검색창에 </b>'+
-  '<span class="cn">途简单</span><b>을 넣으면 미니프로그램</b>이 뜹니다(위챗·앱에도 있습니다). '+
-  '<b>도시 선택 → 지도에서 보관점 → 날짜와 짐 개수 → 결제</b> 순이고, 가게에 가서 예약번호를 '+
-  '보이고 짐 사진을 올리면 끝입니다. <br><rd></rd><b>잡아 둘 것은 두 건</b>입니다 — '+
-  '<b>8/10 이화원 동문 100m</b>(08:00~23:00 · 캐리어 20元/일)와 '+
-  '<br><rd></rd><b>8/12 칭허역 앞</b>(<span class="cn">清河站</span>으로 검색 · <b>09:00~21:00</b> · 20元/일). '+
-  '후허는 <b>같은 방 2박이라 보관이 없습니다</b>. '+
-  '⚠ <b>「일」 단위 요금이라 날짜를 넘기면 2일치</b>입니다. '+
-  '<span class="cn">存知己</span>도 같은 종류라 어느 쪽이든 됩니다</td></tr>'+
-  '<tr><td><b>가오더지도(高德地图)</b></td><td>구글지도는 중국에서 안 됩니다 — 한자로 검색합니다</td></tr>'+
-  '<tr><td><b>번역 앱</b></td><td>파파고·구글번역의 <b>중국어 오프라인 팩</b>을 미리 다운로드</td></tr>'+
-  '<tr><td><b>통신</b></td><td>한국 통신사 로밍 또는 여행용 eSIM — 이 경로는 구글·카카오톡이 보통 '+
-  '그대로 됩니다. <b>현지 유심은 차단이 그대로 적용</b>되니 피합니다</td></tr>'+
+  '<div class="tw"><table class="ckt"><tbody>'+
+  '<tr><td class="t">알리페이(<span class="cn">支付宝</span>)</td>'+
+  '<td class="w"><b>결제의 기본</b> — 해외 Visa·Master 등록(200元 초과분 3%) · 택시(Didi)도 이 앱 안에서</td></tr>'+
+  '<tr><td class="t"><rd></rd>지하철 승차코드</td>'+
+  '<td class="w">알리페이에서 <span class="cn">北京地铁乘车—亿通行</span> → <span class="cn">立即乘车</span> → '+
+  '<span class="cn">领卡</span> · <b>4인이 각자</b> · 공항선도 같은 코드</td></tr>'+
+  '<tr><td class="t">위챗(<span class="cn">微信</span>)</td>'+
+  '<td class="w"><b>바다링 문표</b>가 미니프로그램 <span class="cn">长城内外旅游</span>에 있습니다 · 실명 인증을 미리</td></tr>'+
+  '<tr><td class="t">유니버설 앱</td>'+
+  '<td class="w"><rd></rd><b>표는 여기서 못 삽니다</b>(외국 카드 거부) — 운영시간·대기 시간을 보는 용도</td></tr>'+
+  '<tr><td class="t">12306</td>'+
+  '<td class="w"><b>기차 4구간</b>을 여기서 · 4인 여권을 미리 등록 · 개표변경(<span class="cn">改签</span>)도 여기서</td></tr>'+
+  '<tr><td class="t">Trip.com</td>'+
+  '<td class="w">숙소 + <b>샹사완 패키지</b> · 8/10 22:00 담당자 연락을 알림으로 받게 열어 둡니다</td></tr>'+
+  '<tr><td class="t"><span class="cn">途简单</span> 짐 보관</td>'+
+  '<td class="w">알리페이 검색창에 넣으면 미니프로그램 · <b>보관점 → 날짜 → 개수 → 결제</b> · '+
+  '⚠ 「일」 단위라 날짜를 넘기면 2일치</td></tr>'+
+  '<tr><td class="t">가오더지도(<span class="cn">高德地图</span>)</td>'+
+  '<td class="w">구글지도는 중국에서 안 됩니다 — <b>한자로 검색</b>합니다</td></tr>'+
+  '<tr><td class="t">번역 앱</td>'+
+  '<td class="w">파파고·구글번역의 <b>중국어 오프라인 팩</b>을 미리 받아 둡니다</td></tr>'+
+  '<tr><td class="t">통신</td>'+
+  '<td class="w">로밍 또는 여행용 eSIM — <b>현지 유심은 차단이 그대로</b> 적용되니 피합니다</td></tr>'+
   '</tbody></table></div>'+
+
   '<h3>서류 · 짐</h3>'+
-  '<div class="tw"><table class="stack"><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody>'+
-  '<tr class="tot"><td><b>여권 원본 4개</b></td><td>유효기간 확인 · 2026년 관광 무비자 30일 대상 · '+
-  '<b>사본과 사진을 클라우드에도</b> 올려 둡니다 — 분실 시 재발급이 빨라집니다</td></tr>'+
-  '<tr><td><b>숙소 주소 중문</b></td><td>두 숙소의 중문 주소를 캡처 — 입국 서류와 택시에서 씁니다</td></tr>'+
-  '<tr><td><b>어댑터</b></td><td>중국은 한국과 같은 220V라 변압기는 불필요. 다만 표준 콘센트 모양이 달라 '+
-  '한국 둥근 플러그가 안 맞는 벽이 있습니다 — <b>멀티 어댑터 1~2개</b>면 안심 (호텔은 겸용 콘센트가 흔함)</td></tr>'+
-  '<tr><td><b>보조배터리</b></td><td>기내 <b>휴대만</b> 가능(위탁 금지) · 역·명소 보안검색이 잦으니 '+
-  '꺼내기 쉽게 둡니다</td></tr>'+
-  '<tr><td><b>사막 · 야외</b></td><td>선글라스 · 모래 대비(끈 있는 신발 · 지퍼 주머니) · 자외선 차단 · '+
-  '겉옷 한 벌 — 내몽고는 아침저녁이 쌀쌀합니다</td></tr>'+
-  '<tr><td><b>상비약 · 보험</b></td><td>해열·소화제·밴드 등 기본 상비약 · 여행자보험은 출국 전 가입</td></tr>'+
+  '<div class="tw"><table class="ckt"><tbody>'+
+  '<tr><td class="t">여권 원본 4개</td>'+
+  '<td class="w">2026년 관광 <b>무비자 30일</b> 대상 · 유효기간 확인 · <b>사본을 클라우드에도</b></td></tr>'+
+  '<tr><td class="t">숙소 주소 중문</td>'+
+  '<td class="w">두 곳을 캡처 — 입국 서류와 택시에서 씁니다</td></tr>'+
+  '<tr><td class="t">멀티 어댑터</td>'+
+  '<td class="w">220V라 변압기는 불필요 · <b>1~2개</b>(호텔은 겸용 콘센트가 흔합니다)</td></tr>'+
+  '<tr><td class="t">보조배터리</td>'+
+  '<td class="w">기내 <b>휴대만</b> 가능(위탁 금지) · 보안검색이 잦으니 꺼내기 쉽게</td></tr>'+
+  '<tr><td class="t">사막 · 야외</td>'+
+  '<td class="w">선글라스 · 자외선 차단 · <b>끈 있는 신발</b>과 지퍼 주머니 · 겉옷 한 벌</td></tr>'+
+  '<tr><td class="t">상비약 · 보험</td>'+
+  '<td class="w">해열 · 소화제 · 밴드 · 여행자보험은 출국 전 가입</td></tr>'+
   '</tbody></table></div>'+
-  '<p class="src">예약 채널·수수료·무비자는 예약 · 링크 시트와 같은 조사(2026-08-01) 기준입니다. '+
-  '통신·어댑터·기내 반입은 일반 규정이라 출발 전 항공사·통신사 안내로 최종 확인하세요.</p>'}},
+  '<p class="src">예약 채널·수수료·무비자는 「예약 · 링크」 시트와 같은 조사(2026-08-01) 기준입니다. '+
+  '통신·어댑터·기내 반입은 일반 규정이라 항공사·통신사 안내로 최종 확인하세요.</p>'}},
 
 
 
@@ -2607,197 +2575,86 @@ var SHEET={
   '<s class="cknum">0 / 0 완료</s>'+
   '<button class="ckrs" onclick="ckReset()">전체 해제</button></div>'+
   '<div class="rail"><b class="fill"></b></div></div>'+
-  '<div class="msg ok"><p><b>예약은 전부 링크로 끝납니다 (전화 0건).</b> 사고 나서 누르면 지워지고, '+
-  '<b>출발 전 체크리스트와 같이 셉니다</b> (한쪽에서 지우면 다른 쪽도 지워집니다). '+
-  '<b>자금성은 목록에 없습니다</b> — 표를 못 구해 둘레길만 걷기로 했습니다.</p></div>'+
-  '<div class="msg bad"><p><rd></rd><b>필수는 둘뿐입니다 — 열차와 유니버설.</b> '+
-  '<b>2026-07-01부터 이화원·천단·바다링의 예약 의무가 없어져</b> 여권을 들고 '+
-  '<b>현장 창구·QR</b>로 살 수 있습니다. 아래 ③④의 입장권은 <b>「못 사면 못 들어가는 것」이 아니라 '+
-  '「미리 사면 줄을 안 서는 것」</b>입니다 — <b>8월 성수기</b>라 그래도 미리 잡기를 권합니다.</p></div>'+
+  '<div class="msg bad"><p><rd></rd><b>현장에서 못 사는 것은 열차와 유니버설뿐입니다.</b> '+
+  '나머지는 2026-07-01부터 예약 의무가 없어져 여권으로 현장에서 삽니다 — 미리 사는 이유는 '+
+  '<b>성수기의 줄과 일일 정원</b>입니다. 전화 예약은 0건이고, <b>자금성은 목록에 없습니다</b>'+
+  '(표를 못 구해 둘레길만 걷습니다).</p></div>'+
 
-  ckGroup('<rd></rd>① 필수 — 현장에서는 못 삽니다','열차 좌석과 유니버설 · 유니버설은 1안·2안 중 하나만',
-   rvItem('a1','고속철 본선 2구간','<b>690元</b> (355 + 335)',
-     '<rd></rd><b>1등석 실요금을 확인했습니다</b>(2026-08-09) — <b>G2475 355元 · G2458 335元</b>. '+
-     'G2475 8/10 19:42→<b>후허하오터(종착) 22:29</b>(동역이 아니라 시내역 — 숙소가 2km)  '+
-     '<br><rd></rd><b>G2458 8/12 07:15</b> <span class="cn">呼和浩特东</span>→<b>칭허 09:28</b>  '+
-     '<br><rd></rd><b>칭허에 서는 편이 이것 하나뿐</b>이라 동역 출발이고, 그 대가로 <b>1호선 첫차(06:17)</b>와 '+
-     '<b>기상 05:40</b>이 붙습니다. 대신 시내를 거치지 않아 <b>만리장성이 오전</b>이 되고 '+
-     '<b>삭도</b>를 탑니다. <b>1등석이 먼저 매진</b>됩니다(1등석 유지는 사용자 지시). '+
-     '<br><rd></rd><b>12306 공식이 이미 최저가입니다</b> — 제3자(Trip.com·携程)는 같은 좌석에 수수료가 붙습니다. '+
-     '더 싼 길은 <b>2등석</b>(G2458 209元 · 1인 126元 절약)뿐인데 <b>1등석 유지가 사용자 지시</b>라 쓰지 않습니다. '+
-     '시각은 제3자 시각표라 <b>예매 화면이 곧 최종 확인</b>이고, 어긋나면 일정표부터 고칩니다',
-     '12306 공식 — 여권으로 예매 (수수료 없음)','https://www.12306.cn/en/')+
-   rvItem('a2','칭허 ↔ 바다링 왕복 열차','<b>72元</b> (1등석 32 + 40)',
-     '<rd></rd><b>D6647 8/12 10:51→11:13 · G7834 14:43→15:03</b>입니다. '+
-     '칭허 09:28 도착 뒤 <b>첫 바다링행이 D6647</b>이라 앞으로 당길 수 없고, '+
-     '<br><rd></rd><b>돌아오는 G7834가 그날의 갈림길</b>입니다 — 개찰 <b>14:38 마감</b>이고 놓치면 '+
-     '다음이 <b>G2518 16:24</b>라 첸먼이 18:00경이 되어 <b>천단(입장 마감 17:30)이 사라집니다</b>. '+
-     '하루 20편 안팎이 다녀 <b>돌아오지 못할 일은 없지만</b>(막차 G7886 20:43 · '+
-     '베이징북행 D6654 21:13) 천단은 그때 잃습니다. '+
-     '<br><rd></rd><b>요금을 확인했습니다</b>(2026-08-09) — <b>D6647 1등석 32 / 2등석 20元</b> · '+
-     '<b>G7834 1등석 40 / 2등석 25元</b>. '+
-     '<br><rd></rd><b>2안 — 이 구간만 2등석</b>: 왕복 <b>45元</b>이라 <b>1인 27元</b>이 빠집니다. '+
-     '<b>22분짜리 구간</b>이라 좌석 차이가 거의 뜻이 없는데, 1등석 유지는 사용자 지시라 '+
-     '본선은 그대로 두고 <b>고를 수 있는 자리로만</b> 적어 둡니다',
-     '12306 공식 — 발매 중','https://www.12306.cn/en/')+
-   rvItem('a6','유니버설 <b>1안</b> — 인터파크 세트 (<b>8/13분</b>)','<b>497,154원</b> / 4인',
-     '<rd></rd><b>2026-08-09 실조회 값입니다</b> — <b>3인 세트(1일권 + <span class="cn">626元</span> 식사·상품 쿠폰) '+
-     '376,250원 + 성인 1인권 120,904원 = 497,154원</b>(1인 124,289원 · 약 654元). '+
-     '<br><rd></rd><b>현금은 2안보다 32,368원 더 나가지만 <span class="cn">626元</span>(약 11.9만원) 쿠폰이 붙습니다</b> — '+
-     '이날은 <b>파크 안에서 두 끼</b>를 먹어 4인 식비가 <b>640~1,200元</b>이라 <b>쿠폰을 다 씁니다</b>. '+
-     '그래서 실질은 약 <b>378,000원</b>으로 이쪽이 가장 쌉니다. '+
-     '⚠ <b>세트는 1개까지만</b> 살 수 있어 4인이면 세트 1 + 낱장 1입니다. '+
-     '⚠ <br><rd></rd><b>77,123원짜리는 다른 등급</b>이라 12시간에 못 씁니다 — 값만 보고 고르지 않습니다. '+
-     '<br><rd></rd><b>여권 실명제</b>라 예약할 때 여권 정보를 정확히 넣습니다(오기재면 입장 거부·환불 불가). '+
-     '<br><rd></rd><b>우속통(1인 500元~)은 사지 않습니다</b>',
-     '인터파크 NOL — 8/13 지정','https://travel.interpark.com/tna/products/f8283704-59ca-48f0-b72d-490b74b8bbf9?startDate=2026-08-13&amp;endDate=2026-08-13')+
-   rvItem('a7','유니버설 <b>2안</b> — 클룩 낱장 4장','<b>464,800원</b> / 4인',
-     '<rd></rd><b>현금이 가장 적게 나가는 길</b>입니다(2026-08-09 실조회) — <b>1일권 성인 116,200원 × 4</b>. '+
-     '쿠폰이 없어 <b>1안보다 실질은 비싸지만</b>, 쿠폰을 못 쓰거나 쓰기 번거로울 위험이 없습니다. '+
-     '<br><rd></rd><b>카드가 맞으면 여기서 더 빠집니다</b> — <b>신한 Visa 신용카드 15%</b>'+
-     '(<span class="cn">SHINHANVISAATT15Q3</span> · 최소 281,535원 · <b>상한 70,384원</b>이라 4인 주문에 전액 적용 → '+
-     '<b>395,080원</b>) · 하나 트래블로그 체크카드 UnionPay 20%(<span class="cn">HNCNBUSDL20</span>) · '+
-     'IBK 마스터카드 10%(<span class="cn">26IBKATT10</span>). '+
-     '⚠ <b>신한 15%는 USD 결제일 때만</b> 먹으므로 카드 해외결제 수수료(약 1%)를 빼고 따집니다. '+
-     '⚠ 같은 파크라 <b>1안과 2안 중 하나만</b> 삽니다',
-     '클룩 — 8/13 지정','https://www.klook.com/ko/activity/56183-universal-studios-beijing/'))+
-
-  ckGroup('② 추천 <br><rd></rd>안 사도 들어갑니다','2026-07-01 예약 의무 폐지 · 성수기라 미리 잡을 뿐 · 3건',
-   rvItem('a3','바다링 문표 (<b>8/12분</b> · 오전장)','40元',
-     '<rd></rd><b>2026-07-01 규정 변경으로 바다링도 「예약 불필요」</b>가 됐습니다 — 여권을 들고 '+
-     '현장 창구·QR로 살 수 있습니다. <b>다만 일일 정원</b>(오전 29,250 · 오후 19,500명)은 '+
-     '그대로라 <b>8월 성수기에는 미리 사는 편이 안전</b>합니다. '+
-     '<b>40元 단일</b>이고 <b>성인 할인이 없습니다</b> · <b>오전장(06:30~12:30 입장)</b>으로 삽니다 '+
-     '(⚠ 분시 예약의 시간대는 <b>권장 입장 시각일 뿐</b>이고 체류 시간에 제한이 없습니다) · '+
-     '매일 20:00에 15일치 발매 · <b>여권 예약 가능</b>. '+
-     '현장에서 <b>등성구 종합서비스 창구 환표</b>가 한 단계 붙습니다 — 일정에 15분 반영돼 있습니다. '+
-     '⚠ <b>삭도는 문표에 없습니다</b> — 현장에서 따로 100元',
-     '위챗 미니프로그램 <span class="cn">长城内外旅游</span> · 携程·Trip.com도 가능')+
-   rvItem('a5','천단 <b>통표</b> (<b>8/12분</b>)','34元',
-     '<rd></rd><b>2026-07-01부터 사전 예약 의무가 없어졌습니다</b> — 여권을 들고 현장에서 살 수 있고, '+
-     '미리 사려면 <b>1~7일 전 매일 21:00</b>(8/12분은 <b>8/11 21:00</b>이 마지막 창)입니다. '+
-     '<br><rd></rd><b>통표여야</b> 합니다 — <b>8/12 저녁 16:59~18:00(61분)</b>에 들어가 '+
-     '<b>기년전 → 회음벽 → 환구단</b>을 보는데 대문표 15元로는 경점에 못 들어갑니다'+
-     '(<b>경점 입장 마감 17:30 · 폐문 18:00</b>). 따로 사면 15+20=35元이라 <b>통표가 1元 쌉니다</b>. '+
-     '⚠ 베이징은 <b>60세 이상이면 대문표가 무료</b>(외국인은 여권으로 환표)인데 '+
-     '<b>경점은 별도</b>이고 이번 일행은 해당이 없습니다',
-     '창유공원 bjgyol.com.cn (이화원과 같은 곳)','https://www.bjgyol.com.cn/buyTicket.html')+
-   rvItem('b3','이화원 <b>통표</b> (<b>8/10분</b>)','60元',
-     '<rd></rd><b>통표 60元</b>입니다(2026-08-08 결정) — 대문표 30元에 <b>원중원 네 곳</b>'+
-     '(불향각 10 · 소주가 10 · 덕화원 5 · <b>이화원박물관</b> 20元)이 붙어, 74분 안에서 '+
-     '<b>현장에서 줄을 다시 서지 않고</b> 그때그때 들어갈 수 있습니다. '+
-     '<br><rd></rd><b>8/10분 · 입장 시간대는 16:00~19:00</b>(도착 16:46 · 관람 74분)입니다. '+
-     '<br><rd></rd><b>예약 의무는 없어졌지만</b> 미리 살 거면 <b>1~7일 전 매일 21:00</b>이고 '+
-     '<b>8/9 21:00이 마지막 창</b>이라 여섯 중 가장 급합니다. '+
-     '⚠ <b>원중원 구역은 18:00에 닫힙니다</b> — 공원 자체(19:00 입장 마감)보다 이르니 '+
-     '늦게 들어가면 장랑·쿤밍호만 걷게 됩니다. <b>천단과 같은 창유공원</b>이라 한 사이트에서 둘 다 됩니다',
-     '창유공원 bjgyol.com.cn (천단과 같은 곳)','https://www.bjgyol.com.cn/buyTicket.html'))+
-
-  ckGroup('③ 추천 — 짐 보관 2건','8/10과 8/12 · 途简单에서 날짜 지정 · 2건',
-   rvItem('b4','<rd></rd>이화원 동문 <b>짐 보관</b> (<b>8/10분</b>)','40元 (1인 10元)',
-     '8/10은 <b>짐과 함께 움직이는 유일한 날</b>입니다 — 베이징에 숙소가 없어 이화원 앞에 맡기고 들어갑니다. '+
-     '<br><rd></rd><b>이화원 동문에서 약 100m · 08:00~23:00 · 캐리어 20元/일</b>(2개면 40元 · 배낭 10元/일)이고, '+
-     '<b>마감이 늦어 이화원이 밀려도 안전</b>합니다. '+
-     '<br><rd></rd><b>지금 미리 예약됩니다</b> — 알리페이 검색창에 <span class="cn">途简单</span>을 넣으면 '+
-     '미니프로그램이 뜨고 <b>목적지(北京) → 보관점(<span class="cn">颐和园</span>) → 날짜 지정 → 개수 → 결제</b> '+
-     '순입니다(플랫폼은 최장 6개월까지 잡힙니다). 가게에 가서 <b>예약번호를 보이고 짐 사진</b>을 올리면 끝입니다. '+
-     '유인 가게라 예약 없이 가도 받지만 <b>성수기 저녁</b>이라 미리 잡는 편이 안전합니다. '+
-     '⚠ <b>18:20에 반드시 회수</b>합니다 — 그대로 베이징북으로 가 G2475를 탑니다',
-     '알리페이 미니프로그램 <span class="cn">途简单</span> (또는 <span class="cn">存知己</span>)')+
-   rvItem('b5','<rd></rd>칭허역 앞 <b>짐 보관</b> (<b>8/12분</b>)','40元 (1인 10元)',
-     '<rd></rd><b>이 보관이 8/12 설계의 핵심입니다.</b> 후허에서 캐리어를 들고 넘어와 '+
-     '<b>시내로 들어가지 않고 칭허역에 두고</b> 그대로 만리장성으로 올라가기 때문에 '+
-     '<b>오전 등성과 삭도</b>가 가능해졌습니다. '+
-     '⚠ <b>칭허역에는 공식 보관소가 없습니다</b> — 역 앞 <b>제3자</b>뿐입니다'+
-     '(도보 180m · <b>09:00~21:00</b> · 캐리어 20元/일 · 2개면 40元). '+
-     '<br><rd></rd><b>09:00 개점이라 09:28 도착이 딱 맞습니다</b> — 더 이른 편으로 바꾸면 '+
-     '보관소가 안 열려 있으니 주의합니다. '+
-     '<span class="cn">途简单</span>에서 <b><span class="cn">清河站</span></b>으로 검색해 '+
-     '<b>날짜를 지정해 미리</b> 잡아 둡니다. ⚠ <b>15:03에 돌아와 회수</b>하고 첸먼으로 갑니다',
-     '알리페이 미니프로그램 <span class="cn">途简单</span> (또는 <span class="cn">存知己</span>)'))+
+  ckTab('<rd></rd>예약 9건','마감 순서 · 체크리스트와 같이 셉니다 · 유니버설은 1안·2안 중 하나만',
+   rvRow('b3','이화원 통표','60元','<rd></rd><b>오늘 21:00</b>',
+     '창유공원','https://www.bjgyol.com.cn/buyTicket.html','8/10분 · 16~19시 · 원중원 네 곳 포함')+
+   rvRow('a1','고속철 본선 2구간','690元','<b>지금</b>',
+     '12306','https://www.12306.cn/en/','G2475 8/10 19:42 · G2458 8/12 07:15 · <b>1등석이 먼저 매진</b>')+
+   rvRow('a2','칭허 ↔ 바다링 왕복','72元','<b>지금</b>',
+     '12306','https://www.12306.cn/en/','D6647 10:51 · <b>G7834 14:43</b>(놓치면 천단이 사라집니다)')+
+   rvRow('a6','유니버설 <b>1안</b>','497,154원','<b>지금</b>',
+     '인터파크','https://travel.interpark.com/tna/products/f8283704-59ca-48f0-b72d-490b74b8bbf9?startDate=2026-08-13&amp;endDate=2026-08-13',
+     '3인 세트 + 낱장 1 · <b>쿠폰 626元</b>이 붙어 실질 약 378,000원')+
+   rvRow('a7','유니버설 <b>2안</b>','464,800원','<b>지금</b>',
+     '클룩','https://www.klook.com/ko/activity/56183-universal-studios-beijing/',
+     '낱장 4장 · 신한 Visa 15%면 395,080원 · <b>둘 중 하나만</b>')+
+   rvRow('a3','바다링 문표','40元','<b>지금</b>',
+     '위챗 <span class="cn">长城内外旅游</span>','','8/12 <b>오전장</b> · 정원 29,250명 · 삭도는 현장 별도 100元')+
+   rvRow('b4','이화원 짐 보관','40元','<b>지금</b>',
+     '<span class="cn">途简单</span>','','<span class="cn">颐和园</span> · 08:00~23:00 · <b>18:20 회수</b>')+
+   rvRow('b5','칭허역 짐 보관','40元','<b>지금</b>',
+     '<span class="cn">途简单</span>','','<span class="cn">清河站</span> · 09:00~21:00 · <b>15:03 회수</b>')+
+   rvRow('a5','천단 통표','34元','<b>8/11 21:00</b>',
+     '창유공원','https://www.bjgyol.com.cn/buyTicket.html','8/12분 · <b>경점 입장 마감 17:30</b> · 이화원과 같은 곳'))+
 
   '<h3>이미 산 것</h3>'+
-  '<div class="msg ok"><p><b><a href="https://kr.trip.com/things-to-do/detail/104990274/" '+
-  'target="_blank" rel="noopener">샹사완 중문 단체 패키지 B — 8/11분</a></b> '+
-  '<s class="du">Trip.com 상품번호 104990274 · ₩102,064/인 · 예약 완료</s><br>'+
-  '07:15 집합(신화광장 서쪽 중신은행) → 19:00~20:00 해산. 사막은 '+
-  '<span class="cn">不通公共交通</span>이라 패키지가 유일한 접근로이고, '+
-  '<b>입장권 + 왕복 케이블카 + 셴사다오 낙타</b>가 값에 들어 있습니다. '+
-  '취소는 8/7까지 20% → 8/8까지 40% → 8/10까지 50% → 이후 100%입니다.</p></div>'+
+  '<div class="tw"><table class="ckt"><tbody>'+
+  '<tr><td class="t"><a href="https://kr.trip.com/things-to-do/detail/104990274/" target="_blank" '+
+  'rel="noopener">샹사완 패키지 B</a></td><td class="w"><b>₩102,064</b>/인</td>'+
+  '<td class="w"><b>예약 완료</b></td><td class="w">Trip.com 104990274</td>'+
+  '<td class="w">8/11 07:15 집합 · 입장권 + 케이블카 + <b>낙타</b> 포함 · 8/10까지 취소 50%</td></tr>'+
+  '</tbody></table></div>'+
 
   '<h3>현장에서 내는 것</h3>'+
-  '<div class="tw"><table class="stack"><thead><tr><th>무엇</th><th class="n">1인</th>'+
-  '<th>어떻게</th></tr></thead><tbody>'+
-  '<tr class="tot"><td><b>교통</b> — 전부 지하철 + <br><rd></rd>택시 1회</td>'+
-  '<td class="n">약 94元</td>'+
-  '<td>지하철 <b>91元</b>(공항선 25元 × 2 포함 <br><rd></rd><b>유니버설 왕복이 14元</b>으로 가장 비쌉니다 — '+
-  '편도 33km라 32km 초과 구간 7元) + <br><rd></rd><b>택시 한 번</b> — <b>8/10 후허하오터역→숙소</b>'+
-  '(1인 약 3元 · 2호선 막차 뒤). <b>예약콜 없이 그 자리에서</b> 잡습니다</td></tr>'+
-  '<tr class="tot"><td><b>바다링 북선 삭도</b> <s class="du">상행만</s></td><td class="n">100元</td>'+
-  '<td><rd></rd><b>편도 100 · 왕복 140元</b> — <b><span class="cn">滚天沟</span> 주차장 북쪽 '+
-  '<span class="cn">索道大厅</span> 1번 창구</b>에서 삽니다(문표에 포함되지 않습니다). '+
-  '<b>8분이면 북8루 호한파</b>이고 걸어 오르면 40분~1시간입니다. '+
-  '<br><rd></rd><b>하행은 걷습니다</b> — 왕복보다 40元이 빠지고 내려오며 성벽을 봅니다. '+
-  '⚠ <b>활도(<span class="cn">滑道</span>·루지 · 편도 30元)는 운영이 중단됐습니다</b> — '+
-  '재개됐으면 하행을 그걸로 바꿔도 됩니다</td></tr>'+
-  '<tr><td><b>사막 현장</b></td><td class="n">약 70元<span class="est">추정</span></td>'+
-  '<td>점심(자율식사) + 모래썰매 1회 20元 — 케이블카·낙타는 값에 들어 있습니다</td></tr>'+
-  '<tr class="tot"><td><b>짐 보관</b> — 두 번</td><td class="n">약 20元</td>'+
-  '<td><b>8/10 이화원 동문 100m</b>(08:00~23:00 · 캐리어 20元/일 × 2 = 40元)와 '+
-  '<br><rd></rd><b>8/12 칭허역 앞</b>(도보 180m · <b>09:00~21:00</b> · 2개 40元)을 4인이 나눕니다. '+
-  '알리페이 <span class="cn">途简单</span>에서 <b><span class="cn">颐和园</span></b>·'+
-  '<b><span class="cn">清河站</span></b>으로 검색합니다. '+
-  '<br><rd></rd><b>8/11 후허는 같은 방 2박이라 보관이 없습니다</b></td></tr>'+
+  '<div class="tw"><table class="ckt"><tbody>'+
+  '<tr><td class="t">교통</td><td class="w"><b>약 94元</b></td>'+
+  '<td class="w">지하철 91 + 택시 1회 3 — 유니버설 왕복 14元이 가장 비쌉니다</td></tr>'+
+  '<tr><td class="t">바다링 북선 삭도</td><td class="w"><b>100元</b></td>'+
+  '<td class="w">상행만 · <span class="cn">滚天沟</span> <span class="cn">索道大厅</span> 1번 창구 · 하행은 도보</td></tr>'+
+  '<tr><td class="t">사막 현장</td><td class="w">약 70元<span class="est">추정</span></td>'+
+  '<td class="w">점심 자율식사 + 모래썰매 1회 20元</td></tr>'+
+  '<tr><td class="t">짐 보관</td><td class="w"><b>약 20元</b></td>'+
+  '<td class="w">8/10 이화원 · 8/12 칭허 두 번을 4인이 나눕니다</td></tr>'+
   '</tbody></table></div>'+
 
   /* 비용 시트가 없으므로 1인 총액은 이 표로만 노출한다 (2026-08-05). */
   '<h3>1인 총액</h3>'+
-  '<div class="tw"><table><tbody>'+
-  '<tr class="tot"><td><b>위 예약분 + 숙박 + 현장 실비</b> <s class="du">유니버설 1안 · 입장료 · 교통 · 식비 포함</s></td>'+
-  '<td class="n"><b>'+pm().total+'</b><span class="est">추정</span></td></tr>'+
-  '<tr><td>원화 환산 <s class="du">1 CNY ≈ 190원 · 항공권 제외 · 2인 1실 · 1등석 기준</s></td>'+
-  '<td class="n"><b>'+pm().won+'</b></td></tr>'+
-  '<tr><td>유니버설 <b>2안</b>(클룩)으로 바꾸면 <s class="du">대신 626元 쿠폰이 없어 식비가 그만큼 나갑니다</s></td>'+
-  '<td class="n">약 3,300元</td></tr>'+
-  '<tr><td>2안 + <b>신한 Visa 15%</b> <s class="du">카드가 있고 USD로 결제할 때</s></td>'+
-  '<td class="n">약 3,210元</td></tr>'+
+  '<div class="tw"><table class="ckt"><tbody>'+
+  '<tr><td class="t">예약분 + 숙박 + 현장 실비</td>'+
+  '<td class="w"><b>'+pm().total+'</b><span class="est">추정</span></td>'+
+  '<td class="w">유니버설 1안 · 입장료 · 교통 · 식비 포함 · 항공권 제외</td></tr>'+
+  '<tr><td class="t">원화 환산</td><td class="w"><b>'+pm().won+'</b></td>'+
+  '<td class="w">1 CNY ≈ 190원 · 2인 1실 · 1등석 기준</td></tr>'+
+  '<tr><td class="t">유니버설 <b>2안</b>이면</td><td class="w">약 3,300元</td>'+
+  '<td class="w">대신 626元 쿠폰이 없어 식비가 그만큼 나갑니다</td></tr>'+
+  '<tr><td class="t">2안 + 신한 Visa 15%</td><td class="w">약 3,210元</td>'+
+  '<td class="w">카드가 있고 USD로 결제할 때</td></tr>'+
   '</tbody></table></div>'+
 
-  '<h3>대체가 없는 것</h3>'+
-  '<div class="tw"><table><tbody>'+
-  '<tr><td><b>여권 원본</b></td><td>기차 개찰 · 천단 · 이화원 · <b>유니버설</b> · '+
-  '<b>바다링 환표</b> · 호텔 전부에 필요하고 <b>예약자와 입장자가 같아야</b> 합니다. '+
-  '개찰은 외국 여권이라 <b>유인 통로</b>를 씁니다</td></tr>'+
-  '<tr><td><b>이동 원칙</b></td><td><rd></rd><b>전부 지하철 · 택시는 1회</b>(8/10 후허하오터역→숙소 · '+
-  '2호선 막차 22:24 뒤인 22:29 도착이라 그렇습니다). 짐은 캐리어 2개 + 가방 2개라 '+
-  '택시를 쓸 때는 <b>일반 택시(4인승) 1대</b>면 되고, <b>예약콜 없이 그 자리에서</b> 잡습니다</td></tr>'+
-  '<tr><td><b>튼튼한 신발</b></td><td><rd></rd><b>바다링은 상행만 삭도이고 하행은 도보 40분</b>입니다 — '+
-  '북8루에서 관성까지 <b>계단이 가파르니</b> 운동화가 사실상 준비물입니다. '+
-  '8/13 유니버설도 12시간을 서서 다닙니다</td></tr>'+
+  '<h3>대체가 없는 것 · 남은 미확인</h3>'+
+  '<div class="tw"><table class="ckt"><tbody>'+
+  '<tr><td class="t">여권 원본</td>'+
+  '<td class="w">개찰 · 입장 · 호텔 전부 · <b>예약자와 입장자가 같아야</b> 하고 개찰은 유인 통로</td></tr>'+
+  '<tr><td class="t">튼튼한 신발</td>'+
+  '<td class="w"><b>8/12 하산 40분</b>과 8/13 유니버설 12시간</td></tr>'+
+  '<tr><td class="t">기차 시각</td>'+
+  '<td class="w">제3자 시각표라 <b>12306 예매 화면이 곧 최종 확인</b>입니다(특히 D6647 · G7834)</td></tr>'+
+  '<tr><td class="t"><span class="cn">626元</span> 쿠폰 범위</td>'+
+  '<td class="w">1안을 살 때 바우처에서 확인 — <b>못 쓰면 2안이 더 쌉니다</b></td></tr>'+
+  '<tr><td class="t">삭도 운영시간</td>'+
+  '<td class="w">08:00~14:00과 종일로 자료가 갈립니다 — <b>12:03 탑승은 어느 쪽이든 안전</b></td></tr>'+
+  '<tr><td class="t">사막 담당자 연락</td>'+
+  '<td class="w">전날 22:00까지 · 안 오면 먼저 문의 (중문 단체 미구성이면 환불 통보)</td></tr>'+
   '</tbody></table></div>'+
 
-  '<div class="msg ok"><p><rd></rd><b>유니버설 8/13 운영시간을 공식에서 확인했습니다</b>(2026-08-09 · '+
-  '공식 Park Schedule) — <b>09:00~21:00</b>이고 시티워크는 07:00~23:00입니다. '+
-  '계획의 12시간이 그대로 섭니다. ⚠ 공식도 「당일 변경될 수 있다」고 적어 두었으니 '+
-  '<b>전날 밤 앱에서 한 번 더</b> 봅니다(클룩 상품 페이지에는 09:00~20:00으로 적혀 있는데 '+
-  '<b>공식 쪽이 맞습니다</b>).</p></div>'+
-  '<div class="msg warn"><p><b>남은 미확인</b> — ① 기차 시각의 <b>12306</b> 최종 확인(예매가 곧 확인 · '+
-  '특히 <b>D6647 · G7834</b>는 몇 분 차이가 그날을 정합니다) '+
-  '② <br><rd></rd><b><span class="cn">626元</span> 쿠폰의 사용 범위</b>(1안을 살 때 — 어느 매장에서 '+
-  '어떻게 쓰는지 바우처에서 확인. 못 쓰면 2안이 더 쌉니다) '+
-  '③ <br><rd></rd><b>바다링 북선 삭도 운영시간</b>(<span class="cn">本地宝</span> 08:00~14:00 · '+
-  '携程 성수기 종일로 갈립니다 — <b>12:03 탑승은 어느 쪽이든 안전</b>하나 현장에서 확인) '+
-  '④ <b>8/11 사막 담당자 연락</b>(전날 22:00까지 · 실제 해산 시각을 여기서 확인). '+
-  '<s class="du">우속통은 사지 않기로 정했고, 볜이팡은 예약이 필요 없습니다. '+
-  '카이더몰 시즈먼(8/10 저녁 자리)은 2026-08-09에 정상 영업을 확인해 목록에서 뺐습니다</s></p></div>'+
-  '<p class="src"><rd></rd><b>2026-08-09 실조회</b>(같은 날 두 번 확인 — 인터파크 값은 환율에 따라 '+
-  '<b>수십 원씩 움직입니다</b>) — 유니버설 공식 Park Schedule(8/13 09:00~21:00) · '+
-  '인터파크 8/13 옵션 화면(세트 376,250 · 낱장 120,904) · 클룩 8/13 옵션 화면(116,200 · 카드 쿠폰 3종) · '+
-  '<span class="cn">凯德</span> 공식(시즈먼점 영업 중) · '+
-  'gaotie.com.cn(G2475 1등석 355元 · D6647 32/20元) · 高铁网(G2458 1등석 335 · 2등석 209元). '+
-  '그 앞은 2026-08-01~08-02 조회 — 北京本地宝(바다링 분시단 · 발매 규칙 · 광장-자금성 예약 관계) · '+
-  '창유공원 · <span class="cn">颐和园</span> 공중번호 · Trip.com(숙소·기차). 샹사완 패키지는 '+
-  '<b>2026-08-04 Trip.com 상품 104990274 페이지 실조회</b>입니다. '+
+  '<p class="src"><rd></rd><b>2026-08-09 실조회</b> — 유니버설 공식 Park Schedule(8/13 09:00~21:00) · '+
+  '인터파크·클룩 8/13 옵션 화면 · gaotie.com.cn · 高铁网(1등석 요금). '+
+  '그 앞은 2026-08-01~08-04 조회 — 北京本地宝 · 창유공원 · Trip.com(샹사완 104990274). '+
   '링크는 전부 접속을 확인했습니다.</p>'}},
 
 };
